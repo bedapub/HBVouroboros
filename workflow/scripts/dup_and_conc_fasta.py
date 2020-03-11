@@ -21,11 +21,12 @@ def dup_and_conc_fasta(infile="hbvdbr.fas", outfile="hbvdbr-dupconc.bas"):
         if len(line)==0 or not line:
             break;
 
-      if line[0]==">":
-        count += 1
-        fout.write(line)
-      else:
-        conc = line + line
-        fout.write(conc)
+        if line[0]=='>':
+          count += 1
+          fout.write(line)
+          fout.write('\n')
+        else:
+          conc = line + line + '\n'
+          fout.write(conc)
 
   return(count)

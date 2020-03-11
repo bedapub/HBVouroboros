@@ -29,11 +29,15 @@ We took an approach inspired by the annotation procedure of HBVdb to circumvent 
 
 [^fn1]: https://academic.oup.com/nar/article/41/D1/D566/1051781
 
-## The mapping procedure
+## Aligning reads to HBV genomes
 
 Given that concatenated HBV genomes are used as templates, virtually any sequence alignment software can be used for read mapping. Given that HBV genes are transcribed from cccDNA without splicing, RNA sequencing reads can be aligned in an ungapped fashion. *HBVouroboros* offers the option to choose from two popular aligners: *bowtie* and *STAR*.
 
 ## Genotype calling
 
-## Feature count summary
+We use a Bayesian approach to call genotypes for each sample based on alignment results. We first set the prior of each reference strain, which are equal for all genotypes by default, though users can set their own priors depending on prior knowledge or the context. As we scan over reads mapped to HBV genomes, We update the probability sequentially. Finally, we report the posterior probability of each reference genome. The genotype of the reference genome with the highest posterior probability is reported as the inferred genotype. Subsequent base-level and gene-level summary statistics are reported using the inferred reference genome and genotype.
+
+## Nucleotide-level and gene-level summary statistics
+
+*HBVouroboros* reports read coverage per nucleotide base and per gene of the inferred genotype, as well as single-nucleotide polymorphisms (SNP) compared with the inferred reference genome. Coverage and SNP data are reported using the original reference genome, not the concatenated genome.
 

@@ -18,8 +18,9 @@ def dup_and_conc_fasta(infile="hbvdbr.fas", outfile="hbvdbr-dupconc.bas"):
       while True:
         line = fin.readline().strip()
         
-        if not line:
+        if len(line)==0 or not line:
             break;
+
       if line[0]==">":
         count += 1
         fout.write(line)

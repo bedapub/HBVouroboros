@@ -25,9 +25,9 @@ We downloaded HBV reference genomes of major genotypes (A-H) from The Hepatitis 
 
 Most popular sequence aligners that we tested, including bowtie2 and STAR, do not provide specific support for circular genomes. While it is possible to map RNA-sequencing reads derived from HBV cccDNAs to the linear genomes deposited in HBVdb and other public databases, reads that span both ends of the linear genome will not be correctly mapped, causing an inaccurate estimate of HBV gene expression.
 
-We took an approach inspired by the annotation procedure of HBVdb to circumvent this problem[^fn1]. We duplicated the sequence of each reference genome, concatenated the original and the duplicate genome, and used the concatenated genomes (twice the size of the original genome) as templates of read mapping.
+We took an approach inspired by the annotation procedure of HBVdb to circumvent this problem[^1]. We duplicated the sequence of each reference genome, concatenated the original and the duplicate genome, and used the concatenated genomes (twice the size of the original genome) as templates of read mapping.
 
-[^fn1]: https://academic.oup.com/nar/article/41/D1/D566/1051781
+[^1]: https://academic.oup.com/nar/article/41/D1/D566/1051781
 
 ## Aligning reads to HBV genomes
 

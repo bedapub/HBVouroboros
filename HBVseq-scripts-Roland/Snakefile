@@ -1,0 +1,92 @@
+INDEX = ["1", "2", "3", "4", "rev.1", "rev.2"]
+#ids = ["Z-1", "Z-2"]
+dire = ["1", "2"]
+configfile: "config.yaml"
+
+rule duplicate_circular_genomes:
+  input:
+    "data/one_time_genomes/{sample}-genotyped-completeGenomes-20190306.fasta"
+  output:
+    "data/duplicated_genomes/{sample}.fasta",
+    "data/duplicated_genomes/{sample}_lengths_original.txt"
+  script:
+    "scripts/duplication.py"
+rule bowtie2_index:
+    input:
+        "data/duplicated_genomes/{sample}.fasta"
+    params:
+        basename = "data/indexed_duplicated_genomes/{sample}"
+    output:
+        expand("data/indexed_duplicated_genomes/{{sample}}.{ind}.bt2", ind=INDEX)
+    shell:
+        "bowtie2-build -f --offrate 3 --ftabchars 12 --threads 2 {input} {params.basename}"
+rule order_samples:
+    input:
+        "data/test/{id}.unmapped_mate1.gz",
+        "data/test/{id}.unmapped_mate2.gz"
+    output:
+        temp("data/test/{id}.unmapped_mate1"),
+        temp("data/test/{id}.unmapped_mate2")
+    params:
+        sample = 1000
+    script:
+        "scripts/sort.py"
+'''
+rule extract_reads:
+    input:
+        "data/test2/{id}.unmapped_mate{pairing}.gz"
+    output:
+        temp("data/test2/{id}.unmapped_mate{pairing}")
+    shell:
+        "zcat {input}"
+        "| head -n 4000"
+        "| sponge {output}"
+        "|| if [[ $? -eq 141 ]]; then true; else exit $?; fi"
+'''
+rule bowtie2_align:
+    input:
+        ref=expand("data/indexed_duplicated_genomes/{{sample}}.{ind}.bt2", ind=INDEX),
+        reads1="data/test/{id}.unmapped_mate1",
+        reads2="data/test/{id}.unmapped_mate2"
+    params:
+        basename = "data/indexed_duplicated_genomes/{sample}"
+    output:
+        "mapped_reads/{sample}_{id}.sam"
+    shell:
+        "bowtie2 --no-mixed --no-unal --xeq --threads 2 --omit-sec-seq --no-discordant -a -x {params.basename} -1 {input.reads1} -2 {input.reads2} -S {output}"
+rule samtools_view:
+    input:
+        "mapped_reads/{sample}_{id}.sam"
+    output:
+        "unsorted_mapped_reads/{sample}_{id}.bam"
+    shell:
+        "samtools view {input} -b -o {output}"
+rule samtools_sort:
+    input:
+        "unsorted_mapped_reads/{sample}_{id}.bam"
+    output:
+        "sorted_reads/{sample}_{id}.bam"
+    shell:
+        "samtools sort -T sorted_reads/{wildcards.sample}_{wildcards.id}"
+        " -m3g -O bam {input} > {output}"
+rule samtools_index:
+    input:
+        "sorted_reads/{sample}_{id}.bam"
+    output:
+        "sorted_reads/{sample}_{id}.bam.bai"
+    shell:
+        "samtools index {input}"
+rule samtools_flagstat:
+    input:
+        "sorted_reads/{sample}_{id}.bam"
+    output:
+        "sorted_reads/{sample}_{id}.bam.flagstat"
+    shell:
+        "samtools flagstat {input} > {output}"
+rule idenify_gt:
+    input:
+        "mapped_reads/{sample}_{id}.sam"
+    output:
+        "matched_genomes/{sample}_{id}.txt"
+    script:
+        "scripts/identifyGenotype.py"

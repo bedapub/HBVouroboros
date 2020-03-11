@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import re
+from Bio import SeqIO
+
 def dup_and_conc_fasta(infile="hbvdbr.fas", outfile="hbvdbr-dupconc.bas"):
   """Duplicate sequences in a FASTA file, concatenate the original 
      with the duplicates, and write the concatenated sequences
@@ -13,20 +16,13 @@ def dup_and_conc_fasta(infile="hbvdbr.fas", outfile="hbvdbr-dupconc.bas"):
   """
 
   count = 0
-  with open(outfile, 'w') as fout:
-    with open(infile, 'r') as fin:
-      while True:
-        line = fin.readline().strip()
-        
-        if len(line)==0 or not line:
-            break;
+  fout = open(outfile, 'w')
 
-        if line[0]=='>':
-          count += 1
-          fout.write(line)
-          fout.write('\n')
-        else:
-          conc = line + line + '\n'
-          fout.write(conc)
+  for record in SeqIO.parse(infile, 'fasta'):
+    fout.write('>' + record.description + '\n')
+    sstr = str(record.seq)
+    fout.write(sstr*2 + '\n')
+    count += 1
 
+  fout.close()
   return(count)

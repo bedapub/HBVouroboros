@@ -1,5 +1,6 @@
 name: HBVouroboros
 channels:
+  - defaults
   - bioconda
   - conda-forge
 dependencies:

@@ -25,3 +25,4 @@ counts/
 
 ~$*
 biokit*
+__pycache__

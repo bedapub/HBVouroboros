@@ -31,7 +31,7 @@ We took an approach inspired by the annotation procedure of HBVdb to circumvent 
 
 ## Aligning reads to HBV genomes
 
-Given that concatenated HBV genomes are used as templates, virtually any sequence alignment software can be used for read mapping. Given that HBV genes are transcribed from cccDNA without splicing, RNA sequencing reads can be aligned in an ungapped fashion. *HBVouroboros* offers the option to choose from two popular aligners: *bowtie* and *STAR*.
+Given that concatenated HBV genomes are used as templates, virtually any sequence alignment software can be used for read mapping. Given that HBV genes are transcribed from cccDNA without splicing, RNA sequencing reads can be aligned in an ungapped fashion. *HBVouroboros* uses *STA* as the default aligner. Users can modify the Snakemake workflow to use other aligners if it is necessary, for instance to use the same aligner for mapping reads to both HBV and to the host genome or transcriptome, for instance the human genome.
 
 ## Genotype calling
 

@@ -1,6 +1,6 @@
-HBVouroboros: A snakemake-based workflow to map RNA-sequencing reads to circular  HBV cccDNA
+HBVouroboros: A snakemake-based workflow to map RNA-sequencing reads to circular HBV cccDNA
 ===
-Jitao David Zhang, 11.03.2020
+Jitao David Zhang and Roland Ambs, 11.03.2020
 
 # Background
 

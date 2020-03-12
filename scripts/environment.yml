@@ -8,5 +8,6 @@ dependencies:
   - biopython
   - snakemake >=3.5
   - star =2.7.3a
+  - bowtie2 =2.3.5
   - samtools =1.10
   - bedtools =2.29

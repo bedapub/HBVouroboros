@@ -6,7 +6,7 @@ localrules: download_refgenomes
 HTTP = HTTPRemoteProvider()
 
 rule all:
-    input: "HBV_refgenomes_dup_STAR"
+    input: "HBV_refgenomes_dup_STAR", "HBV_refgenomes_dup_BOWTIE2"
 
 rule download_refgenomes:
     input:
@@ -50,3 +50,17 @@ rule star_index:
         "logs/star_index_HBV_refgenomes_dup.log"
     wrapper:
         "0.49.0/bio/star/index"
+
+rule bowtie2_index:
+    input:
+        fasta = "HBV_refgenomes_dup.fasta"
+    output:
+        directory("HBV_refgenomes_dup_BOWTIE2")
+    threads:
+        2
+    message:
+        "Generating bowtie2 index of duplicated HBV reference genomes"
+    log:
+        "logs/bowtie2_index_HBV_refgenomes_dup.log"
+    shell:
+        "mkdir {output}; bowtie2-build --threads {threads} {input.fasta} {output}/{output}"

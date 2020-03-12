@@ -6,7 +6,6 @@ configfile: "config/config.yaml"
 bowtie2_index = config["bowtie2_index"]
 project_name = config["project_name"]
 sample_annotation = config['sample_annotation']
-min_read_length = config["min_read_length"]
 
 # parse sample annotation
 annotation = pd.read_table(sample_annotation)
@@ -17,20 +16,71 @@ fq2s = annotation.iloc[:, 3]
 fq1dict = dict(zip(samples, fq1s))
 fq2dict = dict(zip(samples, fq2s))
 
+rawbam_dir = "raw_bam"
+bam_dir = "bam"
+log_dir = "logs"
+stats_dir = "stats"
+
+
 rule all:
     input:
-        expand("mapped_reads/{sample}.bam", sample=samples)
+        expand(os.path.join(stats_dir, "{sample}.sorted.bam.flagstat"), sample=samples)
 
 rule bowtie2_map:
     input:
         f1 = lambda wildcards: fq1dict[wildcards.sample],
         f2 = lambda wildcards: fq2dict[wildcards.sample]
     output:
-        "mapped_reads/{sample}.bam"
+        os.path.join(rawbam_dir, "{sample}.bam")
     log:
         "logs/{sample}_bowtie2.log"
     threads:
         2 
     shell:
-        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -x {bowtie2_index} -1 {input.f1} -2 {input.f2} 2>{log} | samtools view -Sb - > {output}"
+        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -x {bowtie2_index} \
+        -1 {input.f1} -2 {input.f2} 2>{log} | samtools view -Sb - > {output}"
     
+rule filter_and_sort_bam:
+    input:
+        os.path.join(rawbam_dir, "{sample}.bam")
+    output:
+        os.path.join(bam_dir, "{sample}.sorted.bam")
+    log:
+        os.path.join(log_dir, "{sample}_filter_and_sort_bam.log")
+    threads:
+        2
+    shell:
+        "samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
+
+rule index_bam:
+    input:
+        os.path.join(bam_dir, "{sample}.sorted.bam")
+    output:
+        os.path.join(bam_dir, "{sample}.sorted.bam.bai")
+    threads: 2
+    shell:
+        "samtools index {input}"
+
+rule flagstat:
+    input:
+        bam=os.path.join(bam_dir, "{sample}.sorted.bam"),
+        bai=os.path.join(bam_dir, "{sample}.sorted.bam.bai"),
+    output:
+        os.path.join(stats_dir, "{sample}.sorted.bam.flagstat")
+    threads:
+        2
+    shell:
+        "samtools flagstat -@ {threads} {input.bam} > {output}"
+
+"""
+rule coverage:
+    input:
+        bam="bam/{sample}.sorted.bam",
+        bai="bam/{sample}.sorted.bam.bai"
+    output:
+        "bedcov/{sample}.coverage"
+    log:
+        os.path.join(log_dir, "{sample}.coverageBed.out")
+    shell:
+        "coverageBed -a {BEDFILE} -b {input} -counts -F 0.5 2>{log} >{output}"
+"""

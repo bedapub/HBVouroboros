@@ -1,10 +1,12 @@
 Use snakemake to build STAR index of duplicated-concatenated HBV reference genomes
 ===
 
-## First-time use: create a conda environment
+## First-time use: create a conda environment at the level above
 
 ```bash
+cd ..
 conda env create
+cd -
 ```
 
 ## Subsequent use:

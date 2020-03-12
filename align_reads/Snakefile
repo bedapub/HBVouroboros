@@ -38,8 +38,10 @@ rule bowtie2_map:
     threads:
         2 
     shell:
-        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -x {bowtie2_index} \
-        -1 {input.f1} -2 {input.f2} 2>{log} | samtools view -Sb - > {output}"
+        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive \
+            -x {bowtie2_index} \
+            -1 {input.f1} -2 {input.f2} 2>{log} | \
+            samtools view -Sb - > {output}"
     
 rule filter_and_sort_bam:
     input:

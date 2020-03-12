@@ -1,19 +1,31 @@
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
 import prepare_HBV_refgenomes as ref
 
-localrules: download_HBV_refgenomes
+localrules: download_refgenomes
+
+HTTP = HTTPRemoteProvider()
 
 rule all:
     input: "HBV_refgenomes_dup"
 
-rule download_HBV_refgenomes:
+rule download_refgenomes:
+    input:
+         HTTP.remote('https://hbvdb.lyon.inserm.fr/data/references/hbvdbr.fas',
+		     keep_local=True)
     output:
-        "HBV_refgenomes.fasta"
-    log:
-        "logs/HBV_refgenomes.log"
+        "HBV_refgenomes_raw.fasta" 
     run:
-        ref.download_HBV_refgenomes("HBV_refgenomes.fasta")
+        shell("mv {input} {output}")
+    
+rule simplify_id:
+    input:
+       fasta="HBV_refgenomes_raw.fasta"
+    output:
+       fasta="HBV_refgenomes.fasta"
+    run:
+        ref.simplify_id_FASTA(input.fasta, output.fasta)
 
-rule HBV_refgenomes_dup:
+rule dup_and_conc:
     input:
         fasta="HBV_refgenomes.fasta"
     output:
@@ -21,7 +33,7 @@ rule HBV_refgenomes_dup:
     log:
         "logs/HBV_refgenomes_dup.log"
     run:
-        ref.dup_and_conc(input.fasta, output.fasta)
+        ref.dup_and_conc_FASTA(input.fasta, output.fasta)
 
 rule star_index:
     input:

@@ -4,7 +4,4 @@ project_name: 'rsv'
 sample_annotation: '/mnt/projects/HBVouroboros/testdata/sampleAnnotation'
 
 # bowtie2 index of duplicated HBV reference genomes
-bowtie2_index: 'HBV_refgenomes/HBV_refgenomes_dup_BOWTIE2/HBV_refgenomes_dup_BOWTIE2'
-
-# minimal read length to be considered
-min_read_length: 30
+bowtie2_index: '../HBV_refgenomes/HBV_refgenomes_dup_BOWTIE2/HBV_refgenomes_dup_BOWTIE2'

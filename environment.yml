@@ -12,3 +12,4 @@ dependencies:
   - samtools =1.10
   - bedtools =2.29
   - pandas
+  - trinity

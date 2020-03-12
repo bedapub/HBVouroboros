@@ -1,6 +1,5 @@
 name: HBVouroboros
 channels:
-  - defaults
   - bioconda
   - conda-forge
 dependencies:
@@ -9,4 +8,5 @@ dependencies:
   - biopython
   - snakemake >=3.5
   - star =2.7.3a
-  - samtools
+  - samtools =1.10
+  - bedtools =2.29

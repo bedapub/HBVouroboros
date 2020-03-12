@@ -25,12 +25,7 @@ fq_dir = "fastq"
 rule all:
     input:
         os.path.join(bam_dir, "aggregated_mapped_reads.bam"),  
-        f1 = os.path.join(
-             fq_dir,
-             "aggregated_mapped_reads_1.fq.gz"),
-        f2 = os.path.join(
-             fq_dir,
-             "aggregated_mapped_reads_2.fq.gz")
+        "trinity_out_dir"
 
 rule bowtie2_map:
     input:
@@ -107,6 +102,22 @@ rule aggregate_fq:
         "samtools fastq --threads {threads} \
              -1 {output.f1} -2 {output.f2} {input}"
     
+rule run_trinity:
+    input:
+        f1 = os.path.join(
+             fq_dir, 
+             "aggregated_mapped_reads_1.fq.gz"),
+        f2 = os.path.join(
+             fq_dir,
+             "aggregated_mapped_reads_2.fq.gz")
+    output:
+        directory("trinity_out_dir")
+    threads: 2
+    shell:
+        "Trinity --seqType fq \
+            --left {input.f1} --right {input.f2} \
+            --CPU {threads} --max_memory 10G"
+
 """
 rule coverage:
     input:

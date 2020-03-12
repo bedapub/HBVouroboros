@@ -99,7 +99,7 @@ rule aggregate_fq:
              "aggregated_mapped_reads_2.fq.gz")
     threads: 2
     shell:
-        "samtools fastq --threads {threads} \
+        "samtools fastq --threads {threads} -N \
              -1 {output.f1} -2 {output.f2} {input}"
     
 rule run_trinity:

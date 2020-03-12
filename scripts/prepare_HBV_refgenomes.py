@@ -3,7 +3,7 @@
 import re
 from Bio import SeqIO
 
-def simplified_id(desc):
+def get_simplified_id(desc):
    """ Make a new id for reference genome that contains genotype and accession
 
    Args:
@@ -20,27 +20,67 @@ def simplified_id(desc):
 
    return(id)
 
-def dup_and_conc(infile="hbvdbr.fas", outfile="hbvdbr-dupconc.bas"):
-  """Duplicate sequences in a FASTA file, concatenate the original 
-     with the duplicates, and write the concatenated sequences
+def simplify_id(record):
+    """Simplify IDs of HBV reference genomes, 
+    using the format of GENOTYPE|Accession.
 
-  Args:
-      infile (str): The input filename, pointing to a FASTA file
-      outfile (str): The output filename, overwritten if the file exists.
+    Args:
+        record (Bio.SeqRecord): A SeqRecord object
+    Returns:
+        Bio.SeqRecord
+    """
+    
+    new_id = get_simplified_id(record.description)
+    new_desc = new_id + ' ' + record.description
+    record.id = new_id
+    record.description = new_desc
+    return(record)
 
-  Returns:
-      int: number of sequences 
-  """
+def simplify_id_FASTA(infile, outfile):
+    """Simplify IDs of all sequences in a FASTA file
 
-  count = 0
-  fout = open(outfile, 'w')
+    Args:
+        infile (str): input file name
+        outfile (str): output file name
+    Returns:
+        int: number of sequences written
+    """
 
-  for record in SeqIO.parse(infile, 'fasta'):
-    newid = simplified_id(record.description)
-    fout.write('>' + newid + ' ' + record.description + ' Duplicated_Concatenated\n')
-    sstr = str(record.seq)
-    fout.write(sstr*2 + '\n')
-    count += 1
+    sequences = SeqIO.parse(infile, 'fasta')
+    outseqs = (simplify_id(record) for record in sequences)
+    res = SeqIO.write(outseqs, outfile, 'fasta')
+    return(res)
 
-  fout.close()
-  return(count)
+def dup_and_conc(record):
+    """Duplicate the sequence and concatenate the original and duplicated
+    sequence, and append a text label to the id and the description
+
+    Args:
+        record (Bio.SeqRecord): A SeqRecord object
+    Returns:
+        Bio.SeqRecord
+    """
+    record.seq = record.seq*2
+    old_desc = record.description
+    new_desc = old_desc.replace("length=", "original length=")
+    new_desc += ' Duplicated and concatenated (final length:{})'.format(len(record.seq))
+    record.description = new_desc
+    record.id += '|DupConc'
+    return(record)
+
+def dup_and_conc_FASTA(infile, outfile):
+    """Duplicate sequences in a FASTA file, concatenate the original 
+       with the duplicates, and write the concatenated sequences
+
+    Args:
+        infile (str): The input filename, pointing to a FASTA file
+        outfile (str): The output filename, overwritten if the file exists.
+
+    Returns:
+        int: number of sequences 
+    """
+
+    sequences = SeqIO.parse(infile, 'fasta')
+    outseqs = (dup_and_conc(record) for record in sequences)
+    res = SeqIO.write(outseqs, outfile, 'fasta')
+    return(res)

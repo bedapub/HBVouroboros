@@ -1,9 +1,11 @@
 import prepare_HBV_refgenomes as ref
 
+localrules: download_HBV_refgenomes
+
 rule all:
     input: "HBV_refgenomes_dup"
 
-rule HBV_refgenomes:
+rule download_HBV_refgenomes:
     output:
         "HBV_refgenomes.fasta"
     log:

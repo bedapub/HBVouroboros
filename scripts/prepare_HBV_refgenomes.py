@@ -64,6 +64,6 @@ def dup_and_conc(infile="hbvdbr.fas", outfile="hbvdbr-dupconc.bas"):
   fout.close()
   return(count)
 
-if __name__ == '__main__':
-    download_HBV_refgenomes("test.fasta") 
-    dup_and_conc("test.fasta", "test-dupconc.fasta")
+## if __name__ == '__main__':
+##    download_HBV_refgenomes("HBV_refgenomes.fasta") 
+##    dup_and_conc("HBV_refgenomes.fasta", "HBV_refgenomes_dup.fasta")

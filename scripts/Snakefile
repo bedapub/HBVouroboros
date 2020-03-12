@@ -6,7 +6,7 @@ localrules: download_refgenomes
 HTTP = HTTPRemoteProvider()
 
 rule all:
-    input: "HBV_refgenomes_dup"
+    input: "HBV_refgenomes_dup_STAR"
 
 rule download_refgenomes:
     input:
@@ -39,9 +39,9 @@ rule star_index:
     input:
         fasta = "HBV_refgenomes_dup.fasta"
     output:
-        directory("HBV_refgenomes_dup")
+        directory("HBV_refgenomes_dup_STAR")
     message:
-        "Generating STAR index"
+        "Generating STAR index of duplicated HBV reference genomes"
     threads:
         1
     params:

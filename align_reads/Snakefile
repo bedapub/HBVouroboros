@@ -20,11 +20,17 @@ rawbam_dir = "raw_bam"
 bam_dir = "bam"
 log_dir = "logs"
 stats_dir = "stats"
-
+fq_dir = "fastq"
 
 rule all:
     input:
-        expand(os.path.join(stats_dir, "{sample}.sorted.bam.flagstat"), sample=samples)
+        os.path.join(bam_dir, "aggregated_mapped_reads.bam"),  
+        f1 = os.path.join(
+             fq_dir,
+             "aggregated_mapped_reads_1.fq.gz"),
+        f2 = os.path.join(
+             fq_dir,
+             "aggregated_mapped_reads_2.fq.gz")
 
 rule bowtie2_map:
     input:
@@ -72,6 +78,35 @@ rule flagstat:
     shell:
         "samtools flagstat -@ {threads} {input.bam} > {output}"
 
+rule aggregate_bam:
+    input:
+        expand(os.path.join(
+                bam_dir,
+                "{sample}.sorted.bam"), 
+            sample=samples)
+    output:
+        os.path.join(bam_dir, "aggregated_mapped_reads.bam")
+    threads:
+        2
+    shell:
+        "samtools cat --threads {threads} {input} | \
+            samtools sort -n > {output}"
+        
+rule aggregate_fq:
+    input:
+        os.path.join(bam_dir, "aggregated_mapped_reads.bam")
+    output:
+        f1 = os.path.join(
+             fq_dir, 
+             "aggregated_mapped_reads_1.fq.gz"),
+        f2 = os.path.join(
+             fq_dir,
+             "aggregated_mapped_reads_2.fq.gz")
+    threads: 2
+    shell:
+        "samtools fastq --threads {threads} \
+             -1 {output.f1} -2 {output.f2} {input}"
+    
 """
 rule coverage:
     input:

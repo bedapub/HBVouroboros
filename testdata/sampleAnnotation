@@ -1,0 +1,5 @@
+#ID	GROUP	FASTQ1	FASTQ2	Time
+Sample1	Control	./testfile-1_1.fq.gz	./testfile-1_2.fq.gz	6h
+Sample2	Control	./testfile-2_1.fq.gz	./testfile-2_2.fq.gz	6h
+Sample3	Treatment	./testfile-3_1.fq.gz	./testfile-3_2.fq.gz	6h
+Sample4	Treatment	./testfile-4_1.fq.gz	./testfile-4_2.fq.gz	6h

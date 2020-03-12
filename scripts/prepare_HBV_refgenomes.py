@@ -1,26 +1,7 @@
 #!/usr/bin/env python3
 
-import requests
 import re
 from Bio import SeqIO
-
-def download_HBV_refgenomes(filename="hbvdbr.fas"):
-  """Download HBV reference genomes and save them into a file
-
-  Args:
-      filename (str): The output filename
-
-  Returns:
-      bool: whether the request was ok
-  """
-
-  url = 'https://hbvdb.lyon.inserm.fr/data/references/hbvdbr.fas'
-  r = requests.get(url)
-  rstr = r.content.decode("utf-8")
-  with open(filename, 'w') as f:
-      f.write(rstr)
-
-  return(r.ok)
 
 def simplified_id(desc):
    """ Make a new id for reference genome that contains genotype and accession
@@ -63,7 +44,3 @@ def dup_and_conc(infile="hbvdbr.fas", outfile="hbvdbr-dupconc.bas"):
 
   fout.close()
   return(count)
-
-## if __name__ == '__main__':
-##    download_HBV_refgenomes("HBV_refgenomes.fasta") 
-##    dup_and_conc("HBV_refgenomes.fasta", "HBV_refgenomes_dup.fasta")

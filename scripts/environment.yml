@@ -4,8 +4,9 @@ channels:
   - bioconda
   - conda-forge
 dependencies:
-  - python=3.7
+  - python =3.7
   - requests
   - biopython
-  - snakemake
-  - star=2.7.3a
+  - snakemake >=3.5
+  - star =2.7.3a
+  - samtools

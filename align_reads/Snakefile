@@ -1,191 +1,36 @@
 import os
+import pandas as pd
 
 configfile: "config/config.yaml"
 
-BOWTIE2_INDEX=config["bowtie2_index"]
-MIN_READ_LENGTH=config["min_read_length"]
-GFF3_FILE=config["gff3_file"]
-PROJECT_NAME=config["project_name"]
+bowtie2_index = config["bowtie2_index"]
+project_name = config["project_name"]
+sample_annotation = config['sample_annotation']
+min_read_length = config["min_read_length"]
 
-## identify samples from fastq_dir
-## select only .gz files
-fastqFiles=[f for f in os.listdir(FASTQ_DIR) if f.endswith("gz")]
-sampleNames=[x[:x.find(".unmapped")] for x in fastqFiles]
-SAMPLES=list(set(sampleNames))
+# parse sample annotation
+annotation = pd.read_table(sample_annotation)
+samples = annotation.iloc[:, 0]
+fq1s = annotation.iloc[:, 2]
+fq2s = annotation.iloc[:, 3]
+
+fq1dict = dict(zip(samples, fq1s))
+fq2dict = dict(zip(samples, fq2s))
 
 rule all:
     input:
-        OUTPUT_DIR + "/statistics/mapping_statistics.txt",
-        OUTPUT_DIR + "/statistics/idx_statistics.txt",
-        OUTPUT_DIR + "/statistics/strand_statistics.txt",
-        OUTPUT_DIR + "/gct/" + PROJECT_NAME + ".gtc",
-        OUTPUT_DIR + "/genotype-calling/genotype-calling.txt"
+        expand("mapped_reads/{sample}.bam", sample=samples)
 
 rule bowtie2_map:
     input:
-        f1=FASTQ_DIR + "/{sample}.unmapped_mate1.gz",
-        f2=FASTQ_DIR + "/{sample}.unmapped_mate2.gz"
-    conda:
-        BIN_DIR + "/environment.yaml"
+        f1 = lambda wildcards: fq1dict[wildcards.sample],
+        f2 = lambda wildcards: fq2dict[wildcards.sample]
     output:
-        OUTPUT_DIR + "/mapped_reads/{sample}.bam"
+        "mapped_reads/{sample}.bam"
     log:
-        OUTPUT_DIR + "/log/{sample}.bowtie2.log"
+        "logs/{sample}_bowtie2.log"
     threads:
-        4
+        2 
     shell:
-        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -x {BOWTIE2_INDEX} -1 {input.f1} -2 {input.f2} 2>{log} | samtools view -Sb - > {output}"
-
-rule samtools_filter:
-    input:
-        OUTPUT_DIR + "/mapped_reads/{sample}.bam"
-    output:
-        OUTPUT_DIR + "/filtered_reads/{sample}.bam"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "samtools view -h {input} | awk 'length($10)>{MIN_READ_LENGTH} || $1 ~ /^@/' | samtools view -Sb - > {output}"
-
-rule samtools_sort:
-    input:
-        OUTPUT_DIR + "/filtered_reads/{sample}.bam"
-    output:  
-        OUTPUT_DIR + "/sorted_reads/{sample}.bam"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "samtools sort -O bam {input} > {output}"
-
-rule samtools_index:
-    input:
-        OUTPUT_DIR + "/sorted_reads/{sample}.bam"
-    output:
-        OUTPUT_DIR + "/sorted_reads/{sample}.bam.bai"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "samtools index {input}"
-
-## 99/147: paired, mapped in proper pair, mate is reversed
-rule samtools_fwd:
-    input:
-        OUTPUT_DIR + "/sorted_reads/{sample}.bam"
-    output:
-        OUTPUT_DIR + "/strand_reads/{sample}_fwd.bam",
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "samtools view -h {input} | awk '$2 == 99 || $2 == 147 || $1 ~ /^@/' | samtools view -Sb - > {output}"
-
-rule samtools_fwd_index:
-    input:
-        OUTPUT_DIR + "/strand_reads/{sample}_fwd.bam"
-    output:
-        OUTPUT_DIR + "/strand_reads/{sample}_fwd.bam.bai"
-    conda:
-        BIN_DIR + "/environment.yaml"    
-    shell:
-        "samtools index {input}"
-
-## 83/163: paired, mapped in proper pair, read is reversed
-rule samtools_rev:
-    input:
-        OUTPUT_DIR + "/sorted_reads/{sample}.bam"
-    output:
-        OUTPUT_DIR + "/strand_reads/{sample}_rev.bam"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "samtools view -h {input} | awk '$2 == 83 || $2 == 163 || $1 ~ /^@/' | samtools view -Sb - > {output}"
-
-rule samtools_rev_index:
-    input:
-        OUTPUT_DIR + "/strand_reads/{sample}_rev.bam"
-    output:
-        OUTPUT_DIR + "/strand_reads/{sample}_rev.bam.bai"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "samtools index {input}"
-
-rule mapping_stat:
-    input:
-        bam=expand(OUTPUT_DIR + "/sorted_reads/{sample}.bam", sample=SAMPLES),
-        bai=expand(OUTPUT_DIR + "/sorted_reads/{sample}.bam.bai", sample=SAMPLES)
-    output:
-        OUTPUT_DIR + "/statistics/mapping_statistics.txt"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "{BIN_DIR}/scripts/mapstat-from-bam.bash {input.bam} > {output}"
-
-rule idx_stat:
-    input:
-        bam=expand(OUTPUT_DIR + "/sorted_reads/{sample}.bam", sample=SAMPLES),
-        bai=expand(OUTPUT_DIR + "/sorted_reads/{sample}.bam.bai", sample=SAMPLES)
-    output:
-        OUTPUT_DIR + "/statistics/idx_statistics.txt"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "{BIN_DIR}/scripts/idxstat-from-bam.bash {input.bam} > {output}"
-
-rule strand_stat:
-    input:
-        fwdbam=expand(OUTPUT_DIR + "/strand_reads/{sample}_fwd.bam", sample=SAMPLES),
-        fwdbai=expand(OUTPUT_DIR + "/strand_reads/{sample}_fwd.bam.bai", sample=SAMPLES),
-        revbam=expand(OUTPUT_DIR + "/strand_reads/{sample}_rev.bam", sample=SAMPLES),
-        revbai=expand(OUTPUT_DIR + "/strand_reads/{sample}_rev.bam.bai", sample=SAMPLES)
-    output:
-        OUTPUT_DIR + "/statistics/strand_statistics.txt"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "{BIN_DIR}/scripts/strandstat-from-bam.bash {input.fwdbam} {input.revbam} > {output}"
-
-rule bedtools_organize:
-    input:
-        sortedReadFile=OUTPUT_DIR + "/sorted_reads/{sample}.bam",
-        genotypeCallingFile=OUTPUT_DIR + "/genotype-calling/{sample}-genotype-calling.txt"
-    output:  
-        OUTPUT_DIR + "/coverage/{sample}-coverage.txt"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "coverageBed -counts -a " + GFF3_FILE + " -b {input.sortedReadFile}"
-        "| cut -f 1,9,10"
-        "| awk -F \"\t\" '{{ split($2, subfieldGene,\"gene=\"); split(subfieldGene[2], subfieldGeneName,\";\"); print $1 \"\t\" subfieldGeneName[1] \"\t\" $3}}'"
-        "| grep $(cut -f 2 {input.genotypeCallingFile} | sed -n 2p) "
-        "| awk '{{ print $2 \"\t\" $1 \"\t\" $3 }}' > {output}"
-
-rule genotype_calling:
-    input:
-        OUTPUT_DIR + "/statistics/idx_statistics.txt"
-    output:
-        OUTPUT_DIR + "/genotype-calling/{sample}-genotype-calling.txt"
-    params:
-        samplename="{sample}"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "{BIN_DIR}/scripts/genotype-calling-from-statistics.bash {input} {params.samplename} > {output}"
-
-rule genotype_sumup:
-    input:
-        expand(OUTPUT_DIR + "/genotype-calling/{sample}-genotype-calling.txt", sample=SAMPLES)
-    output:
-        OUTPUT_DIR + "/genotype-calling/genotype-calling.txt"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "{BIN_DIR}/scripts/genotype-sum-up.bash {input} > {output}"
-
-rule generate_gct:
-    input:
-        expand(OUTPUT_DIR + "/coverage/{sample}-coverage.txt", sample=SAMPLES)
-    output:
-        OUTPUT_DIR + "/gct/" + PROJECT_NAME + ".gtc"
-    conda:
-        BIN_DIR + "/environment.yaml"
-    shell:
-        "{BIN_DIR}/scripts/gct-from-coverage.bash {input} > {output}"
+        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -x {bowtie2_index} -1 {input.f1} -2 {input.f2} 2>{log} | samtools view -Sb - > {output}"
+    

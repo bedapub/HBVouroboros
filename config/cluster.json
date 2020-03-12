@@ -1,0 +1,10 @@
+{
+    "__default__" :
+    {
+        "time" : "02:00:00",
+	"nodes" : 4-16,
+	"mem" : 5gb,
+        "cpu" : 4,
+	"ntasks_per_node": 1
+    }
+}

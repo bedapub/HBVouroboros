@@ -1,20 +1,16 @@
 Use snakemake to build STAR index of duplicated-concatenated HBV reference genomes
 ===
 
-## Create conda environment
+## First-time use: create a conda environment
 
 ```bash
 conda env create
 ```
 
-## Activate conda environment
+## Subsequent use:
 
-```bash
-conda activate HBVouroboros
-```
-
-## Build index
-
-```bash
-snakemake --use-conda
+* Option #1: run `build_ref_genomes.bash`
+* Option #2: run the following commands explicitly
+    1. Activate the conda environment: `conda activate HBVouroboros`
+    2. Fetch HBV reference genomes and build index: `snakemake --use-conda -d ../HBV_refgenomes/`
 ```

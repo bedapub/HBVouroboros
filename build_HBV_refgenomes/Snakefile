@@ -8,7 +8,8 @@ HTTP = HTTPRemoteProvider()
 rule all:
     input: "HBV_refgenomes_dup_STAR", 
            "HBV_refgenomes_dup_BOWTIE2",
-           dynamic("HBV_refgenome_dup_{refgenome}.fasta")
+           "HBV_allgenomes.fasta",
+           dynamic("HBV_refgenome_{refgenome}.fasta")
 
 rule download_refgenomes:
     input:
@@ -19,6 +20,16 @@ rule download_refgenomes:
     run:
         shell("mv {input} {output}")
     
+rule download_allgenomes:
+    input:
+        HTTP.remote(
+            'https://hbvdb.lyon.inserm.fr/data/nucleic/fasta/all_Genomes.fas',
+            keep_local=True)
+    output:
+        "HBV_allgenomes.fasta"
+    run:
+        shell("mv {input} {output}")
+
 rule simplify_id:
     input:
        fasta="HBV_refgenomes_raw.fasta"
@@ -41,9 +52,9 @@ checkpoint split:
     input:
         fasta="HBV_refgenomes_dup.fasta"
     output:
-        dynamic('HBV_refgenome_dup_{refgenome}.fasta')
+        dynamic('HBV_refgenome_{refgenome}.fasta')
     run:
-        ref.split_FASTA(input.fasta, prefix='HBV_refgenome_dup_')
+        ref.split_FASTA(input.fasta, prefix='HBV_refgenome_')
         
 rule star_index:
     input:

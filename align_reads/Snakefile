@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 from HBVouroboros import infref
+from HBVouroboros import refgenomes
+from os.path import join
 
 configfile: "/mnt/projects/HBVouroboros/align_reads/config/config.yaml"
 
@@ -24,20 +26,24 @@ log_dir = "logs"
 stats_dir = "stats"
 fq_dir = "fastq"
 blast_dir="blast"
+infref_dir = "inferred_reference_strain"
 
 trinity_outdir="trinity_out_dir"
 trinity_fasta=os.path.join(trinity_outdir, "Trinity.fasta")
 trinity_sorted_fasta=os.path.join(trinity_outdir, "Trinity.sorted.fasta")
 blast_out = os.path.join(blast_dir, "blast.out")
-inferred_strain_FASTA="genotype/inferred_strain.fasta"
-inferred_strain_gb="genotype/inferred_strain.gb"
-inferred_strain_gff="genotype/inferred_strain.gff"
+inferred_strain_FASTA=join(infref_dir, "inferred_strain.fasta")
+inferred_strain_dup_FASTA=join(infref_dir, "inferred_strain_dup.fasta")
+inferred_strain_gb=join(infref_dir, "inferred_strain.gb")
+inferred_strain_gff=join(infref_dir, "inferred_strain.gff")
+inferred_strain_dup_BOWTIE2=join(infref_dir, "inferred_strain_dup_BOWTIE2")
 
 rule all:
     input:
         os.path.join(bam_dir, "aggregated_mapped_reads.bam"),  
         inferred_strain_FASTA,
-        inferred_strain_gff
+        inferred_strain_gff,
+        inferred_strain_dup_BOWTIE2
 
 rule bowtie2_map:
     input:
@@ -163,6 +169,23 @@ rule ref_strain_gb2gff:
     output: inferred_strain_gff
     run:
         infref.gb2gff(input[0], output[0])
+
+rule infref_dup:
+    input: inferred_strain_FASTA
+    output: inferred_strain_dup_FASTA
+    run:
+        refgenomes.dup_and_conc_FASTA(input[0], output[0])
+
+rule bowtie2_index_infref_dup:
+    input: inferred_strain_dup_FASTA
+    output: directory(inferred_strain_dup_BOWTIE2)
+    threads: 2
+    message:  "Generating bowtie2 index of duplicated the inferred reference genome"
+    log:  "logs/bowtie2_index_inferred_reference_genome.log"
+    shell:
+        "mkdir {output}; bowtie2-build --threads {threads} {input} {output}"
+
+
 """
 rule coverage:
     input:

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import re
+import os.path
 from Bio import SeqIO
 
 def get_simplified_id(desc):
@@ -84,3 +85,40 @@ def dup_and_conc_FASTA(infile, outfile):
     outseqs = (dup_and_conc(record) for record in sequences)
     res = SeqIO.write(outseqs, outfile, 'fasta')
     return(res)
+
+def refgenome_ids(infile, replace_pipe=True):
+    """Return IDs of reference genomes
+
+    Args:
+        infile (str): The input FASTA file name
+        replace_pipe (bool): Whether replace pipe (|) with underscores (_)
+    Returns:
+        list: ids
+    """
+    sequences = SeqIO.parse(infile, 'fasta')
+    res = (seq.id for seq in sequences)
+    if replace_pipe: 
+      res = (s.replace('|', '_') for s in res)
+    return(res)
+
+def split_FASTA(infile, outdir=None, prefix=''):
+    """Split sequences in a FASTA file into separate files
+       output file name is given by the ids (with pipes replaced by underscore)
+
+       Args:
+           infile (str): The input FASTA file name
+           outdir (str): The output directory. Default: input file folder
+           prefix (str): Prefix to the output file name
+       Returns:
+           int: number of sequences
+    """
+
+    count=0
+    if outdir is None:
+        outdir = os.path.dirname(infile)
+    sequences = SeqIO.parse(infile, 'fasta')
+    for seq in sequences:
+        outfile = os.path.join(outdir, prefix + seq.id.replace('|', '_') + '.fasta')
+        SeqIO.write(seq, outfile, 'fasta')
+        count += 1
+

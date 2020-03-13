@@ -29,7 +29,10 @@ __pycache__
 
 IGV
 HBV_refgenomes
+testdata-output
 realdata
 realdata-alignment
 
 *.svg
+
+.snakemake

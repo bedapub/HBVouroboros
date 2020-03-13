@@ -26,3 +26,8 @@ counts/
 ~$*
 biokit*
 __pycache__
+
+IGV
+HBV_refgenomes
+realdata
+realdata-alignment

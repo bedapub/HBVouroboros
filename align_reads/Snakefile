@@ -54,7 +54,7 @@ rule bowtie2_map:
         f1 = lambda wildcards: fq1dict[wildcards.sample],
         f2 = lambda wildcards: fq2dict[wildcards.sample]
     output:
-        os.path.join(rawbam_dir, "{sample}.bam")
+        temp(os.path.join(rawbam_dir, "{sample}.bam"))
     log:
         "logs/{sample}_bowtie2.log"
     threads:
@@ -195,7 +195,7 @@ rule infref_bowtie2_map:
         f1 = lambda wildcards: fq1dict[wildcards.sample],
         f2 = lambda wildcards: fq2dict[wildcards.sample]
     output:
-        os.path.join(infref_bam_dir, "{sample}.bam")
+        temp(os.path.join(infref_bam_dir, "{sample}.bam"))
     log:
         "logs/{sample}_infref_bowtie2.log"
     threads:

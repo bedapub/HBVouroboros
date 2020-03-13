@@ -41,3 +41,9 @@ We use a Bayesian approach to call genotypes for each sample based on alignment 
 
 *HBVouroboros* reports read coverage per nucleotide base and per gene of the inferred genotype, as well as single-nucleotide polymorphisms (SNP) compared with the inferred reference genome. Coverage and SNP data are reported using the original reference genome, not the concatenated genome.
 
+# Setup HBVouroboros package
+
+```bash
+conda activate HBVouroboros
+pip install .
+```

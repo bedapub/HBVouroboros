@@ -1,5 +1,5 @@
 from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
-import prepare_HBV_refgenomes as ref
+import HBVouroboros.refgenomes as ref
 
 localrules: download_refgenomes
 

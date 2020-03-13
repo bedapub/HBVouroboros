@@ -17,7 +17,7 @@ rule download_refgenomes:
          HTTP.remote('https://hbvdb.lyon.inserm.fr/data/references/hbvdbr.fas',
 		     keep_local=True)
     output:
-        "HBV_refgenomes_raw.fasta" 
+        "HBV_refgenomes.fasta" 
     run:
         shell("mv {input} {output}")
     
@@ -38,14 +38,6 @@ rule makeblastdb:
         blastdb_filenames
     shell:
         "makeblastdb -in {input} -title \"HBVdb genomes\" -dbtype nucl"
-
-rule simplify_id:
-    input:
-       fasta="HBV_refgenomes_raw.fasta"
-    output:
-       fasta="HBV_refgenomes.fasta"
-    run:
-        ref.simplify_id_FASTA(input.fasta, output.fasta)
 
 rule dup_and_conc:
     input:

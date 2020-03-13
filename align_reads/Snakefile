@@ -31,12 +31,13 @@ trinity_sorted_fasta=os.path.join(trinity_outdir, "Trinity.sorted.fasta")
 blast_out = os.path.join(blast_dir, "blast.out")
 inferred_strain_FASTA="genotype/inferred_strain.fasta"
 inferred_strain_gb="genotype/inferred_strain.gb"
+inferred_strain_gff="genotype/inferred_strain.gff"
 
 rule all:
     input:
         os.path.join(bam_dir, "aggregated_mapped_reads.bam"),  
         inferred_strain_FASTA,
-        inferred_strain_gb
+        inferred_strain_gff
 
 rule bowtie2_map:
     input:
@@ -157,6 +158,11 @@ rule get_ref_strain_gb:
         gb_acc = infref.get_infref_gb_acc(blast_out)
         infref.download_gb(gb_acc, output[0])
 
+rule ref_strain_gb2gff:
+    input: inferred_strain_gb
+    output: inferred_strain_gff
+    run:
+        infref.gb2gff(input[0], output[0])
 """
 rule coverage:
     input:

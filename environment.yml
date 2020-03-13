@@ -13,3 +13,4 @@ dependencies:
   - bedtools =2.29
   - pandas
   - trinity
+  - blast

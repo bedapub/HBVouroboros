@@ -132,7 +132,8 @@ rule run_trinity:
 rule sort_trinity_fasta:
     input: trinity_fasta
     output: trinity_sorted_fasta
-    run: infref.sort_FASTA_by_length(trinity_fasta, trinity_sorted_fasta)
+    run: 
+        infref.sort_FASTA_by_length(input[0], output[0])
 
 rule run_blast:
     input: trinity_sorted_fasta

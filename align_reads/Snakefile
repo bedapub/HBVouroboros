@@ -178,12 +178,12 @@ rule infref_dup:
 
 rule bowtie2_index_infref_dup:
     input: inferred_strain_dup_FASTA
-    output: directory(inferred_strain_dup_BOWTIE2)
+    output: inferred_strain_dup_BOWTIE2
     threads: 2
     message:  "Generating bowtie2 index of duplicated the inferred reference genome"
     log:  "logs/bowtie2_index_inferred_reference_genome.log"
     shell:
-        "mkdir {output}; bowtie2-build --threads {threads} {input} {output}"
+        "touch {output}; bowtie2-build --threads {threads} {input} {output}"
 
 
 """

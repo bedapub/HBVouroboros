@@ -27,6 +27,7 @@ blast_dir="blast"
 
 trinity_outdir="trinity_out_dir"
 trinity_fasta=os.path.join(trinity_outdir, "Trinity.fasta")
+trinity_sorted_fasta=os.path.join(trinity_outdir, "Trinity.sorted.fasta")
 blast_out = os.path.join(blast_dir, "blast.out")
 inferred_strain_FASTA="genotype/inferred_strain.fasta"
 
@@ -128,8 +129,13 @@ rule run_trinity:
             --left {input.f1} --right {input.f2} \
             --CPU {threads} --max_memory 10G"
 
-rule run_blast:
+rule sort_trinity_fasta:
     input: trinity_fasta
+    output: trinity_sorted_fasta
+    run: infref.sort_FASTA_by_length(trinity_fasta, trinity_sorted_fasta)
+
+rule run_blast:
+    input: trinity_sorted_fasta
     output: blast_out
     shell:
         "blastn -db {blast_db} -query {input} -outfmt 6 > {output}"

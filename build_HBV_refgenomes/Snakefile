@@ -4,11 +4,13 @@ import prepare_HBV_refgenomes as ref
 localrules: download_refgenomes
 
 HTTP = HTTPRemoteProvider()
+blastdb_filenames = ["HBV_allgenomes.fasta."+s for s in ("nhr", "nsq", "nin")]
 
 rule all:
     input: "HBV_refgenomes_dup_STAR", 
            "HBV_refgenomes_dup_BOWTIE2",
-           "HBV_allgenomes.fasta"
+           "HBV_allgenomes.fasta",
+           blastdb_filenames
 
 rule download_refgenomes:
     input:
@@ -28,6 +30,14 @@ rule download_allgenomes:
         "HBV_allgenomes.fasta"
     run:
         shell("mv {input} {output}")
+
+rule makeblastdb:
+    input:
+        "HBV_allgenomes.fasta"
+    output:
+        blastdb_filenames
+    shell:
+        "makeblastdb -in {input} -title \"HBVdb genomes\" -dbtype nucl"
 
 rule simplify_id:
     input:

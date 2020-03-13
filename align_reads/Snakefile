@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-configfile: "config/config.yaml"
+configfile: "/mnt/projects/HBVouroboros/align_reads/config/config.yaml"
 
 bowtie2_index = config["bowtie2_index"]
 project_name = config["project_name"]

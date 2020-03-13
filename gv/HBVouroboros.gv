@@ -1,0 +1,28 @@
+digraph HBVouroboros {
+
+   fq [label="FASTQ files"]
+   HBVrefs [label="HBVdb reference genomes"]
+   refbams [label="BAM files"]
+   aggmapreads [label="Aggregated mapped reads"]
+   assembly [label="De novo assembly"]
+   infref [label="Inferred reference strain"]
+
+   manref [label="Manually specified reference strain"]
+   
+   bam [label="BAM files"]
+   mappingstat [label="Mapping statstics"]
+   structvar [label="Structural variants"]
+
+   fq -> refbams [label="bowtie2"]
+   HBVrefs -> refbams [label="bowtie2"]
+   refbams -> aggmapreads [label="samtools"]
+   aggmapreads -> assembly [label="Trinity"]
+   assembly -> infref [label="blast"]
+   
+   infref -> bam
+   manref -> bam
+   fq -> bam [label="bowtie2"]
+   bam -> mappingstat [label="bedtools and scripts"]
+   bam -> structvar
+   
+}

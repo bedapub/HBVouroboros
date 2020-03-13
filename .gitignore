@@ -31,3 +31,5 @@ IGV
 HBV_refgenomes
 realdata
 realdata-alignment
+
+*.svg

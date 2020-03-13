@@ -27,6 +27,7 @@ stats_dir = "stats"
 fq_dir = "fastq"
 blast_dir="blast"
 infref_dir = "inferred_reference_strain"
+infref_bam_dir = "infref_bam"
 
 trinity_outdir="trinity_out_dir"
 trinity_fasta=os.path.join(trinity_outdir, "Trinity.fasta")
@@ -36,14 +37,17 @@ inferred_strain_FASTA=join(infref_dir, "inferred_strain.fasta")
 inferred_strain_dup_FASTA=join(infref_dir, "inferred_strain_dup.fasta")
 inferred_strain_gb=join(infref_dir, "inferred_strain.gb")
 inferred_strain_gff=join(infref_dir, "inferred_strain.gff")
-inferred_strain_dup_BOWTIE2=join(infref_dir, "inferred_strain_dup_BOWTIE2")
+infref_bowtie2_index=join(infref_dir, "infref_bowtie2_index")
+
 
 rule all:
     input:
         os.path.join(bam_dir, "aggregated_mapped_reads.bam"),  
         inferred_strain_FASTA,
         inferred_strain_gff,
-        inferred_strain_dup_BOWTIE2
+        expand(os.path.join(infref_bam_dir, 
+                            "{sample}.sorted.bam.flagstat"),
+               sample=samples)
 
 rule bowtie2_map:
     input:
@@ -178,12 +182,61 @@ rule infref_dup:
 
 rule bowtie2_index_infref_dup:
     input: inferred_strain_dup_FASTA
-    output: inferred_strain_dup_BOWTIE2
+    output: infref_bowtie2_index
     threads: 2
     message:  "Generating bowtie2 index of duplicated the inferred reference genome"
     log:  "logs/bowtie2_index_inferred_reference_genome.log"
     shell:
         "touch {output}; bowtie2-build --threads {threads} {input} {output}"
+
+rule infref_bowtie2_map:
+    input:
+        genome = infref_bowtie2_index,
+        f1 = lambda wildcards: fq1dict[wildcards.sample],
+        f2 = lambda wildcards: fq2dict[wildcards.sample]
+    output:
+        os.path.join(infref_bam_dir, "{sample}.bam")
+    log:
+        "logs/{sample}_infref_bowtie2.log"
+    threads:
+        2
+    shell:
+        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive \
+            -x {infref_bowtie2_index} \
+            -1 {input.f1} -2 {input.f2} 2>{log} | \
+            samtools view -Sb - > {output}"
+
+rule filter_and_sort_infref_bam:
+    input:
+        os.path.join(infref_bam_dir, "{sample}.bam")
+    output:
+        os.path.join(infref_bam_dir, "{sample}.sorted.bam")
+    log:
+        os.path.join(log_dir, "{sample}_infref_filter_and_sort_bam.log")
+    threads:
+        2
+    shell:
+        "samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
+
+rule index_infref_bam:
+    input:
+        os.path.join(infref_bam_dir, "{sample}.sorted.bam")
+    output:
+        os.path.join(infref_bam_dir, "{sample}.sorted.bam.bai")
+    threads: 2
+    shell:
+        "samtools index {input}"
+
+rule infref_flagstat:
+    input:
+        bam=os.path.join(infref_bam_dir, "{sample}.sorted.bam"),
+        bai=os.path.join(infref_bam_dir, "{sample}.sorted.bam.bai"),
+    output:
+        os.path.join(infref_bam_dir, "{sample}.sorted.bam.flagstat")
+    threads:
+        2
+    shell:
+        "samtools flagstat -@ {threads} {input.bam} > {output}"
 
 
 """

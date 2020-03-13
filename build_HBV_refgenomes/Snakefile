@@ -8,8 +8,7 @@ HTTP = HTTPRemoteProvider()
 rule all:
     input: "HBV_refgenomes_dup_STAR", 
            "HBV_refgenomes_dup_BOWTIE2",
-           "HBV_allgenomes.fasta",
-           dynamic("HBV_refgenome_{refgenome}.fasta")
+           "HBV_allgenomes.fasta"
 
 rule download_refgenomes:
     input:
@@ -48,14 +47,6 @@ rule dup_and_conc:
     run:
         ref.dup_and_conc_FASTA(input.fasta, output.fasta)
 
-checkpoint split:
-    input:
-        fasta="HBV_refgenomes_dup.fasta"
-    output:
-        dynamic('HBV_refgenome_{refgenome}.fasta')
-    run:
-        ref.split_FASTA(input.fasta, prefix='HBV_refgenome_')
-        
 rule star_index:
     input:
         fasta = "HBV_refgenomes_dup.fasta"

@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-import infref 
+from HBVouroboros import infref
 
 configfile: "/mnt/projects/HBVouroboros/align_reads/config/config.yaml"
 

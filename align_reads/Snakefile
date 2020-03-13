@@ -6,6 +6,7 @@ configfile: "/mnt/projects/HBVouroboros/align_reads/config/config.yaml"
 bowtie2_index = config["bowtie2_index"]
 project_name = config["project_name"]
 sample_annotation = config['sample_annotation']
+blast_db = config['blast_db']
 
 # parse sample annotation
 annotation = pd.read_table(sample_annotation)
@@ -21,11 +22,15 @@ bam_dir = "bam"
 log_dir = "logs"
 stats_dir = "stats"
 fq_dir = "fastq"
+blast_dir="blast"
+
+trinity_outdir="trinity_out_dir"
+trinity_fasta=os.path.join(trinity_outdir, "Trinity.fasta")
 
 rule all:
     input:
         os.path.join(bam_dir, "aggregated_mapped_reads.bam"),  
-        "trinity_out_dir"
+        os.path.join(blast_dir, "blast.out")
 
 rule bowtie2_map:
     input:
@@ -113,12 +118,18 @@ rule run_trinity:
              fq_dir,
              "aggregated_mapped_reads_2.fq.gz")
     output:
-        directory("trinity_out_dir")
+        trinity_fasta
     threads: 2
     shell:
         "Trinity --seqType fq \
             --left {input.f1} --right {input.f2} \
             --CPU {threads} --max_memory 10G"
+
+rule run_blast:
+    input: trinity_fasta
+    output: os.path.join(blast_dir, "blast.out")
+    shell:
+        "blastn -db {blast_db} -query {input} > {output}"
 
 """
 rule coverage:

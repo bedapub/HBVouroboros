@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import infref 
 
 configfile: "/mnt/projects/HBVouroboros/align_reads/config/config.yaml"
 
@@ -26,11 +27,13 @@ blast_dir="blast"
 
 trinity_outdir="trinity_out_dir"
 trinity_fasta=os.path.join(trinity_outdir, "Trinity.fasta")
+blast_out = os.path.join(blast_dir, "blast.out")
+inferred_strain_FASTA="genotype/inferred_strain.fasta"
 
 rule all:
     input:
         os.path.join(bam_dir, "aggregated_mapped_reads.bam"),  
-        os.path.join(blast_dir, "blast.out")
+        inferred_strain_FASTA
 
 rule bowtie2_map:
     input:
@@ -127,9 +130,16 @@ rule run_trinity:
 
 rule run_blast:
     input: trinity_fasta
-    output: os.path.join(blast_dir, "blast.out")
+    output: blast_out
     shell:
-        "blastn -db {blast_db} -query {input} > {output}"
+        "blastn -db {blast_db} -query {input} -outfmt 6 > {output}"
+
+rule get_ref_strain_seq:
+    input: blast_out
+    output: inferred_strain_FASTA
+    run:
+        acc=infref.get_infref_acc(blast_out)
+        infref.write_seq_by_acc(blast_db, acc, inferred_strain_FASTA)
 
 """
 rule coverage:

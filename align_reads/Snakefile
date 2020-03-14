@@ -312,17 +312,4 @@ rule gene_coverage:
      output:
         os.path.join(cov_dir, "infref_genome_gene_coverage.gct")
      run:
-        "touch {output}"
-
-"""
-rule coverage:
-    input:
-        bam="bam/{sample}.sorted.bam",
-        bai="bam/{sample}.sorted.bam.bai"
-    output:
-        "bedcov/{sample}.coverage"
-    log:
-        os.path.join(log_dir, "{sample}.coverageBed.out")
-    shell:
-        "coverageBed -a {BEDFILE} -b {input} -counts -F 0.5 2>{log} >{output}"
-"""
+        coverage.collect_gene_coverage(input, output[0])

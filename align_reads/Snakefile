@@ -53,7 +53,8 @@ rule all:
         inferred_strain_dup_gff,
         os.path.join(cov_dir, "infref_genome_count.tsv"),
         os.path.join(cov_dir, "infref_genome_depth.tsv"),
-        os.path.join(cov_dir, "infref_genome_gene_coverage.gct")
+        os.path.join(cov_dir, "infref_genome_gene_coverage.gct"),
+        os.path.join(cov_dir, "infref_genome_CDS_coverage.gct")
 
 rule bowtie2_map:
     input:
@@ -303,4 +304,15 @@ rule gene_coverage:
      output:
         os.path.join(cov_dir, "infref_genome_gene_coverage.gct")
      run:
-        coverage.collect_gene_coverage(input, output[0])
+        coverage.collect_gene_coverage(input, output[0], feat_type='gene')
+
+## question: can we combine the two?
+rule CDS_coverage:
+     input:
+        expand(
+          os.path.join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv"),
+          sample=samples)
+     output:
+        os.path.join(cov_dir, "infref_genome_CDS_coverage.gct")
+     run:
+        coverage.collect_gene_coverage(input, output[0], feat_type='CDS')

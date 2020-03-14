@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'HBVouroboros',
-    version = '0.2',
+    version = '0.3',
     description = "Map reads to HBV cccDNA genomes",
     packages=find_packages(),
 

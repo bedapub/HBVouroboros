@@ -46,7 +46,7 @@ rule all:
         inferred_strain_FASTA,
         inferred_strain_gff,
         expand(os.path.join(infref_bam_dir, 
-                            "{sample}.sorted.bam.flagstat"),
+                            "{sample}.sorted.bam.stat"),
                sample=samples)
 
 rule bowtie2_map:
@@ -227,17 +227,16 @@ rule index_infref_bam:
     shell:
         "samtools index {input}"
 
-rule infref_flagstat:
+rule infref_stat:
     input:
         bam=os.path.join(infref_bam_dir, "{sample}.sorted.bam"),
         bai=os.path.join(infref_bam_dir, "{sample}.sorted.bam.bai"),
     output:
-        os.path.join(infref_bam_dir, "{sample}.sorted.bam.flagstat")
+        os.path.join(infref_bam_dir, "{sample}.sorted.bam.stat")
     threads:
         2
     shell:
-        "samtools flagstat -@ {threads} {input.bam} > {output}"
-
+        "samtools stat -@ {threads} {input.bam} > {output}"
 
 """
 rule coverage:

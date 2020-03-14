@@ -107,3 +107,37 @@ def sort_FASTA_by_length(infile, outfile):
     records = list(SeqIO.parse(infile, "fasta"))
     records.sort(key=lambda r: -len(r))
     SeqIO.write(records, outfile, "fasta")
+
+def first_accession(fastafile):
+    """Get accession of the first record in FASTA file
+
+    Args:
+        fastafile (str): FASTA file
+    Returns:
+        str : accession number of the first record
+    """
+
+    seqs=SeqIO.parse(fastafile, 'fasta')
+    return(seqs[0].id)
+
+def dup_gff(dup_fasta, ingff, outgff):
+    """Make GFF files for duplicated genome
+
+    Args:
+        dup_fasta (str): duplicated FASTA
+        ingff (str): input GFF file
+        outgff (str): output GFF file
+    Return:
+        None
+    """
+
+    acc = first_accession(dup_fasta)
+    out_handle = open(outgff, 'w')
+    with open(ingff, 'r') as f:
+        fl = f.read().split('\t')
+        fl[0] = acc
+        out_handle.write('\t'.join(fl))
+        out_handle.write('\n')
+
+    out_handle.close()
+    return(None)

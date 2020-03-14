@@ -117,8 +117,13 @@ def first_accession(fastafile):
         str : accession number of the first record
     """
 
+    res = '';
     seqs=SeqIO.parse(fastafile, 'fasta')
-    return(seqs[0].id)
+    for seq in seqs:
+        res = seq.id
+        break;
+
+    return(res)
 
 def dup_gff(dup_fasta, ingff, outgff):
     """Make GFF files for duplicated genome

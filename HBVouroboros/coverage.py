@@ -2,7 +2,7 @@
 
 import os.path
 
-def collect_gene_coverage(coverage_files, outfile):
+def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
     """Collect gene coverage files into a GCT outfile
 
     Args:
@@ -10,6 +10,7 @@ def collect_gene_coverage(coverage_files, outfile):
             'bedtools coverage'. They must be generated from the same
             GFF3 files.
         outfile (str): Output file name
+        feat_type (str): feature type, 'gene' or 'CDS'
     Returns:
         int: files collected
     """
@@ -33,9 +34,15 @@ def collect_gene_coverage(coverage_files, outfile):
             if line[0]=='#':
                 next
             fl = line.rstrip().split('\t')
-            if fl[2]=='gene':
+            if fl[2]==feat_type:
                 chrom = fl[0]
-                gene = fl[8].replace("gene=","")
+                if feat_type == 'gene':
+                    gene = fl[8].replace("gene=","")
+                elif feat_type == 'CDS':
+                    ## this assumes that the ID is in the second, which is not always the case - to be fixed
+                    gene = fl[8].split(';')[1].split('=')[1]
+                else:
+                    raise Exception('not supported feat_type: CDS or gene only')
                 genes.append(gene)
                 descs.append(chrom)
 
@@ -55,7 +62,7 @@ def collect_gene_coverage(coverage_files, outfile):
                 if line[0]=='#':
                     next
                 fl = line.rstrip().split('\t')
-                if fl[2]=='gene':
+                if fl[2]==feat_type:
                     cov_counts.append(fl[9])
  
         counts[ind] = cov_counts

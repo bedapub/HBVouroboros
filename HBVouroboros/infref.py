@@ -139,10 +139,14 @@ def dup_gff(dup_fasta, ingff, outgff):
     acc = first_accession(dup_fasta)
     out_handle = open(outgff, 'w')
     with open(ingff, 'r') as f:
-        fl = f.read().split('\t')
-        fl[0] = acc
-        out_handle.write('\t'.join(fl))
-        out_handle.write('\n')
+        for line in f:
+            if line[0]=='#':
+                out_handle.write(line)
+            else:
+                fl = line.split('\t')
+                fl[0] = acc
+                out_handle.write('\t'.join(fl))
+            out_handle.write('\n')
 
     out_handle.close()
     return(None)

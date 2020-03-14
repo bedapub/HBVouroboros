@@ -49,6 +49,9 @@ def collect_gene_coverage(coverage_files, outfile):
                       for f in coverage_files]
 
     cov0 = coverage_files[0]
+    ngene = 0
+    genes = None
+    descs = None
     with open(cov0, 'r') as f:
         lines = f.readlines()
         ngene = len(lines)-1
@@ -56,5 +59,21 @@ def collect_gene_coverage(coverage_files, outfile):
         outf.write('{}\t{}\n'.format(ngene, nsample))
         outf.write('Name\tDescription\t{}\n'.format(
                 '\t'.join(sample_names)))
+        genes = [line.split('\t')[0] for line in lines[1:]]
+        descs = [line.split('\t')[1] for line in lines[1:]]
+
+    counts=[[0]*ngene]*nsample
+    for ind, cov in enumerate(coverage_files):
+        with open(cov, 'r') as f:
+            lines = f.readlines()[1:]
+            cov_counts = [line.rstrip().split('\t')[-1] for line in lines]
+            counts[ind] = cov_counts
+
+    for i in range(ngene):
+        gene_counts = [vec[i] for vec in counts]
+        curr_line = genes[i] + '\t' + \
+                    descs[i] + '\t' + \
+                    '\t'.join(gene_counts) + '\n'
+        outf.write(curr_line)
 
     outf.close()

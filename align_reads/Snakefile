@@ -3,6 +3,7 @@ import pandas as pd
 from HBVouroboros import infref
 from HBVouroboros import refgenomes
 from HBVouroboros import depth
+from HBVouroboros import coverage
 from os.path import join
 
 configfile: "/mnt/projects/HBVouroboros/align_reads/config/config.yaml"
@@ -52,9 +53,7 @@ rule all:
         inferred_strain_dup_gff,
         os.path.join(cov_dir, "infref_genome_count.tsv"),
         os.path.join(cov_dir, "infref_genome_depth.tsv"),
-        expand(os.path.join(cov_dir, 
-                            "infref_genome_{sample}_feature_coverage.tsv"),
-               sample=samples)
+        os.path.join(cov_dir, "infref_genome_gene_coverage.gct")
         ## os.path.join(cov_dir, "infref_genome_feature_coverage.tsv")
 
 rule bowtie2_map:
@@ -297,15 +296,23 @@ rule individual_coverage:
     shell:
         "coverageBed -a {input.gff} -b {input.bam} > {output}"
 
-rule coverage:
+rule individual_gene_coverage:
+    input:
+        os.path.join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv")
+    output:
+        os.path.join(cov_dir, "infref_genome_{sample}_gene_coverage.tsv")
+    run:
+        coverage.gene_coverage(input[0], output[0])
+        
+rule gene_coverage:
      input:
         expand(
-          os.path.join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv"),
+          os.path.join(cov_dir, "infref_genome_{sample}_gene_coverage.tsv"),
           sample=samples)
      output:
-        os.path.join(cov_dir, "infref_genome_feature_coverage.tsv")
-     shell:
-        "echo"
+        os.path.join(cov_dir, "infref_genome_gene_coverage.gct")
+     run:
+        "touch {output}"
 
 """
 rule coverage:

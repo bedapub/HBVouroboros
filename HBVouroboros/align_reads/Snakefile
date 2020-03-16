@@ -9,10 +9,13 @@ import snakemake
 
 configfile: snakemake.workflow.srcdir("config/config.yaml")
 
-bowtie2_index = config["bowtie2_index"]
+refgenomes_dir: config["refgenomes_dir"]
 project_name = config["project_name"]
 sample_annotation = config['sample_annotation']
-blast_db = config['blast_db']
+
+bowtie2_index = join(refgenomes_dir,
+                     'HBV_refgenomes_dup_BOWTIE2/HBV_refgenomes_dup_BOWTIE2')
+blast_db = join(refgenomes_dir, 'HBV_allgenomes.fasta')
 
 # parse sample annotation
 annotation = pd.read_table(sample_annotation)

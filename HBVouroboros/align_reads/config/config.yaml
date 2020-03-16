@@ -2,8 +2,5 @@
 project_name: 'rsv'
 # sample annotation file
 sample_annotation: '/mnt/projects/HBVouroboros/testdata/sampleAnnotation'
-
-# bowtie2 index of duplicated HBV reference genomes
-bowtie2_index: '../HBV_refgenomes/HBV_refgenomes_dup_BOWTIE2/HBV_refgenomes_dup_BOWTIE2'
-# blast database
-blast_db: '../HBV_refgenomes/HBV_allgenomes.fasta'
+# reference genomes directory
+refgenomes_dir: '../HBV_refgenomes'

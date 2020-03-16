@@ -14,9 +14,9 @@ setup(
     # names of binaries
     scripts = ['bin/HBVouroboros_biokit_unmapped.py'],
     package_data = {
-        "HBVouroboros": ["HBVouroboros/align_reads/Snakemake",
-            "HBVouroboros/align_reads/config/cluster.json"
-            "HBVouroboros/align_reads/config/config.yaml"]}
+        "HBVouroboros": ["align_reads/Snakefile",
+            "align_reads/config/cluster.json",
+            "align_reads/config/config.yaml"]}
     # list all the requirements here
     # install_requires = ['requests>=2.19.1']
 )

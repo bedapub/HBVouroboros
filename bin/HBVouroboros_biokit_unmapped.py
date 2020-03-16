@@ -9,7 +9,12 @@ import pkg_resources
 align_snakefile = pkg_resources.resource_filename('HBVouroboros', 
     'align_reads/Snakefile')
 align_clusterfile = pkg_resources.resource_filename('HBVouroboros',  
-    'align_reads/config/cluster.yaml')
+    'align_reads/config/cluster.json')
+
+if not os.path.exists(align_snakefile):
+    raise Exception('align_snakefile not found')
+if not os.path.exists(align_clusterfile):
+    raise Exception('align_clusterfile not found')
 
 def main(args):
     indir = args.biokit_dir

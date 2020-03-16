@@ -51,3 +51,12 @@ We use the software *Trinity* to perform *de novo* assembly of the HBV cccDNA ge
 conda activate HBVouroboros
 make install
 ```
+
+## Test biokit output directory  
+
+*Not working yet*
+
+
+```bash
+HBVouroboros_biokit_unmapped.py ~/projects/2020-01-HBVcccDNA-RNAseq/cccDNA_destab_202002/biokit_outdir_cccDNA_destab_PHH_202002
+```

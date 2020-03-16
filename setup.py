@@ -12,7 +12,10 @@ setup(
     # python modules
     py_modules = ['HBVouroboros'],
     # names of binaries
-    scripts = ['bin/HBVouroboros_biokit_unmapped.py'],
+    scripts = [
+        'bin/HBVouroboros_biokit_unmapped.py',
+        'bin/HBVouroboros_build_refgenomes.py'
+        ],
     package_data = {
         "HBVouroboros": ["align_reads/Snakefile",
             "align_reads/config/cluster.json",

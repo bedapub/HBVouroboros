@@ -52,10 +52,15 @@ conda activate HBVouroboros
 make install
 ```
 
+## Build HBV reference genomes (run once at installation)
+
+```bash
+HBVouroboros_build_refgenomes.py /pstore/data/bi/apps/HBVouroboros
+```
+
 ## Test biokit output directory  
 
 *Not working yet*
-
 
 ```bash
 HBVouroboros_biokit_unmapped.py ~/projects/2020-01-HBVcccDNA-RNAseq/cccDNA_destab_202002/biokit_outdir_cccDNA_destab_PHH_202002

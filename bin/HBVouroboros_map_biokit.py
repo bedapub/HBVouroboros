@@ -21,6 +21,8 @@ def main(args):
     indir = args.biokit_dir
     sample_annotation = os.path.join(indir, 'samples.txt')
 
+    refgenomes_dir = args.refgenomes_dir
+
     outdir = args.outdir
     if outdir is None:
         outdir = os.path.join(indir, 'HBVouroboros')
@@ -34,7 +36,10 @@ def main(args):
                   '--ntasks-per-node={cluster.ntasks_per_node}',
         cluster_config=align_clusterfile,
         cores=64, nodes=64, local_cores=4,
-        config={'sample_annotation': sample_annotation},
+        config={
+            'sample_annotation': sample_annotation,
+            'refgenomes_dir': refgenomes_dir
+            },
         workdir=outdir,
         restart_times=3,
         printshellcmds=True)
@@ -49,6 +54,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description = 'Run HBVouroboros using a biokit outdir')
 
+    parser.add_argument('refgenomes_dir',
+       help = 'The directory of reference genomes')
     parser.add_argument('biokit_dir',
         help = 'An output directory of biokit')
     parser.add_argument('--outdir', '-o',

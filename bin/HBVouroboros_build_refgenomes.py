@@ -19,6 +19,7 @@ def main(args):
         snakefile = refgenome_snakefile,
         cores=2, nodes=2, local_cores=2,
         workdir=outdir,
+        forceall=args.forceall,
         printshellcmds=True)
 
     if status:
@@ -31,6 +32,9 @@ if __name__ == '__main__':
 
     parser.add_argument('outdir',
         help = 'Output directory of reference genomes')
+
+    parser.add_argument('-f', '--forceall', action='store_true', 
+        help = 'If given, all output files will be re-created')
 
     args = parser.parse_args()
     sys.exit(main(args))

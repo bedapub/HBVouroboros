@@ -1,8 +1,10 @@
 from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
 import HBVouroboros.refgenomes as ref
+from os.path import join
 
 localrules: download_refgenomes
 
+log_dir = "logs"
 HTTP = HTTPRemoteProvider()
 blastdb_filenames = ["HBV_allgenomes.fasta."+s for s in ("nhr", "nsq", "nin")]
 
@@ -18,6 +20,8 @@ rule download_refgenomes:
 		     keep_local=True)
     output:
         "HBV_refgenomes.fasta" 
+    log:
+        join(log_dir, 'download_refgenomes.log')
     run:
         shell("mv {input} {output}")
     
@@ -28,6 +32,8 @@ rule download_allgenomes:
             keep_local=True)
     output:
         "HBV_allgenomes.fasta"
+    log:
+        join(log_dir, 'download_allgenomes.log')
     run:
         shell("mv {input} {output}")
 
@@ -36,8 +42,10 @@ rule makeblastdb:
         "HBV_allgenomes.fasta"
     output:
         blastdb_filenames
+    log:
+        join(log_dir, 'makeblastdb.log')
     shell:
-        "makeblastdb -in {input} -title \"HBVdb genomes\" -dbtype nucl"
+        "makeblastdb -in {input} -title \"HBVdb genomes\" -dbtype nucl 2> {log}"
 
 rule dup_and_conc:
     input:
@@ -45,7 +53,7 @@ rule dup_and_conc:
     output:
         fasta="HBV_refgenomes_dup.fasta"
     log:
-        "logs/HBV_refgenomes_dup.log"
+        join(log_dir, "HBV_refgenomes_dup.log")
     run:
         ref.dup_and_conc_FASTA(input.fasta, output.fasta)
 
@@ -59,6 +67,6 @@ rule bowtie2_index:
     message:
         "Generating bowtie2 index of duplicated HBV reference genomes"
     log:
-        "logs/bowtie2_index_HBV_refgenomes_dup.log"
+        join(log_dir, "bowtie2_index.log")
     shell:
-        "mkdir {output}; bowtie2-build --threads {threads} {input.fasta} {output}/{output}"
+        "mkdir {output}; bowtie2-build --threads {threads} {input.fasta} {output}/{output} 2>&1 > {log}"

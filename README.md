@@ -55,7 +55,8 @@ make install
 ## Build HBV reference genomes (run once at installation)
 
 ```bash
-HBVouroboros_build_refgenomes.py /pstore/data/bi/apps/HBVouroboros
+HBVouroboros_refdir=/pstore/data/bi/apps/HBVouroboros
+HBVouroboros_build_refgenomes.py "${HBVouroboros_refdir}"
 ```
 
 ## Test biokit output directory  

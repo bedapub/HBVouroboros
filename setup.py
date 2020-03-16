@@ -13,7 +13,7 @@ setup(
     py_modules = ['HBVouroboros'],
     # names of binaries
     scripts = [
-        'bin/HBVouroboros_biokit_unmapped.py',
+        'bin/HBVouroboros_map_biokit.py',
         'bin/HBVouroboros_build_refgenomes.py'
         ],
     package_data = {

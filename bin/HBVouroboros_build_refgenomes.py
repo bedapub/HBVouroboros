@@ -32,6 +32,5 @@ if __name__ == '__main__':
     parser.add_argument('outdir',
         help = 'Output directory of reference genomes')
 
-    print(os.path.realpath(__file__))
     args = parser.parse_args()
     sys.exit(main(args))

@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+from os import makedirs
 import os.path
 import snakemake
 import pkg_resources
@@ -18,10 +19,13 @@ if not os.path.exists(align_clusterfile):
 
 def main(args):
     indir = args.biokit_dir
-    outdir = args.outdir
-    if outdir == '':
-       outdir = os.path.join(indir, 'HBVouroboros')
     sample_annotation = os.path.join(indir, 'samples.txt')
+
+    outdir = args.outdir
+    if outdir is None:
+        outdir = os.path.join(indir, 'HBVouroboros')
+    if os.path.exists(outdir):
+        makedirs(outdir, mode=0x775, exist_ok=True)
 
     status = snakemake.snakemake(
         snakefile = align_snakefile,

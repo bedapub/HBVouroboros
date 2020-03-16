@@ -5,8 +5,9 @@ from HBVouroboros import refgenomes
 from HBVouroboros import depth
 from HBVouroboros import coverage
 from os.path import join
+import snakemake
 
-configfile: "/mnt/projects/HBVouroboros/align_reads/config/config.yaml"
+configfile: snakemake.workflow.srcdir("config/config.yaml")
 
 bowtie2_index = config["bowtie2_index"]
 project_name = config["project_name"]

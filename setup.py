@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'HBVouroboros',
-    version = '0.3',
+    version = '0.4',
     description = "Map reads to HBV cccDNA genomes",
     packages=find_packages(),
 
@@ -17,9 +17,11 @@ setup(
         'bin/HBVouroboros_build_refgenomes.py'
         ],
     package_data = {
-        "HBVouroboros": ["align_reads/Snakefile",
+        "HBVouroboros": ["build_refgenomes/Snakefile", 
+            "align_reads/Snakefile",
             "align_reads/config/cluster.json",
-            "align_reads/config/config.yaml"]}
+            "align_reads/config/config.yaml",
+            ]}
     # list all the requirements here
     # install_requires = ['requests>=2.19.1']
 )

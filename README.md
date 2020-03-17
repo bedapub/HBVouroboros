@@ -37,12 +37,13 @@ See Figure 1 for a graphic representation of the workflow.
 git clone git@github.roche.com:BEDA/HBVouroboros.git
 conda activate HBVouroboros
 make install
+## define the directory of reference genomes here
+HBVouroboros_refdir=/pstore/data/bi/apps/HBVouroboros
 ```
 
 ### Build HBV reference genomes (run once at installation)
 
 ```bash
-HBVouroboros_refdir=/pstore/data/bi/apps/HBVouroboros
 HBVouroboros_build_refgenomes.py "${HBVouroboros_refdir}"
 ```
 

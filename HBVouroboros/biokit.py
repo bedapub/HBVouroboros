@@ -28,7 +28,6 @@ def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
     with open(infile, 'r') as fin:
       header = fin.readline()
       fout.write(header)
-      fout.write('\n')
       for line in fin:
           lsplit = line.rstrip().split('\t')
           fastq_format = join(

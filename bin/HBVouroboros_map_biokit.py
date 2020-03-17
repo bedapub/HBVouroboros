@@ -21,7 +21,7 @@ if not os.path.exists(align_clusterfile):
 
 def main(args):
     indir = args.biokit_dir
-    refgenomes_dir = args.refgenomes_dir
+    refgenomes_dir = os.path.realpath(args.refgenomes_dir)
 
     outdir = args.outdir
     if outdir is None:

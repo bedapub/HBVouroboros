@@ -1,6 +1,8 @@
 HBVouroboros automates RNA-sequencing-based HBV genotyping and expression profiling
 ===
-Jitao David Zhang, with inputs from Roland Ambs, 11.03.2020
+[Jitao David Zhang](http://orcid.org/0000-0002-3085-0909)$^1$
+
+$^1$: Roche Pharma Research and Early Development, Pharmaceutical Sciences, Roche Innovation Center Basel, F. Hoffmann-La Roche Ltd, Grenzacherstrasse 124, Basel, 4070, Switzerland
 
 # Background
 

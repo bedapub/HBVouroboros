@@ -4,21 +4,43 @@ Jitao David Zhang, with inputs from Roland Ambs, 11.03.2020
 
 # Background
 
-The ouroboros (or uroboros) is an ancient symbol depicting a serpent or dragon eating its own tail. 
+The ouroboros (or uroboros) is an ancient symbol depicting a serpent or dragon eating its own tail. In its twisted form, an ouroboros reassembles covalently closed circular DNA (cccDNA) of hepatitis B virus (HBV).
 
 *HBVouroboros* implements a snakemake-based workflow to map Illumina RNA-sequencing reads to HBV cccDNA. *HBVouroboros* offers following functionalities:
 
 * Mapping reads to reference genomes of of eight major HBV genotypes (A-H). 
     * The mapping procedure takes care of reads that span the junctions between the two ends of the linear form of the cccDNA. This holds true also for mapping procedures described later.
-* *De novo* assembly of the HBV genome
-* Inference of the reference strain from which the reads are likely generated and genotype calling using BLAST and data from HBVdb
+* *De novo* assembly of the HBV genome.
+* Inference of the reference strain from which the reads are likely generated and genotype calling using BLAST and data from HBVdb.
 * Base-level, gene-level, and HBV-genome-level quantification of read counts, as well as structural variants with regard to the inferred reference strain.
-
-# Usage
 
 # Graphic workflow
 
 ![workflow in a graph](gv/HBVouroboros.svg)
+
+# Usage
+
+## Setup the HBVouroboros package
+
+```bash
+git clone git@github.roche.com:BEDA/HBVouroboros.git
+conda activate HBVouroboros
+make install
+```
+
+## Build HBV reference genomes (run once at installation)
+
+```bash
+HBVouroboros_refdir=/pstore/data/bi/apps/HBVouroboros
+HBVouroboros_build_refgenomes.py "${HBVouroboros_refdir}"
+```
+
+## Run HBVouroboros using unmapped reads from a biokit output directory
+
+```bash
+biokit_output_dir=~/projects/2020-01-HBVcccDNA-RNAseq/cccDNA_destab_202002/biokit_outdir_cccDNA_destab_PHH_202002
+bin/HBVouroboros_map_biokit.py ${HBVouroboros_refdir} ${biokit_output_dir}
+```
 
 # Methods
 
@@ -47,26 +69,3 @@ We use the software *Trinity* to perform *de novo* assembly of the HBV cccDNA ge
 
 *HBVouroboros* reports read coverage per nucleotide base and per gene of the inferred genotype, as well as single-nucleotide polymorphisms (SNP) compared with the inferred reference genome. 
 
-# Notes for the developer
-
-## Setup the HBVouroboros package
-
-```bash
-conda activate HBVouroboros
-make install
-```
-
-## Build HBV reference genomes (run once at installation)
-
-```bash
-HBVouroboros_refdir=/pstore/data/bi/apps/HBVouroboros
-HBVouroboros_build_refgenomes.py "${HBVouroboros_refdir}"
-```
-
-## Test biokit output directory  
-
-*Not working yet*
-
-```bash
-bin/HBVouroboros_map_biokit.py ${HBVouroboros_refdir} ~/projects/2020-01-HBVcccDNA-RNAseq/cccDNA_destab_202002/biokit_outdir_cccDNA_destab_PHH_202002
-```

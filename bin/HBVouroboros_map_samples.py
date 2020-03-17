@@ -7,6 +7,7 @@ import os.path
 import snakemake
 import pkg_resources
 
+
 align_snakefile = pkg_resources.resource_filename('HBVouroboros', 
     'align_reads/Snakefile')
 align_clusterfile = pkg_resources.resource_filename('HBVouroboros',  
@@ -18,9 +19,8 @@ if not os.path.exists(align_clusterfile):
     raise Exception('align_clusterfile not found')
 
 def main(args):
-    indir = args.biokit_dir
     refgenomes_dir = args.refgenomes_dir
-    sample_file = args.sample_annotation_file
+    sample_file = os.path.realpath(args.sample_annotation_file)
 
     outdir = args.outdir
     if os.path.exists(outdir):

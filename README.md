@@ -97,6 +97,6 @@ We use the software *Trinity* to perform *de novo* assembly of the HBV cccDNA ge
 
 ## Acknowledgement
 
-I thank Roland Ambs, Raphael Sebastian Müller, and Alex Seitz for sharing their experience with Snakemake. I thank Yaling Zhang, Vivian Wang, Henrik Müller, Miriam Triyatni, Birian Leonard, Souphalone Luangsay, and other colleagues who provided datasets on which HBVouroboros was applied, and for giving feedbacks which allowed HBVouroboros to be continuously improved.
+I thank Roland Ambs, Raphael Sebastian Müller, and Alex Seitz for sharing their experience with Snakemake. I thank Yaling Zhang, Vivian Wang, Henrik Müller, Miriam Triyatni, Birian Leonard, Souphalone Luangsay, and other colleagues who provided datasets on which HBVouroboros was applied, and for giving feedbacks which allowed HBVouroboros to be continuously improved. I thank Roland Schmucki and Fabian Birzele for their work on the Biokit pipeline.
 
 

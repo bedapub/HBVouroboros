@@ -2,7 +2,7 @@ HBVouroboros automates RNA-sequencing-based HBV genotyping and expression profil
 ===
 [Jitao David Zhang](http://orcid.org/0000-0002-3085-0909)<sup>1</sup>
 
-<sup>^1</sup>: Roche Pharma Research and Early Development, Pharmaceutical Sciences, Roche Innovation Center Basel, F. Hoffmann-La Roche Ltd, Grenzacherstrasse 124, Basel, 4070, Switzerland
+<sup>1</sup>: Roche Pharma Research and Early Development, Pharmaceutical Sciences, Roche Innovation Center Basel, F. Hoffmann-La Roche Ltd, Grenzacherstrasse 124, Basel, 4070, Switzerland
 
 # Background
 
@@ -73,4 +73,5 @@ We use the software *Trinity* to perform *de novo* assembly of the HBV cccDNA ge
 
 # Acknowledgement
 
-I thank Roland Ambs, Raphael Sebastian Müller, and Alex Seitz for sharing their experience with Snakemake. 
+I thank Roland Ambs, Raphael Sebastian Müller, and Alex Seitz for sharing their experience with Snakemake. I thank Yaling Zhang, Vivian Wang, Henrik Müller, Miriam Triyatni, Birian Leonard, Souphalone Luangsay, and other colleagues who provided datasets on which HBVouroboros was applied, and for giving feedbacks which allowed HBVouroboros to be continuously improved.
+

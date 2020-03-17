@@ -12,8 +12,7 @@ The ouroboros (or uroboros) is an ancient symbol depicting a serpent or dragon e
 
 *HBVouroboros* implements a snakemake-based workflow to map Illumina RNA-sequencing reads to HBV cccDNA. *HBVouroboros* offers following functionalities:
 
-* Mapping reads to reference genomes of of eight major HBV genotypes (A-H). 
-    * The mapping procedure takes care of reads that span the junctions between the two ends of the linear form of the cccDNA. This holds true also for mapping procedures described later.
+* Mapping reads to reference genomes of of eight major HBV genotypes (A-H). The mapping procedure takes care of reads that span the junctions between the two ends of the linear form of the cccDNA. This holds true also for mapping procedures described later.
 * *De novo* assembly of the HBV genome.
 * Inference of the reference strain from which the reads are likely generated and genotype calling using BLAST and data from HBVdb.
 * Base-level, gene-level, and HBV-genome-level quantification of read counts, as well as structural variants with regard to the inferred reference strain.

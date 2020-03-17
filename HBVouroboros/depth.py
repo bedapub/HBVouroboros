@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import pandas as pd
+import os.path
 
 def dedup(depth):
     """ Deduplicate depth output of samtools
@@ -24,6 +25,12 @@ def dedup(depth):
     out = depth.iloc[:olen,:].copy()
     for i in range(olen, duplen):
         out.iloc[i-olen, 2:] = out.iloc[i-olen, 2:] + depth.iloc[i, 2:]
+
+    ## bam file name pattern (the logic is fragile - to be factored)
+    ## infref_bam/Sample4.sorted.bam
+    out.rename(mapper=lambda colname: 
+            os.path.basename(colname).replace('.sorted.bam',''),
+        axis='columns', inplace=True)
 
     return(out)
 

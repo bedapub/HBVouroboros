@@ -32,6 +32,5 @@ testdata-output
 realdata
 realdata-alignment
 
-*.svg
 
 .snakemake

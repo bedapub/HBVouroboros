@@ -56,7 +56,7 @@ if __name__ == '__main__':
                'The first column contains sample IDs, the third column forward read files, and '
                'the fourth column reverse read files. Currently, single-read files are not tested.')
     parser.add_argument('--outdir', '-o',
-        argument_default='./HBVouroboros',
+        default='./HBVouroboros',
         help='output directory: if missing, a folder "HBVouroboros" '
              ' will be created in the current directory')
 

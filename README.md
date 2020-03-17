@@ -17,6 +17,12 @@ The ouroboros (or uroboros) is an ancient symbol depicting a serpent or dragon e
 * Inference of the reference strain from which the reads are likely generated and genotype calling using BLAST and data from HBVdb.
 * Base-level, gene-level, and HBV-genome-level quantification of read counts, as well as structural variants with regard to the inferred reference strain.
 
+## Software availability
+
+*HBVouroboros* is distributed under the GPL-3 license. 
+
+The source code is available at https://github.roche.com/BEDA/HBVouroboros.
+
 ## Graphic workflow
 
 See Figure 1 for a graphic representation of the workflow.

@@ -46,7 +46,17 @@ HBVouroboros_refdir=/pstore/data/bi/apps/HBVouroboros
 HBVouroboros_build_refgenomes.py "${HBVouroboros_refdir}"
 ```
 
-### Run HBVouroboros using unmapped reads from a biokit output directory
+
+### Run HBVouroboros using a sample annotation file
+
+```bash
+sample_annotation_file=./testdata/sampleAnnotation
+bin/HBVouroboros_map_samples.py --outdir testdata-HBVouroboros-outdir ${HBVouroboros_refdir} ${sample_annotation_file}
+```
+
+### Run HBVouroboros using unmapped reads from a Biokit output directory
+
+*Biokit* is a software pipeline developed at Bioinformatics and Exploratory Data Analysis group of Roche Pharma Research and Early Development. It exports structured output of RNA-seuquencing read mapping. *HBVouroboros* is able to parse the output directory structure of *Biokit* and run over reads that are not mapped to the host genome (human, mouse, *etc.*). This has the advantage that since the reads mapped to other genomes are filtered, the speed of mapping is much faster than starting from the raw FASTA files.
 
 ```bash
 biokit_output_dir=~/projects/2020-01-HBVcccDNA-RNAseq/cccDNA_destab_202002/biokit_outdir_cccDNA_destab_PHH_202002

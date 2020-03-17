@@ -4,6 +4,8 @@ HBVouroboros automates RNA-sequencing-based HBV genotyping and expression profil
 
 <sup>1</sup>: Roche Pharma Research and Early Development, Pharmaceutical Sciences, Roche Innovation Center Basel, F. Hoffmann-La Roche Ltd, Grenzacherstrasse 124, Basel, 4070, Switzerland
 
+Corresponding to: [jitao_david.zhang@roche.com](mailto:jitao_david.zhang@roche.com)
+
 # Background
 
 The ouroboros (or uroboros) is an ancient symbol depicting a serpent or dragon eating its own tail. In its twisted form, an ouroboros reassembles covalently closed circular DNA (cccDNA) of hepatitis B virus (HBV).

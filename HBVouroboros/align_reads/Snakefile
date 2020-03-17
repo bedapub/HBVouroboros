@@ -4,12 +4,12 @@ from HBVouroboros import infref
 from HBVouroboros import refgenomes
 from HBVouroboros import depth
 from HBVouroboros import coverage
-from os.path import join
+from os.path import join, realpath
 import snakemake
 
 configfile: snakemake.workflow.srcdir("config/config.yaml")
 
-refgenomes_dir = config["refgenomes_dir"]
+refgenomes_dir = realpath(config["refgenomes_dir"])
 project_name = config["project_name"]
 sample_annotation = config['sample_annotation']
 

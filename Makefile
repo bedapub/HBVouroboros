@@ -1,4 +1,7 @@
 install:
 	pip install .
 
-.PHONY: install
+gv:
+	cd gv; $(MAKE)
+
+.PHONY: install gv

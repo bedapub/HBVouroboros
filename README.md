@@ -1,6 +1,6 @@
 HBVouroboros: A snakemake-based workflow to map RNA-sequencing reads to circular HBV cccDNA
 ===
-Jitao David Zhang and Roland Ambs, 11.03.2020
+Jitao David Zhang, with inputs from Roland Ambs, 11.03.2020
 
 # Background
 
@@ -15,6 +15,10 @@ The ouroboros (or uroboros) is an ancient symbol depicting a serpent or dragon e
 * Base-level, gene-level, and HBV-genome-level quantification of read counts, as well as structural variants with regard to the inferred reference strain.
 
 # Usage
+
+# Graphic workflow
+
+![workflow in a graph](gv/HBVouroboros.svg)
 
 # Methods
 

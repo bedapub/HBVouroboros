@@ -1,4 +1,4 @@
-HBVouroboros: A snakemake-based workflow to map RNA-sequencing reads to circular HBV cccDNA
+HBVouroboros automates RNA-sequencing-based HBV genotyping and expression profiling
 ===
 Jitao David Zhang, with inputs from Roland Ambs, 11.03.2020
 

@@ -19,8 +19,18 @@ if not os.path.exists(align_clusterfile):
     raise Exception('align_clusterfile not found')
 
 def main(args):
-    refgenomes_dir = args.refgenomes_dir
+    refgenomes_dir = os.path.realpath(args.refgenomes_dir)
     sample_file = os.path.realpath(args.sample_annotation_file)
+    cluster = args.cluster
+   
+    if cluster:
+        cluster_comm = ('sbatch -t {cluster.time} -c {cluster.cpu} ' 
+                       '-N {cluster.nodes} --mem={cluster.mem} ' 
+                       '--ntasks-per-node={cluster.ntasks_per_node}')
+        cluster_config = align_clusterfile
+    else:
+        cluster_comm = None
+        cluster_config = None
 
     outdir = args.outdir
     if os.path.exists(outdir):
@@ -28,10 +38,8 @@ def main(args):
 
     status = snakemake.snakemake(
         snakefile=align_snakefile,
-        cluster='sbatch -t {cluster.time} -c {cluster.cpu} '
-                  '-N {cluster.nodes} --mem={cluster.mem} '
-                  '--ntasks-per-node={cluster.ntasks_per_node}',
-        cluster_config=align_clusterfile,
+        cluster=cluster_comm,
+        cluster_config=cluster_config,
         cores=64, nodes=64, local_cores=4,
         config={
             'sample_annotation': sample_file,
@@ -59,6 +67,9 @@ if __name__ == '__main__':
         default='./HBVouroboros',
         help='output directory: if missing, a folder "HBVouroboros" '
              ' will be created in the current directory')
+    parser.add_argument('-c', '--cluster', 
+        action='store_true',
+        help='If given, the commands will be submitted to cluster with sbatch')
 
     args = parser.parse_args()
 

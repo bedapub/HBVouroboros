@@ -71,3 +71,6 @@ We use the software *Trinity* to perform *de novo* assembly of the HBV cccDNA ge
 
 *HBVouroboros* reports read coverage per nucleotide base and per gene of the inferred genotype, as well as single-nucleotide polymorphisms (SNP) compared with the inferred reference genome. 
 
+# Acknowledgement
+
+I thank Roland Ambs, Raphael Sebastian Müller, and Alex Seitz for sharing their experience with Snakemake. 

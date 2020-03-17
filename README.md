@@ -64,5 +64,5 @@ HBVouroboros_build_refgenomes.py "${HBVouroboros_refdir}"
 *Not working yet*
 
 ```bash
-HBVouroboros_map_biokit.py ${HBVouroboros_refdir} ~/projects/2020-01-HBVcccDNA-RNAseq/cccDNA_destab_202002/biokit_outdir_cccDNA_destab_PHH_202002
+bin/HBVouroboros_map_biokit.py ${HBVouroboros_refdir} ~/projects/2020-01-HBVcccDNA-RNAseq/cccDNA_destab_202002/biokit_outdir_cccDNA_destab_PHH_202002
 ```

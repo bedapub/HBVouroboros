@@ -1,4 +1,4 @@
-*HBVouroboros* automates RNA-sequencing-based HBV genotyping and expression profiling
+*HBVouroboros* automates sequencing-based HBV genotyping and expression profiling
 ===
 [Jitao David Zhang](http://orcid.org/0000-0002-3085-0909)<sup>1</sup>
 

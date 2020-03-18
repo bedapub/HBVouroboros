@@ -33,3 +33,5 @@ testbiokit/HBVouroboros
 
 .snakemake
 README.pdf
+
+docs/_build

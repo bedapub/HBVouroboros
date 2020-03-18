@@ -57,7 +57,7 @@ HBVouroboros_build_refgenomes.py "${HBVouroboros_refdir}"
 
 ```bash
 sample_annotation_file=./testdata/sampleAnnotation
-bin/HBVouroboros_map_samples.py --outdir testdata-HBVouroboros-outdir ${HBVouroboros_refdir} ${sample_annotation_file}
+HBVouroboros_map_samples.py --outdir testdata-HBVouroboros-outdir ${HBVouroboros_refdir} ${sample_annotation_file}
 ```
 
 ### Run HBVouroboros using unmapped reads from a Biokit output directory
@@ -66,7 +66,7 @@ bin/HBVouroboros_map_samples.py --outdir testdata-HBVouroboros-outdir ${HBVourob
 
 ```bash
 biokit_output_dir=~/projects/2020-01-HBVcccDNA-RNAseq/cccDNA_destab_202002/biokit_outdir_cccDNA_destab_PHH_202002
-bin/HBVouroboros_map_biokit.py ${HBVouroboros_refdir} ${biokit_output_dir}
+HBVouroboros_map_biokit.py ${HBVouroboros_refdir} ${biokit_output_dir}
 ```
 
 ## Methods

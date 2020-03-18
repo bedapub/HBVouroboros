@@ -11,3 +11,4 @@ channels:
   - conda-forge
 dependencies:
   - sphinx
+  - pdoc3

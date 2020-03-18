@@ -1,0 +1,5 @@
+#ID	GROUP	FASTQ1	FASTQ2	Time
+testfile-1	Control	/mnt/projects/HBVouroboros/testdata/testfile-1_1.fq.gz	/mnt/projects/HBVouroboros/testdata/testfile-1_2.fq.gz	6h
+testfile-2	Control	/mnt/projects/HBVouroboros/testdata/testfile-2_1.fq.gz	/mnt/projects/HBVouroboros/testdata/testfile-2_2.fq.gz	6h
+testfile-3	Treatment	/mnt/projects/HBVouroboros/testdata/testfile-3_1.fq.gz	/mnt/projects/HBVouroboros/testdata/testfile-3_2.fq.gz	6h
+testfile-4	Treatment	/mnt/projects/HBVouroboros/testdata/testfile-4_1.fq.gz	/mnt/projects/HBVouroboros/testdata/testfile-4_2.fq.gz	6h

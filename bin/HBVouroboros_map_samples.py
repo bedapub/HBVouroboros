@@ -34,7 +34,7 @@ def main(args):
 
     outdir = args.outdir
     if os.path.exists(outdir):
-        makedirs(outdir, mode=0x775, exist_ok=True)
+        makedirs(outdir, mode=0o775, exist_ok=True)
 
     status = snakemake.snakemake(
         snakefile=align_snakefile,

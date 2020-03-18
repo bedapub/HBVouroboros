@@ -13,7 +13,7 @@ refgenome_snakefile = pkg_resources.resource_filename('HBVouroboros',
 def main(args):
     outdir = args.outdir
     if outdir is None:
-         makedirs(outdir, mode=0x775, exist_ok=True)
+         makedirs(outdir, mode=0o775, exist_ok=True)
 
     status = snakemake.snakemake(
         snakefile = refgenome_snakefile,

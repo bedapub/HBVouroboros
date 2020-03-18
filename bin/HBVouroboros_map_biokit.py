@@ -27,7 +27,7 @@ def main(args):
     if outdir is None:
         outdir = os.path.join(indir, 'HBVouroboros')
     if not os.path.exists(outdir):
-        makedirs(outdir, mode=0x775, exist_ok=True)
+        makedirs(outdir, mode=0o775, exist_ok=True)
 
     unmapped_sample_annotation=os.path.join(outdir,
         'unmapped_samples.txt')
@@ -43,7 +43,7 @@ def main(args):
             'for unmapped reads in directory {}'.format(indir))
 
     cluster_logs_dir = os.path.join(outdir, 'cluster-logs')
-    makedirs(cluster_logs_dir, mode=0x775, exist_ok=True)
+    makedirs(cluster_logs_dir, mode=0o775, exist_ok=True)
     cluster_out_pattern = os.path.join(cluster_logs_dir, 'slurm-%x-%j.out')
     cluster_err_pattern = os.path.join(cluster_logs_dir, 'slurm-%x-%j.err')
 

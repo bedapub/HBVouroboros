@@ -1,11 +1,13 @@
 from setuptools import setup, find_packages
 
 setup(
-    name = 'HBVouroboros',
-    version = '0.6-1',
-    description = "Map reads to HBV cccDNA genomes",
+    name='HBVouroboros',
+    version='0.6.1',
+    description="sequence-based HBV genotyping and expression profiling",
     packages=find_packages(),
 
+    license="GPL-3",
+    keywords="HBV bioinformatics sequencing genotyping expression",
     # the following three lines are not required
     author = 'Jitao David Zhang',
     url = 'https://github.roche.com/BEDA/HBVouroboros',
@@ -13,6 +15,7 @@ setup(
     py_modules = ['HBVouroboros'],
     # names of binaries
     scripts = [
+        'bin/HBVouroboros_map_samples.py',
         'bin/HBVouroboros_map_biokit.py',
         'bin/HBVouroboros_build_refgenomes.py'
         ],
@@ -22,8 +25,6 @@ setup(
             "align_reads/config/cluster.json",
             "align_reads/config/config.yaml",
             "biokit/Snakefile"
-            ]}
-    # list all the requirements here
     # install_requires = ['requests>=2.19.1']
 )
 

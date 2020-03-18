@@ -26,7 +26,7 @@ def main(args):
     outdir = args.outdir
     if outdir is None:
         outdir = os.path.join(indir, 'HBVouroboros')
-    if os.path.exists(outdir):
+    if not os.path.exists(outdir):
         makedirs(outdir, mode=0x775, exist_ok=True)
 
     unmapped_sample_annotation=os.path.join(outdir,
@@ -42,11 +42,18 @@ def main(args):
         raise Exception('Failed to derive sample annotation files '
             'for unmapped reads in directory {}'.format(indir))
 
+    cluster_logs_dir = os.path.join(outdir, 'cluster-logs')
+    makedirs(cluster_logs_dir, mode=0x775, exist_ok=True)
+    cluster_out_pattern = os.path.join(cluster_logs_dir, 'slurm-%x-%j.out')
+    cluster_err_pattern = os.path.join(cluster_logs_dir, 'slurm-%x-%j.err')
+
     status = snakemake.snakemake(
         snakefile=align_snakefile,
         cluster='sbatch -t {cluster.time} -c {cluster.cpu} '
                   '-N {cluster.nodes} --mem={cluster.mem} '
-                  '--ntasks-per-node={cluster.ntasks_per_node}',
+                  '--ntasks-per-node={cluster.ntasks_per_node}'
+                  ' -o ' + cluster_out_pattern + \
+                  ' -e ' + cluster_err_pattern,
         cluster_config=align_clusterfile,
         cores=64, nodes=64, local_cores=4,
         config={

@@ -68,9 +68,9 @@ if __name__ == '__main__':
         description = 'Run HBVouroboros using a biokit outdir')
 
     parser.add_argument('refgenomes_dir',
-       help = 'The directory of reference genomes')
+       help = 'Path to the directory of reference genomes.')
     parser.add_argument('biokit_dir',
-        help = 'An output directory of biokit')
+        help = 'Path to the output directory of the biokit pipeline')
     parser.add_argument('--outdir', '-o',
         help='output directory: if missing, a folder "HBVouroboros" '
              ' will be created in the biokit output directory')

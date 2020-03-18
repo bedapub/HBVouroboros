@@ -29,9 +29,7 @@ __pycache__
 IGV
 HBV_refgenomes
 testdata-out
-realdata
-realdata-alignment
-
+testbiokit/HBVouroboros
 
 .snakemake
 README.pdf

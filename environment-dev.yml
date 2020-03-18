@@ -1,0 +1,13 @@
+## Use this file if you develop HBVouroboros.
+##
+## It contains additional dependencies required for development.
+##
+## Usage:  
+## conda activate HBVouroboros ## alternatively, source activate HBVouroboros
+## conda env update -n HBVouroboros --file environment-dev.yml
+name: HBVouroboros-dev
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - sphinx

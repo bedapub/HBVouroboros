@@ -13,7 +13,7 @@ HBV_refgenomes=./HBV_refgenomes
 endif
 
 ${HBV_refgenomes}:
-	bin/HBVouroboros_build_refgenomes "${HBV_refgenomes}"
+	bin/HBVouroboros_build_refgenomes.py "${HBV_refgenomes}"
 
 show_HBV_refgenomes:
 	echo "${HBV_refgenomes}"

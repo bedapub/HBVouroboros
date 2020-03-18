@@ -1,4 +1,0 @@
-#ID	GROUP	FASTQ1	FASTQ2
-HBV-DMSO-6d-2		/mnt/projects/HBVouroboros/realdata/HBV-DMSO-6d-2.unmapped_mate1.gz	/mnt/projects/HBVouroboros/realdata/HBV-DMSO-6d-2.unmapped_mate2.gz
-HBV-DMSO-6d-3		/mnt/projects/HBVouroboros/realdata/HBV-DMSO-6d-3.unmapped_mate1.gz	/mnt/projects/HBVouroboros/realdata/HBV-DMSO-6d-3.unmapped_mate2.gz
-HBV-DMSO-6d-4		/mnt/projects/HBVouroboros/realdata/HBV-DMSO-6d-4.unmapped_mate1.gz	/mnt/projects/HBVouroboros/realdata/HBV-DMSO-6d-4.unmapped_mate2.gz

@@ -29,19 +29,27 @@ See Figure 1 for a graphic representation of the workflow.
 
 ![The workflow implemented by *HBVouroboros* in a graph](gv/HBVouroboros.svg){ width=300px }
 
-## Usage
+## Installation
 
-### Install and setup the HBVouroboros package
+### Download the source code
 
 ```bash
 git clone git@github.roche.com:BEDA/HBVouroboros.git
-conda activate HBVouroboros
+```
+
+### Setup conda environment
+
+```bash
 ## setup conda environment
 conda env create 
 ## in case it has been installed, use the command below to update
 ## conda env update
-## install the python package HBVouroboros
-make install
+conda activate HBVouroboros
+```
+### Install the python package HBVouroboros in the conda environment
+
+```bash
+make install ## alternatively, `pip install .`
 ```
 
 ### Build HBV reference genomes (run once at installation)
@@ -50,8 +58,12 @@ make install
 ## define the directory of reference genomes here
 HBVouroboros_refdir=/pstore/data/bi/apps/HBVouroboros
 HBVouroboros_build_refgenomes.py "${HBVouroboros_refdir}"
+export HBV_refgenomes=/pstore/data/bi/apps/HBVouroboros/
 ```
 
+Make sure to export the variable `HBV_refgenomes` before running following commands using Makefile. If not set, the directory `./HBV_refgenomes` is searched in the current path.
+
+## Usage
 
 ### Run HBVouroboros using a sample annotation file
 
@@ -63,7 +75,7 @@ HBVouroboros_map_samples.py --outdir testdata-HBVouroboros-outdir ${HBVouroboros
 Or, equivalently
 
 ```bash
-make HBV_refgenomes="$HBVouroboros_refdir" test
+make test ## make sure that the environment variable HBV_refgenomes is set
 ```
 
 ### Run HBVouroboros using unmapped reads from a Biokit output directory
@@ -78,7 +90,7 @@ HBVouroboros_map_biokit.py ${HBVouroboros_refdir} ${biokit_output_dir}
 Or, equivalently
 
 ```bash
-make HBV_refgenomes="$HBVouroboros_refdir" test_biokit
+make test_biokit ## make sure that the environment variable HBV_refgenomes is set
 ```
 
 ## Methods

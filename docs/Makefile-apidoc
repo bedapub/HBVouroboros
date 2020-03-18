@@ -1,0 +1,5 @@
+apidoc:
+	sphinx-apidoc -f -a -o . ../HBVouroboros
+	rm -f modules.rst
+
+.PHONY: apidoc

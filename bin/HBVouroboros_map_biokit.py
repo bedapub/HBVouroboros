@@ -20,7 +20,7 @@ if not os.path.exists(align_clusterfile):
     raise Exception('align_clusterfile not found')
 
 def main(args):
-    indir = args.biokit_dir
+    indir = os.path.realpath(args.biokit_dir)
     refgenomes_dir = os.path.realpath(args.refgenomes_dir)
 
     outdir = args.outdir

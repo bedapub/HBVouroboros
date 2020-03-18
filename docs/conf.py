@@ -53,7 +53,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'HBVouroboros'
-copyright = '2020, Jitao David Zhang'
+copyright = '2020, F. Hoffmann-La Roche Ltd.'
 author = 'Jitao David Zhang'
 
 # The version info for the project you're documenting, acts as replacement for

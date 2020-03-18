@@ -10,7 +10,7 @@ def dedup(depth):
         depth (pandas.DataFrame): first two columns are chromsomes and 
             depths, respectively, and the rest columns are samples. 
             Positions are duplicated
-    return:
+    Returns:
         pandas.DataFrame: a new DataFrame containing position aggregated
             values
     """
@@ -39,7 +39,8 @@ def dedup_file(infile, outfile):
     Args:
         infile (str): depth file exported by samtools *with the header*
         outfile (str): outfile file with deduplicated depths
-    return:
+
+    Returns:
         value of pandas.DataFrame.to_csv
     """
     

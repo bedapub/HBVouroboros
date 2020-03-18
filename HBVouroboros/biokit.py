@@ -11,7 +11,7 @@ def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
     Args:
         biokit_outdir (str): An output directory of the biokit pipeline
         outfile (str): Output file name of sample annotation
-    return:
+    Returns:
         number of samples
     """
 

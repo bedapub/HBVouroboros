@@ -64,7 +64,7 @@ def write_seq_by_acc(infile, acc, outfile):
         infile (str): FASTA file of genomes
         acc (str): Accession number of the inferred reference strain
         outfile (str): output FASTA file
-    Return:
+    Returns:
         bool: if found or not
     """
 
@@ -84,7 +84,7 @@ def gb2gff(infile, outfile):
     Args:
         infile (str): input GenBank file
         outfile (str): output GFF3 file
-    Return:
+    Returns:
         Number of records written
     """
 
@@ -132,7 +132,7 @@ def dup_gff(dup_fasta, ingff, outgff):
         dup_fasta (str): duplicated FASTA
         ingff (str): input GFF file
         outgff (str): output GFF file
-    Return:
+    Returns:
         None
     """
 

@@ -21,10 +21,16 @@ show_HBV_refgenomes:
 testSampleAnno=./testdata/sampleAnnotation
 testBiokitDir=./testbiokit
 
-test: ${HBV_refgenomes}
-	bin/HBVouroboros_map_samples.py --outdir testdata-out "${HBV_refgenomes}" "${testSampleAnno}"
+test: ${HBV_refgenomes} ${testSampleAnno}
+	bin/HBVouroboros_map_samples.py --outdir testdata-out "${HBV_refgenomes}" "${testSampleAnno}"  --local
 
-test_biokit: ${HBV_refgenomes}
+test-cluster: ${HBV_refgenomes} ${testSampleAnno}
+	bin/HBVouroboros_map_samples.py --outdir testdata-out "${HBV_refgenomes}" "${testSampleAnno}" 
+
+test_biokit: ${HBV_refgenomes} ${testBiokitDir}
+	bin/HBVouroboros_map_biokit.py "${HBV_refgenomes}" "${testBiokitDir}" --local
+
+test_biokit-cluster: ${HBV_refgenomes} ${testBiokitDir}
 	bin/HBVouroboros_map_biokit.py "${HBV_refgenomes}" "${testBiokitDir}"
 
 .PHONY: install gv test test_biokit

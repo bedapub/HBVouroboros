@@ -47,14 +47,20 @@ def main(args):
     cluster_out_pattern = os.path.join(cluster_logs_dir, 'slurm-%x-%j.out')
     cluster_err_pattern = os.path.join(cluster_logs_dir, 'slurm-%x-%j.err')
 
-    status = snakemake.snakemake(
-        snakefile=align_snakefile,
-        cluster='sbatch -t {cluster.time} -c {cluster.cpu} '
-                  '-N {cluster.nodes} --mem={cluster.mem} '
-                  '--ntasks-per-node={cluster.ntasks_per_node}'
-                  ' -o ' + cluster_out_pattern + \
-                  ' -e ' + cluster_err_pattern,
-        cluster_config=align_clusterfile,
+    if not args.local:
+        cluster_comm = ('sbatch -t {cluster.time} -c {cluster.cpu} '
+                       '-N {cluster.nodes} --mem={cluster.mem} '
+                       '--ntasks-per-node={cluster.ntasks_per_node}'
+                       ' -o ' + cluster_out_pattern + \
+                       ' -e ' + cluster_err_pattern)
+        cluster_config = align_clusterfile
+    else:
+        cluster_comm = None
+        cluster_config = None
+
+    status = snakemake.snakemake(align_snakefile,
+        cluster=cluster_comm,
+        cluster_config=cluster_config,
         cores=64, nodes=64, local_cores=4,
         config={
             'sample_annotation': unmapped_sample_annotation,
@@ -81,6 +87,10 @@ if __name__ == '__main__':
     parser.add_argument('--outdir', '-o',
         help='output directory: if missing, a folder "HBVouroboros" '
              ' will be created in the biokit output directory')
+    parser.add_argument('-l', '--local',
+        action='store_true',
+        help='If given, the commands will be executed locally.'
+             'Otherwise, they will be submitted to the cluster with sbatch')
 
     args = parser.parse_args()
 

@@ -21,9 +21,9 @@ if not os.path.exists(align_clusterfile):
 def main(args):
     refgenomes_dir = os.path.realpath(args.refgenomes_dir)
     sample_file = os.path.realpath(args.sample_annotation_file)
-    cluster = args.cluster
+    local = args.local
    
-    if cluster:
+    if not local:
         cluster_comm = ('sbatch -t {cluster.time} -c {cluster.cpu} ' 
                        '-N {cluster.nodes} --mem={cluster.mem} ' 
                        '--ntasks-per-node={cluster.ntasks_per_node}')
@@ -67,9 +67,10 @@ if __name__ == '__main__':
         default='./HBVouroboros',
         help='output directory: if missing, a folder "HBVouroboros" '
              ' will be created in the current directory')
-    parser.add_argument('-c', '--cluster', 
+    parser.add_argument('-l', '--local', 
         action='store_true',
-        help='If given, the commands will be submitted to cluster with sbatch')
+        help='If given, the commands will be executed locally.'
+             'Otherwise, they will be submitted to the cluster with sbatch')
 
     args = parser.parse_args()
 

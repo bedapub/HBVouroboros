@@ -3,9 +3,9 @@ HBVouroboros
 *HBVouroboros* automates sequencing-based HBV genotyping and expression quantification.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
-   code
+   HBVouroboros
 
 Features
 --------

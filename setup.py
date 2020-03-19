@@ -24,7 +24,8 @@ setup(
             "align_reads/Snakefile",
             "align_reads/config/cluster.json",
             "align_reads/config/config.yaml",
-            "biokit/Snakefile"
+            "biokit/Snakefile"]
+    }
     # install_requires = ['requests>=2.19.1']
 )
 

@@ -61,7 +61,7 @@ def main(args):
     status = snakemake.snakemake(align_snakefile,
         cluster=cluster_comm,
         cluster_config=cluster_config,
-        cores=64, nodes=64, local_cores=4,
+        cores=128, nodes=128, local_cores=4,
         config={
             'sample_annotation': unmapped_sample_annotation,
             'refgenomes_dir': refgenomes_dir

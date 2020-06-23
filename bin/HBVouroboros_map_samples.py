@@ -40,7 +40,7 @@ def main(args):
         snakefile=align_snakefile,
         cluster=cluster_comm,
         cluster_config=cluster_config,
-        cores=64, nodes=64, local_cores=4,
+        cores=128, nodes=128, local_cores=4,
         config={
             'sample_annotation': sample_file,
             'refgenomes_dir': refgenomes_dir

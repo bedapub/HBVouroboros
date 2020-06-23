@@ -69,7 +69,7 @@ rule bowtie2_map:
     log:
         "logs/{sample}_bowtie2.log"
     threads:
-        2 
+        8 
     shell:
         "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive \
             -x {bowtie2_index} \
@@ -84,7 +84,7 @@ rule filter_and_sort_bam:
     log:
         os.path.join(log_dir, "{sample}_filter_and_sort_bam.log")
     threads:
-        2
+        8
     shell:
         "samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
 

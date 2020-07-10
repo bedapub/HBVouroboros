@@ -93,6 +93,10 @@ Or, equivalently
 make test_biokit ## make sure that the environment variable HBV_refgenomes is set
 ```
 
+Note: from biokit version July 10, 2020, user has to specify the option
+`--keep-unmapped` to keep unmapped reads so that HBVouroboros functions
+normally.
+
 ## Methods
 
 ### HBV reference genomes

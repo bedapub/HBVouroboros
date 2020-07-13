@@ -9,7 +9,7 @@ import pkg_resources
 
 
 trim_snakefile = pkg_resources.resource_filename('HBVouroboros', 
-    'trimmomatic/Snakefile')
+    'trim_reads/Snakefile')
 trim_clusterfile = pkg_resources.resource_filename('HBVouroboros',  
     'align_reads/config/cluster.json')
 

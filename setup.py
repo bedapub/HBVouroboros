@@ -22,8 +22,8 @@ setup(
         ],
     package_data = {
         "HBVouroboros": ["build_refgenomes/Snakefile", 
+            "config/cluster.json",
             "align_reads/Snakefile",
-            "align_reads/config/cluster.json",
             "align_reads/config/config.yaml",
             "trim_reads/Snakefile",
             "trim_reads/config/primer.txt",

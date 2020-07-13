@@ -20,17 +20,37 @@ show_HBV_refgenomes:
 
 testSampleAnno=./testdata/sampleAnnotation
 testBiokitDir=./testbiokit
+testOutDir=./test-outputs
+testMapSampleOutDir=${testOutDir}/test-map_samples-out
 
-test: ${HBV_refgenomes} ${testSampleAnno}
-	bin/HBVouroboros_map_samples.py --outdir testdata-out "${HBV_refgenomes}" "${testSampleAnno}"  --local
+test: test-map_samples test-biokit test-trimmomatic
+test-cluster: test-map_samples-cluster test-biokit-cluster test-trimmomatic-cluster
 
-test-cluster: ${HBV_refgenomes} ${testSampleAnno}
-	bin/HBVouroboros_map_samples.py --outdir testdata-out "${HBV_refgenomes}" "${testSampleAnno}" 
+clean-map_samples:
+	rm -rf "${testMapSampleOutDir}"
 
-test_biokit: ${HBV_refgenomes} ${testBiokitDir}
-	bin/HBVouroboros_map_biokit.py "${HBV_refgenomes}" "${testBiokitDir}" --local
+test-map_samples: clean-map_samples ${HBV_refgenomes} ${testSampleAnno}
+	bin/HBVouroboros_map_samples.py --outdir "${testMapSampleOutDir}" "${HBV_refgenomes}" "${testSampleAnno}"  --local
 
-test_biokit-cluster: ${HBV_refgenomes} ${testBiokitDir}
-	bin/HBVouroboros_map_biokit.py "${HBV_refgenomes}" "${testBiokitDir}"
+test-map_samples-cluster: clean-map_samples ${HBV_refgenomes} ${testSampleAnno}
+	bin/HBVouroboros_map_samples.py --outdir "${testMapSampleOutDir}" "${HBV_refgenomes}" "${testSampleAnno}" 
 
-.PHONY: install gv test test_biokit
+clean-biokit:
+	rm -rf ${testOutDir}/biokit-out
+
+test-biokit: clean-biokit ${HBV_refgenomes} ${testBiokitDir}
+	bin/HBVouroboros_map_biokit.py --outdir ${testOutDir}/biokit-out "${HBV_refgenomes}" "${testBiokitDir}" --local
+
+test-biokit-cluster: clean-biokit ${HBV_refgenomes} ${testBiokitDir}
+	bin/HBVouroboros_map_biokit.py --outdir ${testOutDir}/biokit-out "${HBV_refgenomes}" "${testBiokitDir}"
+
+clean-trimmomatic:
+	rm -rf ${testOutDir}/test-trimmomatic-out
+
+test-trimmomatic: clean-trimmomatic ${testSampleAnno}
+	bin/HBVouroboros_trimmomatic.py --outdir ${testOutDir}/test-trimmomatic-out "${testSampleAnno}" --local
+
+test-trimmomatic-cluster: clean-trimmomatic ${testSampleAnno}
+	bin/HBVouroboros_trimmomatic.py --outdir ${testOutDir}/test-trimmomatic-out "${testSampleAnno}"
+
+.PHONY: install gv clean-trimmomatic test-map_samples test-biokit test-trimmomatic test-map_samples-cluster test-biokit-cluster test-trimmomatic-cluster clean-map_samples clean-biokit clen-trimmomatic

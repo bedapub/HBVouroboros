@@ -11,12 +11,12 @@ import pkg_resources
 align_snakefile = pkg_resources.resource_filename('HBVouroboros', 
     'align_reads/Snakefile')
 align_clusterfile = pkg_resources.resource_filename('HBVouroboros',  
-    'align_reads/config/cluster.json')
+    'config/cluster.json')
 
 if not os.path.exists(align_snakefile):
-    raise Exception('align_snakefile not found')
+    raise Exception('align_snakefile not found: ' + align_snakefile)
 if not os.path.exists(align_clusterfile):
-    raise Exception('align_clusterfile not found')
+    raise Exception('align_clusterfile not found:' + align_clusterfile)
 
 def main(args):
     refgenomes_dir = os.path.realpath(args.refgenomes_dir)

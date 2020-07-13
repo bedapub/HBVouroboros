@@ -11,12 +11,12 @@ import pkg_resources
 trim_snakefile = pkg_resources.resource_filename('HBVouroboros', 
     'trim_reads/Snakefile')
 trim_clusterfile = pkg_resources.resource_filename('HBVouroboros',  
-    'align_reads/config/cluster.json')
+    'config/cluster.json')
 
 if not os.path.exists(trim_snakefile):
-    raise Exception('trim_snakefile not found')
+    raise Exception('trim_snakefile not found: ' + trim_snakefile)
 if not os.path.exists(trim_clusterfile):
-    raise Exception('trim_clusterfile not found')
+    raise Exception('trim_clusterfile not found: ' + trim_clusterfile)
 
 def main(args):
 

@@ -44,7 +44,7 @@ rule trimmomatic:
         8
     shell:
         "trimmomatic PE -threads {threads} "
-        "-trimlog {log.logout} -summary {log.summout}"
+        "-trimlog {log.logout} -summary {log.summout} "
         "{input.f1} {input.f2} "
         "{output.tf1} {output.uf1} {output.tf2} {output.uf2} "
         "{trimmomatic_steps}"

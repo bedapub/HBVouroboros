@@ -27,7 +27,8 @@ rule all:
     input:
         output_sample_annotation_fn,
         expand(join(trimmed_dir, "{sample}_R1.fastq.gz"), sample=samples),
-        expand(join(trimmed_dir, "{sample}_R2.fastq.gz"), sample=samples)
+        expand(join(trimmed_dir, "{sample}_R2.fastq.gz"), sample=samples),
+        expand(join(log_dir, "{sample}_trimmomatic.log.gz"), sample=samples)
 
 rule trimmomatic:
     input:
@@ -49,6 +50,14 @@ rule trimmomatic:
         "{input.f1} {input.f2} "
         "{output.tf1} {output.uf1} {output.tf2} {output.uf2} "
         "{trimmomatic_steps}"
+
+rule gzip_log:
+    input:
+        join(log_dir, "{sample}_trimmomatic.log")
+    output:
+        join(log_dir, "{sample}_trimmomatic.log.gz")
+    shell:
+        "gzip {input}"
 
 rule output_sample_annotation:
     output:

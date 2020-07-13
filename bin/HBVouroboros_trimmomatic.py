@@ -8,9 +8,9 @@ import snakemake
 import pkg_resources
 
 
-trim_snakefile = pkg_resources.resource_filename('HBVouroboros', 
+trim_snakefile = pkg_resources.resource_filename('HBVouroboros',
     'trim_reads/Snakefile')
-trim_clusterfile = pkg_resources.resource_filename('HBVouroboros',  
+trim_clusterfile = pkg_resources.resource_filename('HBVouroboros',
     'config/cluster.json')
 
 if not os.path.exists(trim_snakefile):
@@ -19,13 +19,18 @@ if not os.path.exists(trim_clusterfile):
     raise Exception('trim_clusterfile not found: ' + trim_clusterfile)
 
 def main(args):
-
+    """start snakemake with input parameters"""
     sample_file = os.path.realpath(args.sample_annotation_file)
-   
-    cluster_comm = ('sbatch -t {cluster.time} -c {cluster.cpu} ' 
-                   '-N {cluster.nodes} --mem={cluster.mem} ' 
-                   '--ntasks-per-node={cluster.ntasks_per_node}')
-    cluster_config = trim_clusterfile
+    local = args.local
+ 
+    if not local:
+        cluster_comm = ('sbatch -t {cluster.time} -c {cluster.cpu} '
+                       '-N {cluster.nodes} --mem={cluster.mem} '
+                       '--ntasks-per-node={cluster.ntasks_per_node}')
+        cluster_config = trim_clusterfile
+    else:
+        cluster_comm = None
+        cluster_config = None
 
     outdir = args.outdir
     if os.path.exists(outdir):
@@ -59,6 +64,10 @@ if __name__ == '__main__':
         default='./HBVouroboros_trimmed',
         help='output directory: if missing, a folder "HBVouroboros_trimmed" '
              ' will be created in the current directory')
+    parser.add_argument('-l', '--local',
+        action='store_true',
+        help='If given, the commands will be executed locally.'
+             'Otherwise, they will be submitted to the cluster with sbatch')
 
     args = parser.parse_args()
 

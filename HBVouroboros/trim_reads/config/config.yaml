@@ -1,4 +1,4 @@
 # sample annotation file
-sample_annotation: '../testdata/sampleAnnotation'
+sample_annotation: '../../testdata/sampleAnnotation'
 # trimmomatic steps
-trimmomatic_steps: 'ILLUMINACLIP:../HBVouroboros/trim_reads/config/primers.fasta:2:30:10:2:keepBothReads LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:35 CROP:140'
+trimmomatic_steps: 'ILLUMINACLIP:../../HBVouroboros/trim_reads/config/primers.fasta:2:30:10:2:keepBothReads LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:35 CROP:140'

@@ -31,8 +31,8 @@ rule all:
 
 rule trimmomatic:
     input:
-        f1 = lambda wildcards: fq1dict[wildcards.sample],
-        f2 = lambda wildcards: fq2dict[wildcards.sample]
+        f1 = lambda wildcards: abspath(fq1dict[wildcards.sample]),
+        f2 = lambda wildcards: abspath(fq2dict[wildcards.sample])
     output:
         tf1 = join(trimmed_dir, "{sample}_R1.fastq.gz"),
         tf2 = join(trimmed_dir, "{sample}_R2.fastq.gz"),

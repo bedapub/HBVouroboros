@@ -38,12 +38,13 @@ rule trimmomatic:
         uf1 = join(unpaired_dir, "{sample}_R1_unpaired.fastq.gz"),
         uf2 = join(unpaired_dir, "{sample}_R2_unpaired.fastq.gz"),
     log:
-        join(log_dir, "{sample}_trimmomatic.log")
+        logout = join(log_dir, "{sample}_trimmomatic.log"),
+        summout = join(log_dir, "{sample}_trimmomatic_summary.txt")
     threads:
-        8 
+        8
     shell:
         "trimmomatic PE -threads {threads} "
-        "-trimlog {log} -summary {log_dir}/{sample}_trimmomatic_summary.txt "
+        "-trimlog {log.logout} -summary {log.summout}"
         "{input.f1} {input.f2} "
         "{output.tf1} {output.uf1} {output.tf2} {output.uf2} "
         "{trimmomatic_steps}"

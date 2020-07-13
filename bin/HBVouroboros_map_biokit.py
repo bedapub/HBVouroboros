@@ -12,7 +12,7 @@ biokit_snakefile = pkg_resources.resource_filename('HBVouroboros',
 align_snakefile = pkg_resources.resource_filename('HBVouroboros', 
     'align_reads/Snakefile')
 align_clusterfile = pkg_resources.resource_filename('HBVouroboros',  
-    'align_reads/config/cluster.json')
+    'config/cluster.json')
 
 if not os.path.exists(align_snakefile):
     raise Exception('align_snakefile not found')

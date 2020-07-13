@@ -1,0 +1,60 @@
+import os
+import pandas as pd
+from os.path import join, basename
+import snakemake
+
+configfile: snakemake.workflow.srcdir("config/config.yaml")
+
+sample_annotation = config['sample_annotation']
+trimmomatic_steps = config['trimmomatic_steps']
+
+# parse sample annotation
+annotation = pd.read_table(sample_annotation)
+samples = annotation.iloc[:, 0]
+fq1s = annotation.iloc[:, 2]
+fq2s = annotation.iloc[:, 3]
+
+fq1dict = dict(zip(samples, fq1s))
+fq2dict = dict(zip(samples, fq2s))
+
+output_sample_annotation="trimmed_" + basename(sample_annotation)
+trimmed_dir = "trimmed"
+unpaired_dir = "unpaired"
+log_dir = "logs"
+
+rule all:
+    input:
+        output_sample_annotation,
+        expand(join(trimmed_dir, "{sample}_R1.fastq.gz"), sample=samples),
+        expand(join(trimmed_dir, "{sample}_R2.fastq.gz"), sample=samples)
+
+rule trimmomatic:
+    input:
+        f1 = lambda wildcards: fq1dict[wildcards.sample],
+        f2 = lambda wildcards: fq2dict[wildcards.sample]
+    output:
+        tf1 = join(trimmed_dir, "{sample}_R1.fastq.gz"),
+        tf2 = join(trimmed_dir, "{sample}_R2.fastq.gz"),
+        uf1 = join(unpaired_dir, "{sample}_R1_unpaired.fastq.gz"),
+        uf2 = join(unpaired_dir, "{sample}_R2_unpaired.fastq.gz"),
+    log:
+        join(log_dir, "{sample}_trimmomatic.log")
+    threads:
+        8 
+    shell:
+        "trimmomatic PE -threads {threads} "
+        "-trimlog {log} -summary {log_dir}/{sample}_trimmomatic_summary.txt "
+        "{input.f1} {input.f2} "
+        "{output.tf1} {output.uf1} {output.tf2} {output.uf2} "
+        "{trimmomatic_steps}"
+
+rule output_sample_annotation:
+    output:
+        output_sample_annotation
+    run:
+        outanno = annotation.copy()
+        outanno.iloc[:, 2] = [join(trimmed_dir, x+"_R1.fastq.gz") 
+            for x in outanno.iloc[:0]]
+        outanno.iloc[:, 3] = [join(trimmed_dir, x+"_R2.fastq.gz") 
+            for x in outanno.iloc[:0]]
+        outanno.to_csv({output}, index=False, sep='\t', quotechar="")

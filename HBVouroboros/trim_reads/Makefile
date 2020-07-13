@@ -1,5 +1,10 @@
 dryrun:
 	snakemake -d ../../test-outputs/test-trim-out --dryrun -p
 
-run:
-	snakemake -d ../../test-outputs/test-trim-out -c 8 -j 8 --local-cores 8 --forceall --skip-script-cleanup
+run: clean
+	snakemake -d ../../test-outputs/test-trim-out --cores 8 -j 8 --local-cores 8 -p
+
+clean:
+	rm -rf ../../test-outputs/test-trim-out
+
+.PHONY=clean

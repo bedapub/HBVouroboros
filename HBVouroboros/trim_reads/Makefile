@@ -1,0 +1,2 @@
+dryrun:
+	snakemake --dryrun

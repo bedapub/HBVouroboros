@@ -15,3 +15,4 @@ dependencies:
   - trinity
   - blast
   - bcbio-gff
+  - pisces =5.2.10.49

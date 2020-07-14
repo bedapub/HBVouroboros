@@ -55,7 +55,7 @@ sub-folder `docker/ExamplePiscesPaperAnalysis`, version 5.2.11, commit
 
 ## Instructions
 
-To build the Docker image, run the following command
+To build the Docker image, run the following command in the `config` directory.
 
 ```bash
 sudo docker build -t pisces . > docker_build.log

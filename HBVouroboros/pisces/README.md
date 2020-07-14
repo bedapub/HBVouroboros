@@ -1,20 +1,29 @@
 Detecting SNVs with Pisces and HBVouroboros
 =====
+Jitao David Zhang, July 2020
 
 ## Background
 
-To use [Illumina/Pisces](https://github.com/Illumina/Pisces/) for SNV calling, there are two options
+To use [Illumina/Pisces](https://github.com/Illumina/Pisces/) for SNV calling, we have four options
 
+1. Download/clone from the GitHub link above and run
+   * Advantage: no need to use either conda or Docker or Singularity.
+   * Disadvantage: dependencies not controlled, and dotnet runtime 2.x must be
+       installed, which requires `sudo` permission..
 1. [Use the Bioconda package](#working-with-the-pisces-package-in-bioconda)
-   * Advantage: no need to work with Docker images and to mount data
-   * Disadvantage: need to install dotnet runtime 2.x
-1. [Build and use a Docker image](#working-with-a-docker-image-of-pisces)
-   * Advantage: no need to install dotnet runtime
+   * Advantage: no need to work with Docker images and to mount data.
+   * Disadvantage: need to install dotnet runtime 2.x.
+1. [Use a Docker image](#working-with-a-docker-image-of-pisces)
+   * Advantage: no need to install dotnet runtime.
    * Disadvantage: Both `sudo` permission and Docker installation are required.
+1. [Use a Singularity image](#working-with-a-singularity-image-of-pisces)
+   * Advantage: no need to install dotnet runtime, no Docker installation is
+       necessary, and no `sudo` permission is needed.
+   * Disadvantage: Singularity installation is required.
 
-Below we document both possibilities. During the development of *HBVouroboros*,
-I used the Bioconda option. In case you identify issues when using the Docker
-option, please kindly let me know.
+Below we document the last three possibilities. During the development of
+*HBVouroboros*, I used the Bioconda option mainly and tried all other options. In case you identify issues when
+using either the Docker or the Singularity option, please kindly let me know.
 
 ## Working with the Pisces package in Bioconda
 
@@ -89,6 +98,8 @@ Hub](https://hub.docker.com/r/astewart/pisces). It can be pulled by Docker by
 ```bash
 docker pull astewart/pisces
 ```
+
+## Working with a Singularity image of pisces
 
 If Singularity is preferred, use the following commands to convert the Docker
 image into a Singularity one, and run the Pisces binary program from the

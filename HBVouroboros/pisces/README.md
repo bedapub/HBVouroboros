@@ -48,9 +48,15 @@ sudo apt-get install -y dotnet-runtime-2.1 ## Pisces does not work yet with 3.1
 
 ## Working with a Docker image of Pisces
 
+Two options are here: [building your own Docker
+image](#building-the-image-from-source-code), or [using the image available on
+Docker Hub](#working-with-pre-built-Docker-image).
+
+### Building the image from source code
+
 The Dockerfile and run_analysis.sh is copied from the [GitHub repository of
 Pisces](https://github.com/Illumina/Pisces/tree/master/docker/ExamplePiscesPaperAnalysis),
-sub-folder `docker/ExamplePiscesPaperAnalysis`, version 5.2.11, commit
+sub-folder `docker/ExamplePisces5.2.5Release`, version 5.2.5, commit
 [5dce4fe](https://github.com/Illumina/Pisces/commit/5dce4fe7d1dc4603ca35affe258cbce14cf4ae1c).
 
 ## Instructions
@@ -73,6 +79,25 @@ with bash
 ```bash
 docker run -it --mount type=bind,source="$(pwd)"/data,target=/data pisces
 /bin/bash
+```
+
+### Working with pre-built Docker image
+
+An Docker image of pisces is available on [Docker
+Hub](https://hub.docker.com/r/astewart/pisces). It can be pulled by Docker by
+
+```bash
+docker pull astewart/pisces
+```
+
+If Singularity is preferred, use the following commands to convert the Docker
+image into a Singularity one, and run the Pisces binary program from the
+Singularity image within.
+
+```bash
+singularity build pisces.simg docker://astewart/pisces
+singularity shell pisces.simg
+dotnet /app/Pisces_5.2.9.122/Pisces.dll
 ```
 
 ## Licensing information

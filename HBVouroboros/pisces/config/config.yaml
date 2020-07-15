@@ -1,0 +1,10 @@
+# sample annotation file
+sample_annotation: '../../testdata/sampleAnnotation'
+# reference HBV genome in FASTA format
+ref_genome_fa: '../../testdata/reference-genome.fa'
+# genus
+ref_genome_genus: 'Orthohepadnavirus'
+# species
+ref_genome_species: 'Hepatitis B Virus'
+# build
+ref_genome_build: 'payw1.3F (V01460)'

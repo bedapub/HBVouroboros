@@ -4,6 +4,7 @@ from HBVouroboros import infref
 from HBVouroboros import refgenomes
 from HBVouroboros import depth
 from HBVouroboros import coverage
+from HBVouroboros import biokit
 from os.path import join
 import snakemake
 
@@ -18,13 +19,7 @@ bowtie2_index = join(refgenomes_dir,
 blast_db = join(refgenomes_dir, 'HBV_allgenomes.fasta')
 
 # parse sample annotation
-annotation = pd.read_table(sample_annotation)
-samples = annotation.iloc[:, 0]
-fq1s = annotation.iloc[:, 2]
-fq2s = annotation.iloc[:, 3]
-
-fq1dict = dict(zip(samples, fq1s))
-fq2dict = dict(zip(samples, fq2s))
+samples, fq1dict, fq2dict = biokit.parse_sample_annotation(sample_annotation)
 
 rawbam_dir = "raw_bam"
 bam_dir = "bam"

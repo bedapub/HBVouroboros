@@ -1,9 +1,31 @@
 #!/usr/bin/env python3
 
 from os.path import join, exists, isdir, isfile, expanduser, realpath
+from pandas import read_table
 
 def biokit_sample_annotation_filename(biokit_outdir):
     return(join(biokit_outdir, 'samples.txt'))
+
+def parse_sample_annotation(sample_annotation_file):
+    """ Parse biokit sample annotation file into sample names and FASTQ dicts
+
+    Args:
+        sample_annotation_file (str): A Biokit sample annotation file
+    Returns:
+        A tuple of three elements: samples, fq1dict (dict of FASTQ1
+        files indexed by sample names), fq2dict (dict of FASTQ2 files
+        indexed by sample names).
+    """
+
+    annotation = read_table(sample_annotation_file)
+    samples = annotation.iloc[:, 0]
+    fq1s = annotation.iloc[:, 2]
+    fq2s = annotation.iloc[:, 3]
+
+    fq1dict = dict(zip(samples, fq1s))
+    fq2dict = dict(zip(samples, fq2s))
+
+    return (samples, fq1dict, fq2dict);
 
 def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
     """ Get sample annotation from a biokit output directory

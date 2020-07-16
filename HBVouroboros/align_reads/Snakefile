@@ -32,9 +32,9 @@ infref_bam_dir = "infref_bam"
 cov_dir = "coverage"
 
 trinity_outdir="trinity_out_dir"
-trinity_fasta=os.path.join(trinity_outdir, "Trinity.fasta")
-trinity_sorted_fasta=os.path.join(trinity_outdir, "Trinity.sorted.fasta")
-blast_out = os.path.join(blast_dir, "blast.out")
+trinity_fasta=join(trinity_outdir, "Trinity.fasta")
+trinity_sorted_fasta=join(trinity_outdir, "Trinity.sorted.fasta")
+blast_out = join(blast_dir, "blast.out")
 inferred_strain_FASTA=join(infref_dir, "inferred_strain.fasta")
 inferred_strain_dup_FASTA=join(infref_dir, "inferred_strain_dup.fasta")
 inferred_strain_gb=join(infref_dir, "inferred_strain.gb")
@@ -45,72 +45,27 @@ infref_bowtie2_index=join(infref_dir, "infref_bowtie2_index")
 
 rule all:
     input:
-        os.path.join(bam_dir, "aggregated_mapped_reads.bam"),  
+        join(bam_dir, "aggregated_mapped_reads.bam"),  
         inferred_strain_FASTA,
         inferred_strain_gff,
         inferred_strain_dup_FASTA,
         inferred_strain_dup_gff,
-        os.path.join(cov_dir, "infref_genome_count.tsv"),
-        os.path.join(cov_dir, "infref_genome_depth.tsv"),
-        os.path.join(cov_dir, "infref_genome_gene_coverage.gct"),
-        os.path.join(cov_dir, "infref_genome_CDS_coverage.gct")
+        join(cov_dir, "infref_genome_count.tsv"),
+        join(cov_dir, "infref_genome_depth.tsv"),
+        join(cov_dir, "infref_genome_gene_coverage.gct"),
+        join(cov_dir, "infref_genome_CDS_coverage.gct")
 
-rule bowtie2_map:
-    input:
-        f1 = lambda wildcards: fq1dict[wildcards.sample],
-        f2 = lambda wildcards: fq2dict[wildcards.sample]
-    output:
-        temp(os.path.join(rawbam_dir, "{sample}.bam"))
-    log:
-        "logs/{sample}_bowtie2.log"
-    threads:
-        8 
-    shell:
-        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive \
-            -x {bowtie2_index} \
-            -1 {input.f1} -2 {input.f2} 2>{log} | \
-            samtools view -Sb - > {output}"
-    
-rule filter_and_sort_bam:
-    input:
-        os.path.join(rawbam_dir, "{sample}.bam")
-    output:
-        os.path.join(bam_dir, "{sample}.sorted.bam")
-    log:
-        os.path.join(log_dir, "{sample}_filter_and_sort_bam.log")
-    threads:
-        8
-    shell:
-        "samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
-
-rule index_bam:
-    input:
-        os.path.join(bam_dir, "{sample}.sorted.bam")
-    output:
-        os.path.join(bam_dir, "{sample}.sorted.bam.bai")
-    threads: 2
-    shell:
-        "samtools index {input}"
-
-rule flagstat:
-    input:
-        bam=os.path.join(bam_dir, "{sample}.sorted.bam"),
-        bai=os.path.join(bam_dir, "{sample}.sorted.bam.bai"),
-    output:
-        os.path.join(stats_dir, "{sample}.sorted.bam.flagstat")
-    threads:
-        2
-    shell:
-        "samtools flagstat -@ {threads} {input.bam} > {output}"
+## include the rules to map FASTQ files
+include: "map-fastq-snakefile"
 
 rule aggregate_bam:
     input:
-        expand(os.path.join(
+        expand(join(
                 bam_dir,
                 "{sample}.sorted.bam"), 
             sample=samples)
     output:
-        os.path.join(bam_dir, "aggregated_mapped_reads.bam")
+        join(bam_dir, "aggregated_mapped_reads.bam")
     threads:
         2
     shell:
@@ -119,12 +74,12 @@ rule aggregate_bam:
         
 rule aggregate_fq:
     input:
-        os.path.join(bam_dir, "aggregated_mapped_reads.bam")
+        join(bam_dir, "aggregated_mapped_reads.bam")
     output:
-        f1 = os.path.join(
+        f1 = join(
              fq_dir, 
              "aggregated_mapped_reads_1.fq.gz"),
-        f2 = os.path.join(
+        f2 = join(
              fq_dir,
              "aggregated_mapped_reads_2.fq.gz")
     threads: 2
@@ -134,10 +89,10 @@ rule aggregate_fq:
     
 rule run_trinity:
     input:
-        f1 = os.path.join(
+        f1 = join(
              fq_dir, 
              "aggregated_mapped_reads_1.fq.gz"),
-        f2 = os.path.join(
+        f2 = join(
              fq_dir,
              "aggregated_mapped_reads_2.fq.gz")
     output:
@@ -201,7 +156,7 @@ rule infref_bowtie2_map:
         f1 = lambda wildcards: fq1dict[wildcards.sample],
         f2 = lambda wildcards: fq2dict[wildcards.sample]
     output:
-        temp(os.path.join(infref_bam_dir, "{sample}.bam"))
+        temp(join(infref_bam_dir, "{sample}.bam"))
     log:
         "logs/{sample}_infref_bowtie2.log"
     threads:
@@ -214,11 +169,11 @@ rule infref_bowtie2_map:
 
 rule filter_and_sort_infref_bam:
     input:
-        os.path.join(infref_bam_dir, "{sample}.bam")
+        join(infref_bam_dir, "{sample}.bam")
     output:
-        os.path.join(infref_bam_dir, "{sample}.sorted.bam")
+        join(infref_bam_dir, "{sample}.sorted.bam")
     log:
-        os.path.join(log_dir, "{sample}_infref_filter_and_sort_bam.log")
+        join(log_dir, "{sample}_infref_filter_and_sort_bam.log")
     threads:
         2
     shell:
@@ -226,19 +181,19 @@ rule filter_and_sort_infref_bam:
 
 rule index_infref_bam:
     input:
-        os.path.join(infref_bam_dir, "{sample}.sorted.bam")
+        join(infref_bam_dir, "{sample}.sorted.bam")
     output:
-        os.path.join(infref_bam_dir, "{sample}.sorted.bam.bai")
+        join(infref_bam_dir, "{sample}.sorted.bam.bai")
     threads: 2
     shell:
         "samtools index {input}"
 
 rule infref_stat:
     input:
-        bam=os.path.join(infref_bam_dir, "{sample}.sorted.bam"),
-        bai=os.path.join(infref_bam_dir, "{sample}.sorted.bam.bai"),
+        bam=join(infref_bam_dir, "{sample}.sorted.bam"),
+        bai=join(infref_bam_dir, "{sample}.sorted.bam.bai"),
     output:
-        os.path.join(infref_bam_dir, "{sample}.sorted.bam.stat")
+        join(infref_bam_dir, "{sample}.sorted.bam.stat")
     threads:
         2
     shell:
@@ -246,10 +201,10 @@ rule infref_stat:
 
 rule genome_count:
     input:
-        expand(os.path.join(infref_bam_dir, "{sample}.sorted.bam.stat"),
+        expand(join(infref_bam_dir, "{sample}.sorted.bam.stat"),
                sample=samples)
     output:
-        os.path.join(cov_dir, "infref_genome_count.tsv")
+        join(cov_dir, "infref_genome_count.tsv")
     shell:
          "echo -e 'ID\tcoverage' > {output}; "
          "grep -H '^SN' {input} | \
@@ -259,20 +214,20 @@ rule genome_count:
 
 rule dupconc_depth:
     input:
-        bam = expand(os.path.join(infref_bam_dir, "{sample}.sorted.bam"),
+        bam = expand(join(infref_bam_dir, "{sample}.sorted.bam"),
                      sample=samples),
-        bai = expand(os.path.join(infref_bam_dir, "{sample}.sorted.bam.bai"),
+        bai = expand(join(infref_bam_dir, "{sample}.sorted.bam.bai"),
                      sample=samples)
     output:
-       temp(os.path.join(cov_dir, "infref_genome_dupconc_depth.tsv"))
+       temp(join(cov_dir, "infref_genome_dupconc_depth.tsv"))
     shell:
         "samtools depth -a -H -d 0 {input.bam} -o {output}"
 
 rule depth:
     input:
-       os.path.join(cov_dir, "infref_genome_dupconc_depth.tsv")
+       join(cov_dir, "infref_genome_dupconc_depth.tsv")
     output:
-       os.path.join(cov_dir, "infref_genome_depth.tsv")
+       join(cov_dir, "infref_genome_depth.tsv")
     run:
        depth.dedup_file(input[0], output[0])
 
@@ -287,21 +242,21 @@ rule dup_gff:
        
 rule individual_coverage:
     input:
-        bam = os.path.join(infref_bam_dir, "{sample}.sorted.bam"),
-        bai = os.path.join(infref_bam_dir, "{sample}.sorted.bam.bai"),
+        bam = join(infref_bam_dir, "{sample}.sorted.bam"),
+        bai = join(infref_bam_dir, "{sample}.sorted.bam.bai"),
         gff = inferred_strain_dup_gff
     output:
-        temp(os.path.join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv"))
+        temp(join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv"))
     shell:
         "coverageBed -counts -a {input.gff} -b {input.bam} > {output}"
 
 rule gene_coverage:
      input:
         expand(
-          os.path.join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv"),
+          join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv"),
           sample=samples)
      output:
-        os.path.join(cov_dir, "infref_genome_gene_coverage.gct")
+        join(cov_dir, "infref_genome_gene_coverage.gct")
      run:
         coverage.collect_gene_coverage(input, output[0], feat_type='gene')
 
@@ -309,9 +264,9 @@ rule gene_coverage:
 rule CDS_coverage:
      input:
         expand(
-          os.path.join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv"),
+          join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv"),
           sample=samples)
      output:
-        os.path.join(cov_dir, "infref_genome_CDS_coverage.gct")
+        join(cov_dir, "infref_genome_CDS_coverage.gct")
      run:
         coverage.collect_gene_coverage(input, output[0], feat_type='CDS')

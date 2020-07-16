@@ -106,8 +106,14 @@ image into a Singularity one, and run the Pisces binary program from the
 Singularity image within.
 
 ```bash
-singularity build pisces.simg docker://astewart/pisces
-singularity shell pisces.simg
+## On HPCs using EasyBuild, we load the Singularity 3.5 with the following command
+ml purge
+ml load Singularity/3.5.0
+
+cd ../HBVouroboros/pisces_singularity
+singularity build pisces_s3.5.simg docker://astewart/pisces
+## test it
+singularity shell pisces_s3.5.simg
 dotnet /app/Pisces_5.2.9.122/Pisces.dll
 ```
 

@@ -20,11 +20,12 @@ ref_genome_str = '{genus} {species} ({build})'.format(
 samples, fq1dict, fq2dict = biokit.parse_sample_annotation(sample_annotation)
 
 ref_genome_dir = "reference_genome"
-rawbam_dir = "raw_bam"
-bam_dir = "bam"
-pisces_dir = "pisces"
+rawbam_dir = "reference_genome_raw_bam"
+bam_dir = "reference_genome_bam"
+pisces_dir = "reference_genome_pisces"
 log_dir = "logs"
 stats_dir = "stats"
+bowtie2_index = join(ref_genome_dir, "genome_bowtie2_index")
 
 include: '../align_reads/map-fastq-snakefile'
 
@@ -33,7 +34,8 @@ ref_genome_GenomeSizeFile = join(ref_genome_dir, 'GenomeSize.xml')
 
 rule all:
     input:
-        ref_genome_GenomeSizeFile
+        ref_genome_GenomeSizeFile,
+        directory(expand(join(pisces_dir, "{sample}"), sample=samples))
 
 rule reference_genome_dir:
     output:
@@ -54,13 +56,27 @@ rule reference_genome_gs:
         fa=ref_genome_GenomeFaFile
     output:
         gs=ref_genome_GenomeSizeFile
+    log:
+        join(log_dir, "create-genome-size.log")
     shell:
         "{create_genome_size_cmd} -g {ref_genome_dir} "
-        "-s \"{ref_genome_str}\" -o {ref_genome_dir}"
+        "-s \"{ref_genome_str}\" -o {ref_genome_dir} > {log}"
 
+rule indexing_reference_genome:
+    input:
+        fa=ref_genome_GenomeFaFile
+    output:
+        bowtie2_index
+    threads: 2
+    message: "Generating bowtie2 index of the reference genome"
+    log: join(log_dir, "bowtie2-index.log") 
+    shell:
+        "touch {output}; bowtie2-build --threads {threads} {input} {output}"
+        
 rule pisces:
     input:
         bam=join(bam_dir, "{sample}.sorted.bam"),
+        bai=join(bam_dir, "{sample}.sorted.bam.bai"),
         gs=ref_genome_GenomeSizeFile
     output:
         directory(join(pisces_dir, "{sample}"))

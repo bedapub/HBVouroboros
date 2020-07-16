@@ -63,7 +63,7 @@ Docker Hub](#working-with-pre-built-Docker-image).
 
 ### Building the image from source code
 
-The Dockerfile and run_analysis.sh is copied from the [GitHub repository of
+The Dockerfile and run_analysis.sh can be obtained from the [GitHub repository of
 Pisces](https://github.com/Illumina/Pisces/tree/master/docker/ExamplePiscesPaperAnalysis),
 sub-folder `docker/ExamplePisces5.2.5Release`, version 5.2.5, commit
 [5dce4fe](https://github.com/Illumina/Pisces/commit/5dce4fe7d1dc4603ca35affe258cbce14cf4ae1c).
@@ -110,7 +110,7 @@ Singularity image within.
 ml purge
 ml load Singularity/3.5.0
 
-cd ../HBVouroboros/pisces_singularity
+cd ../../pisces_singularity
 singularity build pisces_s3.5.simg docker://astewart/pisces
 ## test it
 singularity shell pisces_s3.5.simg

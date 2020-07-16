@@ -1,7 +1,8 @@
-# CreateGenomeSizeFile command
-create_genome_size_cmd: 'singularity exec -B /pstore/data/:/pstore/data/:rw /pstore/apps/bioinfo/HBVouroboros/pisces_singularity/pisces_s3.5.simg dotnet /app/CreateGenomeSizeFile_5.2.9.122/CreateGenomeSizeFile.dll'
+# CreateGenomeSizeFile command. The TMPDIR command is required due to a known issue with dotnet
+# see https://github.com/dotnet/runtime/issues/3168
+create_genome_size_cmd: 'export TMPDIR=/tmp; singularity exec -B /pstore/data/:/pstore/data/:rw /pstore/apps/bioinfo/HBVouroboros/pisces_singularity/pisces_s3.5.simg dotnet /app/CreateGenomeSizeFile_5.2.9.122/CreateGenomeSizeFile.dll'
 # Pisces command
-pisces_cmd: 'singularity exec -B /pstore/data/:/pstore/data/:rw /pstore/apps/bioinfo/HBVouroboros/pisces_singularity/pisces_s3.5.simg dotnet /app/Pisces_5.2.9.122/Pisces.dll'
+pisces_cmd: 'export TMPDIR=/tmp; singularity exec -B /pstore/data/:/pstore/data/:rw /pstore/apps/bioinfo/HBVouroboros/pisces_singularity/pisces_s3.5.simg dotnet /app/Pisces_5.2.9.122/Pisces.dll'
 # pisces options (to be more stringent, use `--minvq 20 --minmq=30 --vqfilter 20`).
 pisces_opts: '--outputsbfiles true --ssfilter true --rmxnfilter 5,5 --mindp 10 --minvq 0 --minbq 20 --minmq 0 --minvf 0.01 --vqfilter 0 --gvcf true'
 # sample annotation file

@@ -20,7 +20,7 @@ trim_clusterfile = pkg_resources.resource_filename('HBVouroboros',
 if not os.path.exists(default_primer_file):
     raise Exception('default_primer_file not found: ' + default_primer_file)
 if not os.path.exists(trim_config):
-    raise Exception('trim_config not found: ' + trim_snakefile)
+    raise Exception('trim_config not found: ' + trim_config)
 if not os.path.exists(trim_snakefile):
     raise Exception('trim_snakefile not found: ' + trim_snakefile)
 if not os.path.exists(trim_clusterfile):

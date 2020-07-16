@@ -4,11 +4,11 @@ from os.path import join
 from HBVouroboros import biokit
 import snakemake
 
-
 configfile: snakemake.workflow.srcdir("config/config.yaml")
 
-create_genome_size_cmd='singularity exec -B /pstore/data/:/pstore/data/:rw /pstore/data/biomics/ID/7907_HBV_Capsid_2/202006-plasmid-validation/test-pisces/pisces-s3.5.simg dotnet /app/CreateGenomeSizeFile_5.2.9.122/CreateGenomeSizeFile.dll'
-pisces_cmd='singularity exec -B /pstore/data/:/pstore/data/:rw /pstore/data/biomics/ID/7907_HBV_Capsid_2/202006-plasmid-validation/test-pisces/pisces-s3.5.simg dotnet /app/Pisces_5.2.9.122/Pisces.dll' 
+create_genome_size_cmd=config['create_genome_size_cmd']
+pisces_cmd=config['pisces_cmd']
+pisces_opts=config['pisces_opts']
 
 sample_annotation = config['sample_annotation']
 input_fa = config['ref_genome_fa']
@@ -78,7 +78,10 @@ rule pisces:
         bam=join(bam_dir, "{sample}.sorted.bam"),
         bai=join(bam_dir, "{sample}.sorted.bam.bai"),
         gs=ref_genome_GenomeSizeFile
+    threads: 8
+    log: join(log_dir, "pisces-{sample}.log")
     output:
         directory(join(pisces_dir, "{sample}"))
     shell:
-        "{pisces_cmd} --bam {input} -g {ref_genome_dir} -o {output}"
+        "{pisces_cmd} --bam {input} -g {ref_genome_dir} -o {output} "
+        "-t {threads} {pisces_opts} > {log}"

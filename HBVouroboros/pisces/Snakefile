@@ -35,7 +35,7 @@ ref_genome_GenomeSizeFile = join(ref_genome_dir, 'GenomeSize.xml')
 rule all:
     input:
         ref_genome_GenomeSizeFile,
-        directory(expand(join(pisces_dir, "{sample}"), sample=samples))
+        expand(join(pisces_dir, "{sample}"), sample=samples)
 
 rule reference_genome_dir:
     output:

@@ -19,10 +19,10 @@ ref_genome_str = '{genus} {species} ({build})'.format(
     
 samples, fq1dict, fq2dict = biokit.parse_sample_annotation(sample_annotation)
 
-ref_genome_dir = "reference_genome"
-rawbam_dir = "reference_genome_raw_bam"
-bam_dir = "reference_genome_bam"
-pisces_dir = "reference_genome_pisces"
+ref_genome_dir = "refgenome"
+rawbam_dir = "refgenome_rawbam"
+bam_dir = "refgenome_bam"
+pisces_dir = "refgenome_pisces"
 log_dir = "logs"
 stats_dir = "stats"
 bowtie2_index = join(ref_genome_dir, "genome_bowtie2_index")
@@ -35,7 +35,7 @@ ref_genome_GenomeSizeFile = join(ref_genome_dir, 'GenomeSize.xml')
 rule all:
     input:
         ref_genome_GenomeSizeFile,
-        expand(join(pisces_dir, "{sample}"), sample=samples)
+        pisces_dir
 
 rule reference_genome_dir:
     output:
@@ -75,13 +75,13 @@ rule indexing_reference_genome:
         
 rule pisces:
     input:
-        bam=join(bam_dir, "{sample}.sorted.bam"),
-        bai=join(bam_dir, "{sample}.sorted.bam.bai"),
+        bam=expand(join(bam_dir, "{sample}.sorted.bam"), sample=samples),
+        bai=expand(join(bam_dir, "{sample}.sorted.bam.bai"), sample=samples),
         gs=ref_genome_GenomeSizeFile
-    threads: 8
-    log: join(log_dir, "pisces-{sample}.log")
+    threads: 20
+    log: join(log_dir, "pisces.log")
     output:
-        directory(join(pisces_dir, "{sample}"))
+        directory(pisces_dir)
     shell:
-        "{pisces_cmd} --bam {input} -g {ref_genome_dir} -o {output} "
+        "{pisces_cmd} --bam {bam_dir} -g {ref_genome_dir} -o {output} "
         "-t {threads} {pisces_opts} > {log}"

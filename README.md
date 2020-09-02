@@ -1,8 +1,14 @@
 *HBVouroboros* automates sequencing-based HBV genotyping and expression profiling
 ===
-[Jitao David Zhang](http://orcid.org/0000-0002-3085-0909)<sup>1</sup>
+[Jitao David Zhang](http://orcid.org/0000-0002-3085-0909)<sup>1</sup>, Rui
+Li<sup>2</sup>,
+Dingailu Ma<sup>2</sup>, Milad Adibi<sup>1</sup>
 
-<sup>1</sup>: Roche Pharma Research and Early Development, Pharmaceutical Sciences, Roche Innovation Center Basel, F. Hoffmann-La Roche Ltd, Grenzacherstrasse 124, Basel, 4070, Switzerland
+<sup>1</sup>: Roche Pharma Research and Early Development, Roche Innovation
+Center Basel, F. Hoffmann-La Roche Ltd, Grenzacherstrasse 124, Basel, 4070,
+Switzerland.
+<sup>2</sup>: Roche Pharma Research and Early Development, Roche
+Innovation Center Shanghai, F. Hoffmann-La Roche Ltd, Shanghai, China.
 
 Corresponding to: [jitao_david.zhang@roche.com](mailto:jitao_david.zhang@roche.com)
 
@@ -109,8 +115,6 @@ Most popular sequence aligners that we tested, including bowtie2 and STAR, do no
 
 We took an approach inspired by the annotation procedure of HBVdb to circumvent this problem (https://academic.oup.com/nar/article/41/D1/D566/1051781). We duplicated the sequence of each reference genome, concatenated the original and the duplicate genome, and used the concatenated genomes (twice the size of the original genome) as templates of read mapping.
 
-
-
 ### Aligning reads to HBV genomes
 
 Given that concatenated HBV genomes are used as templates, virtually any sequence alignment software can be used for read mapping. Given that HBV genes are transcribed from cccDNA without splicing, RNA sequencing reads can be aligned in an ungapped fashion. *HBVouroboros* uses *STA* as the default aligner. Users can modify the Snakemake workflow to use other aligners if it is necessary, for instance to use the same aligner for mapping reads to both HBV and to the host genome or transcriptome, for instance the human genome.
@@ -121,10 +125,10 @@ We use the software *Trinity* to perform *de novo* assembly of the HBV cccDNA ge
 
 ### Nucleotide-level, gene-level, and HBV-genome level summary statistics as well as structural variants
 
-*HBVouroboros* reports read coverage per nucleotide base and per gene of the inferred genotype, as well as single-nucleotide polymorphisms (SNP) compared with the inferred reference genome. 
+*HBVouroboros* reports read coverage per nucleotide base and per gene of the inferred genotype, as well as single-nucleotide polymorphisms (SNP) compared with the inferred reference genome.
 
 ## Acknowledgement
 
-I thank Roland Ambs, Raphael Sebastian Müller, and Alex Seitz for sharing their experience with Snakemake. I thank Yaling Zhang, Vivian Wang, Henrik Müller, Miriam Triyatni, Birian Leonard, Souphalone Luangsay, and other colleagues who provided datasets on which HBVouroboros was applied, and for giving feedbacks which allowed HBVouroboros to be continuously improved. I thank Roland Schmucki and Fabian Birzele for their work on the Biokit pipeline.
+We thank Roland Ambs, Raphael Sebastian Müller, and Alex Seitz for sharing their experience with Snakemake. I thank Yaling Zhang, Vivian Wang, Henrik Müller, Miriam Triyatni, Birian Leonard, Souphalone Luangsay, and other colleagues who provided datasets on which HBVouroboros was applied, and for giving feedbacks which allowed HBVouroboros to be continuously improved. I thank Roland Schmucki and Fabian Birzele for their work on the Biokit pipeline.
 
 

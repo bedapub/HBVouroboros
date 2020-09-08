@@ -69,4 +69,4 @@ rule bowtie2_index:
     log:
         join(log_dir, "bowtie2_index.log")
     shell:
-        "mkdir {output}; bowtie2-build --threads {threads} {input.fasta} {output}/{output} 2>&1 > {log}"
+        "mkdir {output}; bowtie2-build --threads {threads} {input.fasta} {output}/{output} 2>&1 > {log}; touch {output}/{output}"

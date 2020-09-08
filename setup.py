@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='HBVouroboros',
-    version='0.6.5',
+    version='0.6.6',
     description="sequence-based HBV genotyping and expression profiling",
     packages=find_packages(),
 
@@ -22,7 +22,7 @@ setup(
         'bin/HBVouroboros_pisces.py'
         ],
     package_data = {
-        "HBVouroboros": ["build_refgenomes/Snakefile", 
+        "HBVouroboros": ["build_refgenomes/Snakefile",
             "config/cluster.json",
             "align_reads/Snakefile",
             "align_reads/map-fastq-snakefile",
@@ -36,4 +36,3 @@ setup(
     }
     # install_requires = ['requests>=2.19.1']
 )
-

@@ -25,7 +25,7 @@ The ouroboros (or uroboros) is an ancient symbol depicting a serpent or dragon e
 
 ## Software availability
 
-*HBVouroboros* is distributed under the GPL-3 license. 
+*HBVouroboros* is distributed under the GPL-3 license.
 
 The source code is available at https://github.roche.com/BEDA/HBVouroboros.
 
@@ -40,14 +40,14 @@ See Figure 1 for a graphic representation of the workflow.
 ### Download the source code
 
 ```bash
-git clone git@github.roche.com:BEDA/HBVouroboros.git
+git clone https://github.com/bedapub/HBVouroboros.git
 ```
 
 ### Setup conda environment
 
 ```bash
 ## setup conda environment
-conda env create 
+conda env create
 ## in case it has been installed, use the command below to update
 ## conda env update
 conda activate HBVouroboros
@@ -130,5 +130,3 @@ We use the software *Trinity* to perform *de novo* assembly of the HBV cccDNA ge
 ## Acknowledgement
 
 We thank Roland Ambs, Raphael Sebastian Müller, and Alex Seitz for sharing their experience with Snakemake. I thank Yaling Zhang, Vivian Wang, Henrik Müller, Miriam Triyatni, Birian Leonard, Souphalone Luangsay, and other colleagues who provided datasets on which HBVouroboros was applied, and for giving feedbacks which allowed HBVouroboros to be continuously improved. I thank Roland Schmucki and Fabian Birzele for their work on the Biokit pipeline.
-
-

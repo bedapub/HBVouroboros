@@ -19,12 +19,12 @@ rule download_refgenomes:
          HTTP.remote('https://hbvdb.lyon.inserm.fr/data/references/hbvdbr.fas',
 		     keep_local=True)
     output:
-        "HBV_refgenomes.fasta" 
+        "HBV_refgenomes.fasta"
     log:
         join(log_dir, 'download_refgenomes.log')
     run:
         shell("mv {input} {output}")
-    
+
 rule download_allgenomes:
     input:
         HTTP.remote(
@@ -63,7 +63,7 @@ rule bowtie2_index:
     output:
         directory("HBV_refgenomes_dup_BOWTIE2")
     threads:
-        2
+        1
     message:
         "Generating bowtie2 index of duplicated HBV reference genomes"
     log:

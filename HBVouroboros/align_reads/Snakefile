@@ -97,7 +97,7 @@ rule run_trinity:
              "aggregated_mapped_reads_2.fq.gz")
     output:
         trinity_fasta
-    threads: 2
+    threads: 1
     shell:
         "Trinity --seqType fq \
             --left {input.f1} --right {input.f2} \

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='HBVouroboros',
-    version='0.6.6',
+    version='0.6.7',
     description="sequence-based HBV genotyping and expression profiling",
     packages=find_packages(),
 

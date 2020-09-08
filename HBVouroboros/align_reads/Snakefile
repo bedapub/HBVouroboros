@@ -45,7 +45,7 @@ infref_bowtie2_index=join(infref_dir, "infref_bowtie2_index")
 
 rule all:
     input:
-        join(bam_dir, "aggregated_mapped_reads.bam"),  
+        join(bam_dir, "aggregated_mapped_reads.bam"),
         inferred_strain_FASTA,
         inferred_strain_gff,
         inferred_strain_dup_FASTA,
@@ -62,7 +62,7 @@ rule aggregate_bam:
     input:
         expand(join(
                 bam_dir,
-                "{sample}.sorted.bam"), 
+                "{sample}.sorted.bam"),
             sample=samples)
     output:
         join(bam_dir, "aggregated_mapped_reads.bam")
@@ -71,13 +71,13 @@ rule aggregate_bam:
     shell:
         "samtools cat --threads {threads} {input} | \
             samtools sort -n > {output}"
-        
+
 rule aggregate_fq:
     input:
         join(bam_dir, "aggregated_mapped_reads.bam")
     output:
         f1 = join(
-             fq_dir, 
+             fq_dir,
              "aggregated_mapped_reads_1.fq.gz"),
         f2 = join(
              fq_dir,
@@ -86,11 +86,11 @@ rule aggregate_fq:
     shell:
         "samtools fastq --threads {threads} -N \
              -1 {output.f1} -2 {output.f2} {input}"
-    
+
 rule run_trinity:
     input:
         f1 = join(
-             fq_dir, 
+             fq_dir,
              "aggregated_mapped_reads_1.fq.gz"),
         f2 = join(
              fq_dir,
@@ -106,7 +106,7 @@ rule run_trinity:
 rule sort_trinity_fasta:
     input: trinity_fasta
     output: trinity_sorted_fasta
-    run: 
+    run:
         infref.sort_FASTA_by_length(input[0], output[0])
 
 rule run_blast:
@@ -144,7 +144,7 @@ rule infref_dup:
 rule bowtie2_index_infref_dup:
     input: inferred_strain_dup_FASTA
     output: infref_bowtie2_index
-    threads: 2
+    threads: 1
     message:  "Generating bowtie2 index of duplicated the inferred reference genome"
     log:  "logs/bowtie2_index_inferred_reference_genome.log"
     shell:
@@ -239,7 +239,7 @@ rule dup_gff:
        gff = inferred_strain_dup_gff
     run:
        infref.dup_gff(input.fasta, input.gff, output.gff)
-       
+
 rule individual_coverage:
     input:
         bam = join(infref_bam_dir, "{sample}.sorted.bam"),

@@ -61,10 +61,11 @@ make install ## alternatively, `pip install .`
 ### Build HBV reference genomes (run once at installation)
 
 ```bash
-## define the directory of reference genomes here
-HBVouroboros_refdir=/pstore/data/bi/apps/HBVouroboros
+## define the directory of reference genomes here, change the path according
+## to your local environment
+HBVouroboros_refdir=./HBV_refgenomes
 HBVouroboros_build_refgenomes.py "${HBVouroboros_refdir}"
-export HBV_refgenomes=/pstore/data/bi/apps/HBVouroboros/
+export HBV_refgenomes=${HBVouroboros_refdir}
 ```
 
 Make sure to export the variable `HBV_refgenomes` before running following commands using Makefile. If not set, the directory `./HBV_refgenomes` is searched in the current path.

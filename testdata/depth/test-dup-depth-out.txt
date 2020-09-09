@@ -1,5 +1,0 @@
-#CHROM	POS	Sample1	Sample2	Sample3
-chr1	1	3	3	3
-chr1	2	3	4	7
-chr1	3	3	7	8
-chr1	4	5	8	5

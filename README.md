@@ -4,9 +4,8 @@
 *HBVouroboros* uses RNA-sequencing reads to infer HBV genotype, quantify HBV
 transcript expression, and perform variant calling of HBV genomes.
 
-*HBVouroboros* is distributed under the GPL-3 license.
-
-The source code is available at https://github.roche.com/BEDA/HBVouroboros.
+*HBVouroboros*, distributed under the GPL-3 license, is available at
+https://github.com/bedapub/HBVouroboros.
 
 ## The workflow in a nutshell
 

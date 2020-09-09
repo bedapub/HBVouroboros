@@ -1,5 +1,5 @@
 from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
-import scripts.refgenomes as ref
+import refgenomes as ref
 from os.path import join
 
 localrules: download_refgenomes

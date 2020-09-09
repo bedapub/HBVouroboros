@@ -7,12 +7,6 @@ transcript expression, and perform variant calling of HBV genomes.
 *HBVouroboros*, distributed under the GPL-3 license, is available at
 https://github.com/bedapub/HBVouroboros.
 
-## The workflow in a nutshell
-
-See Figure 1 for a graphic representation of the workflow.
-
-![The workflow implemented by *HBVouroboros* in a graph](gv/HBVouroboros.svg){ width=300px }
-
 ## Installation and usage
 
 ### Download the source code

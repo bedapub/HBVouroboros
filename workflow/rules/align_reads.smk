@@ -1,10 +1,10 @@
 import os
 import pandas as pd
-from HBVouroboros import infref
-from HBVouroboros import refgenomes
-from HBVouroboros import depth
-from HBVouroboros import coverage
-from HBVouroboros import biokit
+import infref
+import refgenomes
+import depth
+import coverage
+import biokit
 from os.path import join
 import snakemake
 

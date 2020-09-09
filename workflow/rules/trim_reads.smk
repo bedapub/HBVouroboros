@@ -1,3 +1,5 @@
+""" A snakemake-based workflow to trim reads with trimmomatic """
+
 import os
 import pandas as pd
 import csv

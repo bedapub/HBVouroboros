@@ -1,4 +1,4 @@
-from HBVouroboros import biokit
+from . import biokit
 
 biokit_dir = config["biokit_dir"]
 output_file = config["output_file"]

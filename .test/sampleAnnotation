@@ -1,5 +1,5 @@
 #ID	GROUP	FASTQ1	FASTQ2	Time
-Sample1	Control	../../testdata/testfile-1_1.fq.gz	../../testdata/testfile-1_2.fq.gz	6h
-Sample2	Control	../../testdata/testfile-2_1.fq.gz	../../testdata/testfile-2_2.fq.gz	6h
-Sample3	Treatment	../../testdata/testfile-3_1.fq.gz	../../testdata/testfile-3_2.fq.gz	6h
-Sample4	Treatment	../../testdata/testfile-4_1.fq.gz	../../testdata/testfile-4_2.fq.gz	6h
+Sample1	Control	data/testfile-1_1.fq.gz	data/testfile-1_2.fq.gz	6h
+Sample2	Control	data/testfile-2_1.fq.gz	data/testfile-2_2.fq.gz	6h
+Sample3	Treatment	data/testfile-3_1.fq.gz	data/testfile-3_2.fq.gz	6h
+Sample4	Treatment	data/testfile-4_1.fq.gz	data/testfile-4_2.fq.gz	6h

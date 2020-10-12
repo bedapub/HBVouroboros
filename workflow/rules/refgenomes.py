@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
 
-import re
 import os.path
 from Bio import SeqIO
 
+
 def get_simplified_id(desc):
-   """ Make a new id for reference genome that contains genotype and accession
+    """ Make a new id for reference genome that contains genotype and accession
 
-   Args:
-      desc (str): The input description
-   
-   Returns:
-      str: a new id
-   """
-   
-   strain = desc.split(" ")[0].split("|")[2]
-   acc = strain.split("_")[0]
-   gt = strain.split("-")[1]
-   id = "{}|{}".format(gt, acc)
+    Args:
+       desc (str): The input description
 
-   return(id)
+    Returns:
+       str: a new id
+    """
+
+    strain = desc.split(" ")[0].split("|")[2]
+    acc = strain.split("_")[0]
+    gt = strain.split("-")[1]
+    id = "{}|{}".format(gt, acc)
+    return(id)
+
 
 def dup_and_conc(record):
     """Duplicate the sequence and concatenate the original and duplicated
@@ -34,13 +34,15 @@ def dup_and_conc(record):
     record.seq = record.seq*2
     old_desc = record.description
     new_desc = old_desc.replace("length=", "original length=")
-    new_desc += ' Duplicated and concatenated (final length:{})'.format(len(record.seq))
+    new_desc += ' Duplicated and concatenated \
+            (final length:{})'.format(len(record.seq))
     record.description = new_desc
     record.id += '|DupConc'
     return(record)
 
+
 def dup_and_conc_FASTA(infile, outfile):
-    """Duplicate sequences in a FASTA file, concatenate the original 
+    """Duplicate sequences in a FASTA file, concatenate the original
        with the duplicates, and write the concatenated sequences
 
     Args:
@@ -48,13 +50,14 @@ def dup_and_conc_FASTA(infile, outfile):
         outfile (str): The output filename, overwritten if the file exists.
 
     Returns:
-        int: number of sequences 
+        int: number of sequences
     """
 
     sequences = SeqIO.parse(infile, 'fasta')
     outseqs = (dup_and_conc(record) for record in sequences)
     res = SeqIO.write(outseqs, outfile, 'fasta')
     return(res)
+
 
 def split_FASTA(infile, outdir=None, prefix=''):
     """Split sequences in a FASTA file into separate files
@@ -68,12 +71,12 @@ def split_FASTA(infile, outdir=None, prefix=''):
            int: number of sequences
     """
 
-    count=0
+    count = 0
     if outdir is None:
         outdir = os.path.dirname(infile)
     sequences = SeqIO.parse(infile, 'fasta')
     for seq in sequences:
-        outfile = os.path.join(outdir, prefix + seq.id.replace('|', '_') + '.fasta')
+        outfile = os.path.join(outdir,
+                               prefix + seq.id.replace('|', '_') + '.fasta')
         SeqIO.write(seq, outfile, 'fasta')
         count += 1
-

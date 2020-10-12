@@ -6,11 +6,6 @@ project_name: 'HBVouroborosProject'
 sample_annotation: .test/sampleAnnotation
 biokit_outdir: None
 
-## 3. refgenomes_dir specifies a directory of reference genomes.
-## If set to None, a new directory is created the 'resources' directory, where the reference genomes are downloaded and
-## indices for the bowtie2 aligner are built
-refgenomes_dir: None
-
 ## options for read trimming with Trimmomatic
 trim_reads: False
 illumina_clip_file: 'resources/trim_reads/primers.fasta'

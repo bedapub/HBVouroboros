@@ -1,6 +1,5 @@
 import snakemake
 
-project_name = config["project_name"]
 sample_annotation = config['sample_annotation']
 
 bowtie2_index = 'resources/ref/HBV_refgenomes_dup_BOWTIE2'
@@ -8,15 +7,6 @@ blast_db = 'resources/ref/HBV_allgenomes.fasta'
 
 # parse sample annotation
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
-
-## rawbam_dir = "raw_bam"
-## bam_dir = "bam"
-## log_dir = "logs"
-## stats_dir = "stats"
-## fq_dir = "fastq"
-## blast_dir="blast"
-## infref_bam_dir = "infref_bam"
-## cov_dir = "coverage"
 
 ## trinity_outdir="trinity_out_dir"
 trinity_fasta = "results/trinity/Trinity.fasta"
@@ -29,6 +19,59 @@ inferred_strain_gff = "results/infref/inferred_strain.gff"
 inferred_strain_dup_gff = "results/infref/inferred_strain_dup.gff"
 infref_bowtie2_index = "results/infref/infref_bowtie2_index"
 
+rule bowtie2_map:
+    input:
+        f1 = lambda wildcards: fq1dict[wildcards.sample],
+        f2 = lambda wildcards: fq2dict[wildcards.sample],
+        bowtie2_index = bowtie2_index
+    output:
+        temp("results/bam/{sample}.bam")
+    log:
+        "logs/{sample}_bowtie2.log"
+    threads:
+        8
+    shell:
+        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive \
+            -x {input.bowtie2_index} \
+            -1 {input.f1} -2 {input.f2} 2>{log} | \
+            samtools view -Sb - > {output}"
+
+
+rule filter_and_sort_bam:
+    input: "results/bam/{sample}.bam"
+    output: "results/bam/{sample}.sorted.bam"
+    log:
+        "logs/{sample}_filter_and_sort_bam.log"
+    threads:
+        8
+    shell:
+        "samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
+
+rule index_bam:
+    input:
+        "results/bam/{sample}.sorted.bam"
+    output:
+        "results/bam/{sample}.sorted.bam.bai"
+    threads: 2
+    shell:
+        "samtools index {input}"
+
+rule flagstat:
+    input:
+        bam="results/bam/{sample}.sorted.bam",
+        bai="results/bam/{sample}.sorted.bam.bai"
+    output:
+        "results/stats/{sample}.sorted.bam.flagstat"
+    threads:
+        2
+    shell:
+        "samtools flagstat -@ {threads} {input.bam} > {output}"
+
+rule aggregate_flagstat:
+    input: expand("results/stats/{sample}.sorted.bam.flagstat", sample=samples)
+    output: "results/stats/samples.mapping.flagstat"
+    shell:
+    	"cat {input} > {output}"
 
 rule aggregate_bam:
     input:
@@ -233,8 +276,4 @@ rule CDS_coverage:
           "results/coverage/infref_genome_CDS_coverage.gct"
      run:
         collect_gene_coverage(input, output[0], feat_type='CDS')
-
-
-## include map_fastq.smk to map files
-include: "map_fastq.smk"
 

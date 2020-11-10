@@ -1,3 +1,9 @@
+dryrun: workflow/Snakefile
+	snakemake -p --dry-run
+
+run: workflow/Snakefile
+	snakemake -p
+
 gv: gv/HBVouroboros.gv
 	cd gv; $(MAKE)
 

@@ -2,13 +2,13 @@ include: "rules/common.smk"
 include: "rules/build_refgenomes.smk"
 include: "rules/align_reads.smk"
 
-
 configfile: "config/config.yaml"
 
 rule all:
     input:
         "resources/ref/HBV_refgenomes_dup_BOWTIE2",
         "resources/ref/HBV_allgenomes.fasta",
+	"results/stats/samples.mapping.flagstat",
         "results/coverage/infref_genome_count.tsv",
         "results/coverage/infref_genome_depth.tsv",
         "results/coverage/infref_genome_gene_coverage.gct",

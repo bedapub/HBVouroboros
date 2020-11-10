@@ -1,7 +1,6 @@
 include: "rules/build_refgenomes.smk"
 
 configfile: "config.yaml"
-refgenomes_dir = config["refgenomes_dir"]
 
 rule all:
     input:

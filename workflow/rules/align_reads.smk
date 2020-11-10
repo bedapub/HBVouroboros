@@ -46,8 +46,8 @@ rule aggregate_fq:
     input:
         "results/bam/aggregated_mapped_reads.bam"
     output:
-        f1 = temp("results/fastq/aggregated_mapped_reads_1.fq.gz"),
-        f2 = temp("results/fastq/aggregated_mapped_reads_2.fq.gz")
+        f1 = temp("results/aggregated_mapped_reads_1.fq.gz"),
+        f2 = temp("results/aggregated_mapped_reads_2.fq.gz")
     threads: 2
     shell:
         "samtools fastq --threads {threads} -N \
@@ -55,8 +55,8 @@ rule aggregate_fq:
 
 rule run_trinity:
     input:
-        f1 = "results/fastq/aggregated_mapped_reads_1.fq.gz",
-        f2 = "results/fastq/aggregated_mapped_reads_2.fq.gz"
+        f1 = "results/aggregated_mapped_reads_1.fq.gz",
+        f2 = "results/aggregated_mapped_reads_2.fq.gz"
     output:
         trinity_fasta
     threads: 1

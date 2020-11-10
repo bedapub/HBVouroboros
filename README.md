@@ -19,59 +19,27 @@ git clone https://github.com/bedapub/HBVouroboros.git
 
 ```bash
 ## setup conda environment
-conda env create
+cd env; conda env create; cd -
 ## in case it has been installed, use the command below to update
 ## conda env update
 conda activate HBVouroboros
 ```
-### Install the python package HBVouroboros in the conda environment
+
+### Run an example
+
+An out-of-box example can be run by starting the `snakemake` pipeline.
 
 ```bash
-make install ## alternatively, `pip install .`
+snakemake
 ```
 
-### Build HBV reference genomes (run once at installation)
+### Run the pipeline with your own data
 
-```bash
-## define the directory of reference genomes here, change the path according
-## to your local environment
-HBVouroboros_refdir=./HBV_refgenomes
-HBVouroboros_build_refgenomes.py "${HBVouroboros_refdir}"
-export HBV_refgenomes=${HBVouroboros_refdir}
-```
-
-Make sure to export the variable `HBV_refgenomes` before running following commands using Makefile. If not set, the directory `./HBV_refgenomes` is searched in the current path.
-
-## Usage
-
-### Run HBVouroboros using a sample annotation file
-
-```bash
-sample_annotation_file=./testdata/sampleAnnotation
-HBVouroboros_map_samples.py --outdir testdata-HBVouroboros-outdir ${HBVouroboros_refdir} ${sample_annotation_file}
-```
-
-Or, equivalently
-
-```bash
-make test ## make sure that the environment variable HBV_refgenomes is set
-```
+Modify the `config/config.yaml` file to specify a sample annotation file.
 
 ### Run HBVouroboros using unmapped reads from a Biokit output directory
 
-*Biokit* is a software pipeline developed at Bioinformatics and Exploratory Data Analysis group of Roche Pharma Research and Early Development. It exports structured output of RNA-seuquencing read mapping. *HBVouroboros* is able to parse the output directory structure of *Biokit* and run over reads that are not mapped to the host genome (human, mouse, *etc.*). This has the advantage that since the reads mapped to other genomes are filtered, the speed of mapping is much faster than starting from the raw FASTA files.
+This feature has been disabled now. It may be activated in the future.
 
-```bash
-biokit_output_dir=~/projects/2020-01-HBVcccDNA-RNAseq/cccDNA_destab_202002/biokit_outdir_cccDNA_destab_PHH_202002
-HBVouroboros_map_biokit.py ${HBVouroboros_refdir} ${biokit_output_dir}
-```
 
-Or, equivalently
 
-```bash
-make test_biokit ## make sure that the environment variable HBV_refgenomes is set
-```
-
-Note: from biokit version July 10, 2020, user has to specify the option
-`--keep-unmapped` to keep unmapped reads so that HBVouroboros functions
-normally.

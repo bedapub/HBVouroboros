@@ -24,12 +24,12 @@ samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 trinity_fasta = "results/trinity/Trinity.fasta"
 trinity_sorted_fasta = "results/trinity/Trinity.sorted.fasta"
 blast_out = "results/blast/blast.out"
-inferred_strain_FASTA = "results/inf_ref/inferred_strain.fasta"
-inferred_strain_dup_FASTA = "results/inf_ref/inferred_strain_dup.fasta"
-inferred_strain_gb = "results/inf_ref/inferred_strain.gb"
-inferred_strain_gff = "results/inf_ref/inferred_strain.gff"
-inferred_strain_dup_gff = "results/inf_ref/inferred_strain_dup.gff"
-infref_bowtie2_index = "results/inf_ref/infref_bowtie2_index"
+inferred_strain_FASTA = "results/infref/inferred_strain.fasta"
+inferred_strain_dup_FASTA = "results/infref/inferred_strain_dup.fasta"
+inferred_strain_gb = "results/infref/inferred_strain.gb"
+inferred_strain_gff = "results/infref/inferred_strain.gff"
+inferred_strain_dup_gff = "results/infref/inferred_strain_dup.gff"
+infref_bowtie2_index = "results/infref/infref_bowtie2_index"
 
 
 ## rule all:
@@ -77,7 +77,7 @@ rule run_trinity:
     shell:
         "Trinity --seqType fq \
             --left {input.f1} --right {input.f2} \
-            --CPU {threads} --max_memory 10G"
+            --CPU {threads} --max_memory 10G --output results/trinity"
 
 rule sort_trinity_fasta:
     input: trinity_fasta
@@ -95,14 +95,14 @@ rule get_ref_strain_seq:
     input: blast_out
     output: inferred_strain_FASTA
     run:
-        acc=infref.get_infref_acc(blast_out)
+        acc=get_infref_acc(blast_out)
         write_seq_by_acc(blast_db, acc, inferred_strain_FASTA)
 
 rule get_ref_strain_gb:
     input: blast_out
     output: inferred_strain_gb
     run:
-        gb_acc = infref.get_infref_gb_acc(blast_out)
+        gb_acc = get_infref_gb_acc(blast_out)
         download_gb(gb_acc, output[0])
 
 rule ref_strain_gb2gff:
@@ -122,15 +122,11 @@ rule bowtie2_index_infref_dup:
     output: infref_bowtie2_index
     threads: 1
     message:  "Generating bowtie2 index of duplicated the inferred reference genome"
-    log:  "logs/bowtie2_index_inf_reference_genome.log"
+    log:  "logs/bowtie2_index_infref_genome.log"
     shell:
         "touch {output}; bowtie2-build --threads {threads} {input} {output}"
 
-## include map_fastq.smk to map files
-include: "map_fastq.smk"
 
-
-"""
 rule infref_bowtie2_map:
     input:
         genome = infref_bowtie2_index,
@@ -251,4 +247,8 @@ rule CDS_coverage:
           "results/coverage/infref_genome_CDS_coverage.gct"
      run:
         collect_gene_coverage(input, output[0], feat_type='CDS')
-"""
+
+
+## include map_fastq.smk to map files
+include: "map_fastq.smk"
+

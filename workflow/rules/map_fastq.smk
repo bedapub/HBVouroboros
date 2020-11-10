@@ -25,10 +25,8 @@ rule bowtie2_map:
 
 
 rule filter_and_sort_bam:
-    input:
-	"results/raw_bam/{sample}.bam"
-    output:
-        "results/bam/{sample}.sorted.bam"
+    input: "results/raw_bam/{sample}.bam"
+    output: "results/bam/{sample}.sorted.bam"
     log:
         "logs/{sample}_filter_and_sort_bam.log"
     threads:

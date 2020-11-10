@@ -1,7 +1,0 @@
-# sample annotation file
-sample_annotation: '../../testdata/sampleAnnotation'
-
-illumina_clip_file: '/pstore/apps/bioinfo/HBVouroboros/HBVouroboros/trim_reads/config/primers.fasta'
-illumina_clip_opts: ':2:30:10:2:keepBothReads'
-# trimmomatic steps (excluding ILLUMINACLIP)
-trimmomatic_steps: 'LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:35 CROP:140'

@@ -1,6 +1,0 @@
-# project name: output files are named with it
-project_name: 'rsv'
-# sample annotation file
-sample_annotation: '/mnt/projects/HBVouroboros/testdata/sampleAnnotation'
-# reference genomes directory
-refgenomes_dir: '../HBV_refgenomes'

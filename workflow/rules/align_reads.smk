@@ -1,5 +1,3 @@
-## include the rules to map FASTQ files
-
 import snakemake
 
 project_name = config["project_name"]
@@ -32,18 +30,6 @@ inferred_strain_dup_gff = "results/infref/inferred_strain_dup.gff"
 infref_bowtie2_index = "results/infref/infref_bowtie2_index"
 
 
-## rule all:
-##     input:
-##         "results/bam/aggregated_mapped_reads.bam",
-##         inferred_strain_FASTA,
-##         inferred_strain_gff,
-##         inferred_strain_dup_FASTA,
-##         inferred_strain_dup_gff,
-##         "results/coverage/infref_genome_count.tsv",
-##         "results/coverage/infref_genome_depth.tsv",
-##         "results/coverage/infref_genome_gene_coverage.gct",
-##         "results/coverage/infref_genome_CDS_coverage.gct"
-
 rule aggregate_bam:
     input:
         expand("results/bam/{sample}.sorted.bam",
@@ -60,8 +46,8 @@ rule aggregate_fq:
     input:
         "results/bam/aggregated_mapped_reads.bam"
     output:
-        f1 = "results/fastq/aggregated_mapped_reads_1.fq.gz",
-        f2 = "results/fastq/aggregated_mapped_reads_2.fq.gz"
+        f1 = temp("results/fastq/aggregated_mapped_reads_1.fq.gz"),
+        f2 = temp("results/fastq/aggregated_mapped_reads_2.fq.gz")
     threads: 2
     shell:
         "samtools fastq --threads {threads} -N \

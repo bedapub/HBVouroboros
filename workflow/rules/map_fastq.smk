@@ -12,7 +12,7 @@ rule bowtie2_map:
         f2 = lambda wildcards: fq2dict[wildcards.sample],
         bowtie2_index = bowtie2_index
     output:
-        temp("results/raw_bam/{sample}.bam")
+        temp("results/bam/{sample}.bam")
     log:
         "logs/{sample}_bowtie2.log"
     threads:
@@ -25,7 +25,7 @@ rule bowtie2_map:
 
 
 rule filter_and_sort_bam:
-    input: "results/raw_bam/{sample}.bam"
+    input: "results/bam/{sample}.bam"
     output: "results/bam/{sample}.sorted.bam"
     log:
         "logs/{sample}_filter_and_sort_bam.log"

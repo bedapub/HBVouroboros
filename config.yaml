@@ -6,7 +6,11 @@ project_name: 'HBVouroborosProject'
 sample_annotation: .test/sampleAnnotation
 biokit_outdir: None
 
-## options for read trimming with Trimmomatic
+## 3. specify the location of reference genomes and derived froms from them
+## (BOWT2 indices, blast databases, *etc.*)
+refgenomes_dir: resources/HBVrefgenomes
+
+## 4. options for read trimming with Trimmomatic
 trim_reads: False
 illumina_clip_file: 'resources/trim_reads/primers.fasta'
 illumina_clip_opts: ':2:30:10:2:keepBothReads'

@@ -6,20 +6,14 @@ localrules: download_refgenomes
 
 log_dir = "logs"
 HTTP = HTTPRemoteProvider()
-blastdb_filenames = ["HBV_allgenomes.fasta."+s for s in ("nhr", "nsq", "nin")]
-
-rule all:
-    input:
-        "HBV_refgenomes_dup_BOWTIE2",
-        "HBV_allgenomes.fasta",
-        blastdb_filenames
+blastdb_filenames = ["resources/ref/HBV_allgenomes.fasta."+s for s in ("nhr", "nsq", "nin")]
 
 rule download_refgenomes:
     input:
          HTTP.remote('https://hbvdb.lyon.inserm.fr/data/references/hbvdbr.fas',
 		     keep_local=True)
     output:
-        "HBV_refgenomes.fasta"
+        "resources/ref/HBV_refgenomes.fasta"
     log:
         join(log_dir, 'download_refgenomes.log')
     run:
@@ -31,7 +25,7 @@ rule download_allgenomes:
             'https://hbvdb.lyon.inserm.fr/data/nucleic/fasta/all_Genomes.fas',
             keep_local=True)
     output:
-        "HBV_allgenomes.fasta"
+        "resources/ref/HBV_allgenomes.fasta"
     log:
         join(log_dir, 'download_allgenomes.log')
     run:
@@ -39,7 +33,7 @@ rule download_allgenomes:
 
 rule makeblastdb:
     input:
-        "HBV_allgenomes.fasta"
+        "resources/ref/HBV_allgenomes.fasta"
     output:
         blastdb_filenames
     log:
@@ -49,9 +43,9 @@ rule makeblastdb:
 
 rule dup_and_conc:
     input:
-        fasta="HBV_refgenomes.fasta"
+        fasta="resources/ref/HBV_refgenomes.fasta"
     output:
-        fasta="HBV_refgenomes_dup.fasta"
+        fasta="resources/ref/HBV_refgenomes_dup.fasta"
     log:
         join(log_dir, "HBV_refgenomes_dup.log")
     run:
@@ -59,9 +53,9 @@ rule dup_and_conc:
 
 rule bowtie2_index:
     input:
-        fasta = "HBV_refgenomes_dup.fasta"
+        fasta = "resources/ref/HBV_refgenomes_dup.fasta"
     output:
-        directory("HBV_refgenomes_dup_BOWTIE2")
+        directory("resources/ref/HBV_refgenomes_dup_BOWTIE2")
     threads:
         1
     message:
@@ -69,4 +63,4 @@ rule bowtie2_index:
     log:
         join(log_dir, "bowtie2_index.log")
     shell:
-        "mkdir {output}; bowtie2-build --threads {threads} {input.fasta} {output}/{output} 2>&1 > {log}; touch {output}/{output}"
+        "mkdir {output}; bowtie2-build --threads {threads} {input.fasta} {output} 2>&1 > {log}; touch {output}"

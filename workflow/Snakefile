@@ -1,11 +1,10 @@
 include: "rules/build_refgenomes.smk"
 
-
 configfile: "config.yaml"
 refgenomes_dir = config["refgenomes_dir"]
-if refgenomes_dir is None:
-   refgenomes_dir = "resources/HBVrefgenomes"
 
 rule all:
     input:
-        "resources/
+        "resources/ref/HBV_refgenomes_dup_BOWTIE2",
+        "resources/ref/HBV_allgenomes.fasta",
+        blastdb_filenames

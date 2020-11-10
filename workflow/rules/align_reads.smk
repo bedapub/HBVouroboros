@@ -1,71 +1,55 @@
-import os
-import pandas as pd
-import infref
-import refgenomes
-import depth
-import coverage
-import biokit
-from os.path import join
+## include the rules to map FASTQ files
+
 import snakemake
 
-configfile: snakemake.workflow.srcdir("config/config.yaml")
-
-refgenomes_dir = config["refgenomes_dir"]
 project_name = config["project_name"]
 sample_annotation = config['sample_annotation']
 
-bowtie2_index = join(refgenomes_dir,
-                     'HBV_refgenomes_dup_BOWTIE2/HBV_refgenomes_dup_BOWTIE2')
-blast_db = join(refgenomes_dir, 'HBV_allgenomes.fasta')
+bowtie2_index = 'resources/ref/HBV_refgenomes_dup_BOWTIE2'
+blast_db = 'resources/ref/HBV_allgenomes.fasta'
 
 # parse sample annotation
-samples, fq1dict, fq2dict = biokit.parse_sample_annotation(sample_annotation)
+samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
-rawbam_dir = "raw_bam"
-bam_dir = "bam"
-log_dir = "logs"
-stats_dir = "stats"
-fq_dir = "fastq"
-blast_dir="blast"
-infref_dir = "inferred_reference_strain"
-infref_bam_dir = "infref_bam"
-cov_dir = "coverage"
+## rawbam_dir = "raw_bam"
+## bam_dir = "bam"
+## log_dir = "logs"
+## stats_dir = "stats"
+## fq_dir = "fastq"
+## blast_dir="blast"
+## infref_bam_dir = "infref_bam"
+## cov_dir = "coverage"
 
-trinity_outdir="trinity_out_dir"
-trinity_fasta=join(trinity_outdir, "Trinity.fasta")
-trinity_sorted_fasta=join(trinity_outdir, "Trinity.sorted.fasta")
-blast_out = join(blast_dir, "blast.out")
-inferred_strain_FASTA=join(infref_dir, "inferred_strain.fasta")
-inferred_strain_dup_FASTA=join(infref_dir, "inferred_strain_dup.fasta")
-inferred_strain_gb=join(infref_dir, "inferred_strain.gb")
-inferred_strain_gff=join(infref_dir, "inferred_strain.gff")
-inferred_strain_dup_gff=join(infref_dir, "inferred_strain_dup.gff")
-infref_bowtie2_index=join(infref_dir, "infref_bowtie2_index")
+## trinity_outdir="trinity_out_dir"
+trinity_fasta = "results/trinity/Trinity.fasta"
+trinity_sorted_fasta = "results/trinity/Trinity.sorted.fasta"
+blast_out = "results/blast/blast.out"
+inferred_strain_FASTA = "results/inf_ref/inferred_strain.fasta"
+inferred_strain_dup_FASTA = "results/inf_ref/inferred_strain_dup.fasta"
+inferred_strain_gb = "results/inf_ref/inferred_strain.gb"
+inferred_strain_gff = "results/inf_ref/inferred_strain.gff"
+inferred_strain_dup_gff = "results/inf_ref/inferred_strain_dup.gff"
+infref_bowtie2_index = "results/inf_ref/infref_bowtie2_index"
 
 
-rule all:
-    input:
-        join(bam_dir, "aggregated_mapped_reads.bam"),
-        inferred_strain_FASTA,
-        inferred_strain_gff,
-        inferred_strain_dup_FASTA,
-        inferred_strain_dup_gff,
-        join(cov_dir, "infref_genome_count.tsv"),
-        join(cov_dir, "infref_genome_depth.tsv"),
-        join(cov_dir, "infref_genome_gene_coverage.gct"),
-        join(cov_dir, "infref_genome_CDS_coverage.gct")
-
-## include the rules to map FASTQ files
-include: "map_fastq.smk"
+## rule all:
+##     input:
+##         "results/bam/aggregated_mapped_reads.bam",
+##         inferred_strain_FASTA,
+##         inferred_strain_gff,
+##         inferred_strain_dup_FASTA,
+##         inferred_strain_dup_gff,
+##         "results/coverage/infref_genome_count.tsv",
+##         "results/coverage/infref_genome_depth.tsv",
+##         "results/coverage/infref_genome_gene_coverage.gct",
+##         "results/coverage/infref_genome_CDS_coverage.gct"
 
 rule aggregate_bam:
     input:
-        expand(join(
-                bam_dir,
-                "{sample}.sorted.bam"),
+        expand("results/bam/{sample}.sorted.bam",
             sample=samples)
     output:
-        join(bam_dir, "aggregated_mapped_reads.bam")
+        "results/bam/aggregated_mapped_reads.bam"
     threads:
         2
     shell:
@@ -74,14 +58,10 @@ rule aggregate_bam:
 
 rule aggregate_fq:
     input:
-        join(bam_dir, "aggregated_mapped_reads.bam")
+        "results/bam/aggregated_mapped_reads.bam"
     output:
-        f1 = join(
-             fq_dir,
-             "aggregated_mapped_reads_1.fq.gz"),
-        f2 = join(
-             fq_dir,
-             "aggregated_mapped_reads_2.fq.gz")
+        f1 = "results/fastq/aggregated_mapped_reads_1.fq.gz",
+        f2 = "results/fastq/aggregated_mapped_reads_2.fq.gz"
     threads: 2
     shell:
         "samtools fastq --threads {threads} -N \
@@ -89,12 +69,8 @@ rule aggregate_fq:
 
 rule run_trinity:
     input:
-        f1 = join(
-             fq_dir,
-             "aggregated_mapped_reads_1.fq.gz"),
-        f2 = join(
-             fq_dir,
-             "aggregated_mapped_reads_2.fq.gz")
+        f1 = "results/fastq/aggregated_mapped_reads_1.fq.gz",
+        f2 = "results/fastq/aggregated_mapped_reads_2.fq.gz"
     output:
         trinity_fasta
     threads: 1
@@ -107,7 +83,7 @@ rule sort_trinity_fasta:
     input: trinity_fasta
     output: trinity_sorted_fasta
     run:
-        infref.sort_FASTA_by_length(input[0], output[0])
+        sort_FASTA_by_length(input[0], output[0])
 
 rule run_blast:
     input: trinity_sorted_fasta
@@ -120,43 +96,48 @@ rule get_ref_strain_seq:
     output: inferred_strain_FASTA
     run:
         acc=infref.get_infref_acc(blast_out)
-        infref.write_seq_by_acc(blast_db, acc, inferred_strain_FASTA)
+        write_seq_by_acc(blast_db, acc, inferred_strain_FASTA)
 
 rule get_ref_strain_gb:
     input: blast_out
     output: inferred_strain_gb
     run:
         gb_acc = infref.get_infref_gb_acc(blast_out)
-        infref.download_gb(gb_acc, output[0])
+        download_gb(gb_acc, output[0])
 
 rule ref_strain_gb2gff:
     input: inferred_strain_gb
     output: inferred_strain_gff
     run:
-        infref.gb2gff(input[0], output[0])
+        gb2gff(input[0], output[0])
 
 rule infref_dup:
     input: inferred_strain_FASTA
     output: inferred_strain_dup_FASTA
     run:
-        refgenomes.dup_and_conc_FASTA(input[0], output[0])
+        dup_and_conc_FASTA(input[0], output[0])
 
 rule bowtie2_index_infref_dup:
     input: inferred_strain_dup_FASTA
     output: infref_bowtie2_index
     threads: 1
     message:  "Generating bowtie2 index of duplicated the inferred reference genome"
-    log:  "logs/bowtie2_index_inferred_reference_genome.log"
+    log:  "logs/bowtie2_index_inf_reference_genome.log"
     shell:
         "touch {output}; bowtie2-build --threads {threads} {input} {output}"
 
+## include map_fastq.smk to map files
+include: "map_fastq.smk"
+
+
+"""
 rule infref_bowtie2_map:
     input:
         genome = infref_bowtie2_index,
         f1 = lambda wildcards: fq1dict[wildcards.sample],
         f2 = lambda wildcards: fq2dict[wildcards.sample]
     output:
-        temp(join(infref_bam_dir, "{sample}.bam"))
+        temp("results/infref_bam/{sample}.bam")
     log:
         "logs/{sample}_infref_bowtie2.log"
     threads:
@@ -169,11 +150,11 @@ rule infref_bowtie2_map:
 
 rule filter_and_sort_infref_bam:
     input:
-        join(infref_bam_dir, "{sample}.bam")
+        "results/infref_bam/{sample}.bam"
     output:
-        join(infref_bam_dir, "{sample}.sorted.bam")
+        "results/infref_bam/{sample}.sorted.bam"
     log:
-        join(log_dir, "{sample}_infref_filter_and_sort_bam.log")
+        "logs/{sample}_infref_filter_and_sort_bam.log"
     threads:
         2
     shell:
@@ -181,19 +162,19 @@ rule filter_and_sort_infref_bam:
 
 rule index_infref_bam:
     input:
-        join(infref_bam_dir, "{sample}.sorted.bam")
+        "results/infref_bam/{sample}.sorted.bam"
     output:
-        join(infref_bam_dir, "{sample}.sorted.bam.bai")
+        "results/infref_bam/{sample}.sorted.bam.bai"
     threads: 2
     shell:
         "samtools index {input}"
 
 rule infref_stat:
     input:
-        bam=join(infref_bam_dir, "{sample}.sorted.bam"),
-        bai=join(infref_bam_dir, "{sample}.sorted.bam.bai"),
+        bam = "results/infref_bam/{sample}.sorted.bam",
+        bai = "results/infref_bam/{sample}.sorted.bam.bai"
     output:
-        join(infref_bam_dir, "{sample}.sorted.bam.stat")
+        "results/infref_bam/{sample}.sorted.bam.stat"
     threads:
         2
     shell:
@@ -201,35 +182,35 @@ rule infref_stat:
 
 rule genome_count:
     input:
-        expand(join(infref_bam_dir, "{sample}.sorted.bam.stat"),
+        expand("results/infref_bam/{sample}.sorted.bam.stat",
                sample=samples)
     output:
-        join(cov_dir, "infref_genome_count.tsv")
+        "results/coverage/infref_genome_count.tsv"
     shell:
          "echo -e 'ID\tcoverage' > {output}; "
          "grep -H '^SN' {input} | \
           grep '1st fragments' | \
           sed 's/.sorted.bam.stat:SN\s1st fragments:\s/\t/g' | \
-          sed 's/{infref_bam_dir}\///g' >> {output}"
+          sed 's/results\/infref_bam\///g' >> {output}"
 
 rule dupconc_depth:
     input:
-        bam = expand(join(infref_bam_dir, "{sample}.sorted.bam"),
+        bam = expand("results/infref_bam/{sample}.sorted.bam",
                      sample=samples),
-        bai = expand(join(infref_bam_dir, "{sample}.sorted.bam.bai"),
+        bai = expand("results/infref_bam/{sample}.sorted.bam.bai",
                      sample=samples)
     output:
-       temp(join(cov_dir, "infref_genome_dupconc_depth.tsv"))
+       temp("results/coverage/infref_genome_dupconc_depth.tsv")
     shell:
         "samtools depth -a -H -d 0 {input.bam} -o {output}"
 
 rule depth:
     input:
-       join(cov_dir, "infref_genome_dupconc_depth.tsv")
+       "results/coverage/infref_genome_dupconc_depth.tsv"
     output:
-       join(cov_dir, "infref_genome_depth.tsv")
+       "results/coverage/infref_genome_depth.tsv"
     run:
-       depth.dedup_file(input[0], output[0])
+       dedup_file(input[0], output[0])
 
 rule dup_gff:
     input:
@@ -238,35 +219,36 @@ rule dup_gff:
     output:
        gff = inferred_strain_dup_gff
     run:
-       infref.dup_gff(input.fasta, input.gff, output.gff)
+       dup_gff(input.fasta, input.gff, output.gff)
 
 rule individual_coverage:
     input:
-        bam = join(infref_bam_dir, "{sample}.sorted.bam"),
-        bai = join(infref_bam_dir, "{sample}.sorted.bam.bai"),
+        bam = "results/infref_bam/{sample}.sorted.bam",
+        bai = "results/infref_bam/{sample}.sorted.bam.bai",
         gff = inferred_strain_dup_gff
     output:
-        temp(join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv"))
+        temp("results/coverage/infref_genome_{sample}_feature_coverage.tsv")
     shell:
         "coverageBed -counts -a {input.gff} -b {input.bam} > {output}"
 
 rule gene_coverage:
      input:
         expand(
-          join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv"),
+          "results/coverage/infref_genome_{sample}_feature_coverage.tsv",
           sample=samples)
      output:
-        join(cov_dir, "infref_genome_gene_coverage.gct")
+          "results/coverage/infref_genome_gene_coverage.gct"
      run:
-        coverage.collect_gene_coverage(input, output[0], feat_type='gene')
+        collect_gene_coverage(input, output[0], feat_type='gene')
 
 ## question: can we combine the two?
 rule CDS_coverage:
      input:
         expand(
-          join(cov_dir, "infref_genome_{sample}_feature_coverage.tsv"),
+          "results/coverage/infref_genome_{sample}_feature_coverage.tsv",
           sample=samples)
      output:
-        join(cov_dir, "infref_genome_CDS_coverage.gct")
+          "results/coverage/infref_genome_CDS_coverage.gct"
      run:
-        coverage.collect_gene_coverage(input, output[0], feat_type='CDS')
+        collect_gene_coverage(input, output[0], feat_type='CDS')
+"""

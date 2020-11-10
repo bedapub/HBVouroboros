@@ -1,9 +1,17 @@
+include: "rules/common.smk"
 include: "rules/build_refgenomes.smk"
+include: "rules/align_reads.smk"
 
-configfile: "config.yaml"
+
+configfile: "config/config.yaml"
 
 rule all:
     input:
         "resources/ref/HBV_refgenomes_dup_BOWTIE2",
         "resources/ref/HBV_allgenomes.fasta",
-        blastdb_filenames
+        blastdb_filenames,
+        "results/bam/aggregated_mapped_reads.bam",
+##        "results/coverage/infref_genome_count.tsv",
+##        "results/coverage/infref_genome_depth.tsv",
+##        "results/coverage/infref_genome_gene_coverage.gct",
+##        "results/coverage/infref_genome_CDS_coverage.gct"

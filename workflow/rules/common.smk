@@ -7,10 +7,13 @@ from Bio import SeqIO
 from Bio import Entrez
 from BCBio import GFF
 
+# load config and sample sheets
+
+configfile: "config/config.yaml"
+
 
 def biokit_sample_annotation_filename(biokit_outdir):
     return(join(biokit_outdir, 'samples.txt'))
-
 
 def parse_sample_annotation(sample_annotation_file):
     """ Parse biokit sample annotation file into sample names and FASTQ dicts

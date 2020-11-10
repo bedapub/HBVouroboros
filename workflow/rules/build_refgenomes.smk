@@ -1,5 +1,4 @@
 from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
-import refgenomes as ref
 from os.path import join
 
 localrules: download_refgenomes
@@ -48,7 +47,7 @@ rule dup_and_conc:
     log:
         'logs/ref/HBV_refgenomes_dup.log'
     run:
-        ref.dup_and_conc_FASTA(input.fasta, output.fasta)
+        dup_and_conc_FASTA(input.fasta, output.fasta)
 
 rule bowtie2_index:
     input:

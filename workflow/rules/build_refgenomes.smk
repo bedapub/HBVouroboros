@@ -9,7 +9,7 @@ blastdb_filenames = ["resources/ref/HBV_allgenomes.fasta."+s for s in ("nhr", "n
 rule download_refgenomes:
     input:
          HTTP.remote('https://hbvdb.lyon.inserm.fr/data/references/hbvdbr.fas',
-		     keep_local=True)
+                     keep_local=True)
     output:
         "resources/ref/HBV_refgenomes.fasta"
     log:

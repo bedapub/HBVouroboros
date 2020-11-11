@@ -115,10 +115,12 @@ rule sort_trinity_fasta:
         sort_FASTA_by_length(input[0], output[0])
 
 rule run_blast:
-    input: trinity_sorted_fasta
+    input:
+        trinity=trinity_sorted_fasta,
+        blasdbfiles=blastdb_filenames
     output: blast_out
     shell:
-        "blastn -db {blast_db} -query {input} -outfmt 6 > {output}"
+        "blastn -db {blast_db} -query {input.trinity} -outfmt 6 > {output}"
 
 rule get_ref_strain_seq:
     input: blast_out

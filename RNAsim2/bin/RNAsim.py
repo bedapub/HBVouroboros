@@ -306,8 +306,8 @@ def main(args):
 
     #stream = os.system('varscan mpileup2snp %s >vrscn.txt -filter=%s ' %(mpileupFile, '0'))
 
-    filevrs = open('vrscn.txt', 'r')
-    thelines = filevrs.readlines()
+    #filevrs = open('vrscn.txt', 'r')
+    #thelines = filevrs.readlines()
     # if len(thelines) ==1:
     #     splitline = thelines[0].split()
     # else:

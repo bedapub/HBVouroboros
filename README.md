@@ -1,4 +1,4 @@
-*HBVouroboros* automates sequencing-based HBV genotyping and expression profiling
+*HBVouroboros* with freebayes variant calling and a RNA-seq simulator
 ===
 
 ## Freebayes variant calling

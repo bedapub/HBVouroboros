@@ -11,7 +11,7 @@ An RNA-seq paired-end read simulator is added to the repository in the folder "R
 
 ### Running the RNA-seq simualtor
 
-The program needs to be run from the "RNAsim2/bin" folder. an example call looks like: 
+The program needs to be run from the "RNAsim2/bin" folder. An example call looks like: 
 ```bash
 python RNAsim.py 'gnl|hbvnuc|GQ924620_FT00000_C-C' '45000' '95' '45' --mutate --mutpos "66 88"
 ```

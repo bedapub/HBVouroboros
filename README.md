@@ -5,7 +5,7 @@
 
 This branch of HBVouroboros now contains an additional snakemake file: "rules/freebayes_vc.smk". This is included in the main snakemake file and preforms variant calling using the freebayes software. The reuslts are stored in "results/var_valling_results". If you are using a conda environment from the HBVouroboros  master branch, you need to modify it to incude freebayes.
 
-## RNAseq simulator
+## RNA-seq simulator
 
 An RNA-seq paired-end read simulator is added to the repository in the folder "RNAsim2". The program outputs two fastq.tar.gz files corresponding to left and right hand reads, as well as a sample annotation file. These files aredeposited in "RNAsim2/output". In order to run HBVouroboros using the simualted samples, the config file has to be modified to point to the corresponding sample annotation file. 
 

@@ -1,6 +1,7 @@
 include: "rules/common.smk"
 include: "rules/build_refgenomes.smk"
 include: "rules/align_reads.smk"
+include: "rules/freebayes_vc.smk"
 
 configfile: "config/config.yaml"
 

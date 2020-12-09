@@ -41,7 +41,8 @@ Modify the `config/config.yaml` file to specify a sample annotation file.
 
 This feature has been disabled now. It may be activated in the future.
 
-### RNA-seq simulator
+## RNAsim2: a RNA-seq simulator to validate the sensitivity and specificity of
+HBVouroboros
 
 An RNA-seq paired-end read simulator is added to the repository in the folder
 "RNAsim2". The program outputs two fastq.tar.gz files corresponding to left and

@@ -19,7 +19,7 @@ git clone https://github.com/bedapub/HBVouroboros.git
 
 ```bash
 ## setup conda environment
-cd env; conda env create; cd -
+cd envs; conda env create; cd -
 ## in case it has been installed, use the command below to update
 ## conda env update
 conda activate HBVouroboros
@@ -41,26 +41,19 @@ Modify the `config/config.yaml` file to specify a sample annotation file.
 
 This feature has been disabled now. It may be activated in the future.
 
-## RNAsim2: a RNA-seq simulator to validate the sensitivity and specificity of
-HBVouroboros
+### Validating the sensitivity and specificity of HBVouroboros with RNAsim2
 
-An RNA-seq paired-end read simulator is added to the repository in the folder
-"RNAsim2". The program outputs two fastq.tar.gz files corresponding to left and
-right hand reads, as well as a sample annotation file. These files are deposited
-in "RNAsim2/output". In order to run HBVouroboros using the simualted samples,
-the config file has to be modified to point to the corresponding sample
-annotation file. 
+We created RNAsim2, a RNA-seq simulator to validate the sensitivity and
+specificity of HBVouroboros. See [RNAsim2/README.md](RNAsim2/README.md) for
+details.
 
-#### Running the RNA-seq simualtor
 
-The program needs to be run from the "RNAsim2/bin" folder. An example call looks
-like:
+## Known issues and solutions
 
-```bash
-python RNAsim.py 'gnl|hbvnuc|GQ924620_FT00000_C-C' '45000' '95' '45' --mutate --mutpos "66 88"
-```
+### What to do if conda environment initialization takes too long?
 
-The above command will generate 45000 paired-end read, with the fragment size of
-95 and read size of 45, using the genome  "GQ924620_FT00000_C-C" as reference.
-The reference genome will contain random mutations at positions 66 and 88.
+Above we use the default conda solver. If you suffer from slow speed of conda,
+consider using [mamba](https://github.com/mamba-org/mamba), which is a drop-in
+replacement of conda.
 
+If you met more issues, please raise them using the Issues function of GitHub.

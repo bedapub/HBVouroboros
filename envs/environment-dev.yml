@@ -5,7 +5,7 @@
 ## Usage:  
 ## conda activate HBVouroboros ## alternatively, source activate HBVouroboros
 ## conda env update -n HBVouroboros --file environment-dev.yml
-name: HBVouroboros-dev
+name: HBVouroboros
 channels:
   - bioconda
   - conda-forge

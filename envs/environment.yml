@@ -6,7 +6,7 @@ dependencies:
   - python =3.7
   - requests
   - biopython
-  - snakemake >=3.5
+  - snakemake >=5.3
   - star =2.7
   - bowtie2 =2.3
   - samtools =1.10

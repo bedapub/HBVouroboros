@@ -2,7 +2,7 @@ dryrun: workflow/Snakefile
 	snakemake -p --dry-run
 
 run: workflow/Snakefile
-	snakemake -p
+	snakemake -p --cores 1
 
 clean:
 	rm -rf resources/ref/*

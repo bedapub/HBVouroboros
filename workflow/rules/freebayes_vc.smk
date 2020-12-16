@@ -18,5 +18,5 @@ rule freebayes_var:
     output:
        "results/variant-calling/{sample}.vcf"
     shell:
-        "freebayes -f {input.refDup}  {input.sortBam} > {output}"
+        "freebayes -p 1 -K -m 20 -q 30 -f {input.refDup}  {input.sortBam} > {output}"
 

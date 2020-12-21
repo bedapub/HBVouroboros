@@ -1,4 +1,5 @@
 import snakemake
+import os
 
 sample_annotation = config['sample_annotation']
 
@@ -18,6 +19,7 @@ inferred_strain_gb = "results/infref/inferred_strain.gb"
 inferred_strain_gff = "results/infref/inferred_strain.gff"
 inferred_strain_dup_gff = "results/infref/inferred_strain_dup.gff"
 infref_bowtie2_index = "results/infref/infref_bowtie2_index"
+unmapped_dir = "results/bam/unmapped/"
 
 rule bowtie2_map:
     input:
@@ -33,19 +35,23 @@ rule bowtie2_map:
     shell:
         "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive \
             -x {input.bowtie2_index} \
+            --un-conc-gz {unmapped_dir} \  ## Write paired-end reads that fail to align concordantly to *.fq files
             -1 {input.f1} -2 {input.f2} 2>{log} | \
             samtools view -Sb - > {output}"
 
 
 rule filter_and_sort_bam:
     input: "results/bam/{sample}.bam"
-    output: "results/bam/{sample}.sorted.bam"
+    output:
+        o1 = "results/bam/{sample}.sorted.bam",
+        o2 = os.path.join(unmapped_dir, "{sample}.unmapped.bam")
     log:
         "logs/{sample}_filter_and_sort_bam.log"
     threads:
         8
     shell:
-        "samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
+        "samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output.o1}"
+        "samtools view -f4 -h {input} | samtools sort -O bam -@ {threads} - > {output.o2}"  ## Position 4 indicates an unmapped read
 
 rule index_bam:
     input:

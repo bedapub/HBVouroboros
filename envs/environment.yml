@@ -11,6 +11,8 @@ dependencies:
   - bowtie2 =2.3
   - samtools =1.10
   - bedtools =2.29
+  - fastqc=0.11.9=0
+  - multiqc=1.8=py_1
   - pandas
   - trinity
   - blast

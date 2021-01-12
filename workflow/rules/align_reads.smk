@@ -1,10 +1,15 @@
 import snakemake
 import os
 
+include: "common.smk"
+configfile: "config/config_qc.yaml"
+
+# trimmed files
 sample_annotation = config['sample_annotation']
 
 bowtie2_index = 'resources/ref/HBV_refgenomes_dup_BOWTIE2'
 blast_db = 'resources/ref/HBV_allgenomes.fasta'
+blastdb_filenames = ["resources/ref/HBV_allgenomes.fasta."+s for s in ("nhr", "nsq", "nin")]
 
 # parse sample annotation
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
@@ -19,7 +24,32 @@ inferred_strain_gb = "results/infref/inferred_strain.gb"
 inferred_strain_gff = "results/infref/inferred_strain.gff"
 inferred_strain_dup_gff = "results/infref/inferred_strain_dup.gff"
 infref_bowtie2_index = "results/infref/infref_bowtie2_index"
-unmapped_dir = "results/bam/unmapped/"
+
+rule all:
+    input:
+        expand("results/bam/{sample}.bam", sample = samples),
+        expand("results/bam/{sample}.sorted.bam",sample = samples),
+        expand("results/bam/{sample}.sorted.bam.bai",sample = samples),
+        expand("results/stats/{sample}.sorted.bam.flagstat",sample = samples),
+        "results/stats/samples.mapping.flagstat",
+        "results/bam/aggregated_mapped_reads.bam",
+        "results/aggregated_mapped_reads_1.fq.gz",
+        "results/aggregated_mapped_reads_2.fq.gz",
+        trinity_fasta,
+        trinity_sorted_fasta,
+        blast_out,
+        inferred_strain_FASTA,
+        inferred_strain_gb,
+        inferred_strain_gff,
+        inferred_strain_dup_FASTA,
+        infref_bowtie2_index,
+        expand("results/infref_bam/{sample}.sorted.bam",sample = samples),
+        expand("results/infref_bam/{sample}.sorted.bam.bai",sample = samples),
+        expand("results/infref_bam/{sample}.sorted.bam.stat",sample = samples),
+        "results/coverage/infref_genome_count.tsv",
+        "results/coverage/infref_genome_depth.tsv",
+        "results/coverage/infref_genome_gene_coverage.gct",
+        "results/coverage/infref_genome_CDS_coverage.gct"
 
 rule bowtie2_map:
     input:
@@ -27,31 +57,25 @@ rule bowtie2_map:
         f2 = lambda wildcards: fq2dict[wildcards.sample],
         bowtie2_index = bowtie2_index
     output:
-        temp("results/bam/{sample}.bam")
+        "results/bam/{sample}.bam"
     log:
         "logs/{sample}_bowtie2.log"
     threads:
         8
     shell:
-        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive \
-            -x {input.bowtie2_index} \
-            --un-conc-gz {unmapped_dir} \  ## Write paired-end reads that fail to align concordantly to *.fq files
-            -1 {input.f1} -2 {input.f2} 2>{log} | \
-            samtools view -Sb - > {output}"
-
+        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -x {input.bowtie2_index} -1 {input.f1} -2 {input.f2} 2>{log} | samtools view -Sb - > {output}"
+        # --un-conc-gz {unmapped_dir}  ## Write paired-end reads that fail to align concordantly to fastq files
 
 rule filter_and_sort_bam:
     input: "results/bam/{sample}.bam"
     output:
-        o1 = "results/bam/{sample}.sorted.bam",
-        o2 = os.path.join(unmapped_dir, "{sample}.unmapped.bam")
+        "results/bam/{sample}.sorted.bam",
     log:
         "logs/{sample}_filter_and_sort_bam.log"
     threads:
         8
     shell:
-        "samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output.o1}"
-        "samtools view -f4 -h {input} | samtools sort -O bam -@ {threads} - > {output.o2}"  ## Position 4 indicates an unmapped read
+        "samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
 
 rule index_bam:
     input:

@@ -95,7 +95,7 @@ rule flagstat:
     threads:
         2
     shell:
-        "samtools flagstat -@ {threads} {input.bam} > {output}"
+        "samtools flagstat {input.bam} > {output}"
 
 rule aggregate_flagstat:
     input: expand("results/stats/{sample}.sorted.bam.flagstat", sample=samples)

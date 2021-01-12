@@ -6,15 +6,15 @@ dependencies:
   - python =3.7
   - requests
   - biopython
-  - snakemake >=5.3
-  - star =2.7
-  - bowtie2 =2.3
+  - snakemake >=3.5
+  - star =2.7.3a
+  - bowtie2 =2.3.5
   - samtools =1.10
   - bedtools =2.29
-  - fastqc=0.11.9=0
-  - multiqc=1.8=py_1
   - pandas
   - trinity
   - blast
   - bcbio-gff
-  - freebayes
+  - pisces =5.2.10.49
+  - fastqc
+  - multiqc

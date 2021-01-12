@@ -15,7 +15,7 @@ samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 fastqc_dir = "results/fastqc/"
 multiqc_dir = "results/multiqc/"
-bam_dir = "results/bam/"
+bam_dir = "results/stats/"
 
 rule all:
     input:

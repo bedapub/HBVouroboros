@@ -4,36 +4,38 @@ import os
 import pandas as pd
 import snakemake
 
-configfile: snakemake.workflow.srcdir("config/config.yaml")
+include: "common.smk"
+configfile: "config/config_qc.yaml"
 
+# trimmed files
 sample_annotation = config['sample_annotation']
 
 # parse sample annotation
-annotation = pd.read_table(sample_annotation)
-samples = annotation.iloc[:, 0]
-fq1s = annotation.iloc[:, 2]
-fq2s = annotation.iloc[:, 3]
-fq1dict = dict(zip(samples, fq1s))
-fq2dict = dict(zip(samples, fq2s))
+samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 fastqc_dir = "results/fastqc/"
 multiqc_dir = "results/multiqc/"
 bam_dir = "results/bam/"
+
+rule all:
+    input:
+        expand("results/fastqc/{sample}.fastqc.done", sample = samples),
+        "results/multiqc/multiqc_report.html"
 
 rule fastqc:
     input:
         f1 = lambda wildcards: fq1dict[wildcards.sample],
         f2 = lambda wildcards: fq2dict[wildcards.sample],
     output:
-        os.path.join(fastqc_dir, "{sample}.fastqc.done")
+        "results/fastqc/{sample}.fastqc.done"
     shell:
         "fastqc -o {fastqc_dir} {input.f1} {input.f2}; touch {output}"
 
 rule multiqc:
     input:
-        expand(os.path.join(fastqc_dir, "{sample}.fastqc.done"), sample=samples),
-        expand(os.path.join(bam_dir, "{sample}.sorted.bam.bai"), sample=samples)
+        expand("results/fastqc/{sample}.fastqc.done", sample = samples),
+        expand("results/bam/{sample}.sorted.bam.bai", sample = samples)
     output:
-        os.path.join(multiqc_dir, "multiqc_report.html")
+        "results/multiqc/multiqc_report.html"
     shell:
-        "multiqc . -o {multiqc_dir}"
+        "multiqc {fastqc_dir} {bam_dir} -o {multiqc_dir}"

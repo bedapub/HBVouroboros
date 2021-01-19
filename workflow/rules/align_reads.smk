@@ -1,8 +1,7 @@
 import snakemake
 import os
 
-include: "common.smk"
-configfile: "config/config_qc.yaml"
+## configfile: "config/config_qc.yaml"
 
 # trimmed files
 sample_annotation = config['sample_annotation']
@@ -25,7 +24,7 @@ inferred_strain_gff = "results/infref/inferred_strain.gff"
 inferred_strain_dup_gff = "results/infref/inferred_strain_dup.gff"
 infref_bowtie2_index = "results/infref/infref_bowtie2_index"
 
-rule all:
+rule align_out:
     input:
         expand("results/bam/{sample}.bam", sample = samples),
         expand("results/bam/{sample}.sorted.bam",sample = samples),

@@ -30,7 +30,7 @@ conda activate HBVouroboros
 An out-of-box example can be run by starting the `snakemake` pipeline.
 
 ```bash
-snakemake
+snakemake -j 99
 ```
 
 ### Run the pipeline with your own data

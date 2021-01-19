@@ -1,11 +1,12 @@
-""" A snakemake-based workflow to generate fastqc and multiqc reports for FASTQ/BAM files """
+"""
+Generate fastqc and multiqc reports for FASTQ/BAM files
+"""
 
 import os
 import pandas as pd
 import snakemake
 
-include: "common.smk"
-configfile: "config/config_qc.yaml"
+## configfile: "config/config_qc.yaml"
 
 # trimmed files
 sample_annotation = config['sample_annotation']
@@ -17,7 +18,7 @@ fastqc_dir = "results/fastqc/"
 multiqc_dir = "results/multiqc/"
 bam_dir = "results/infref_bam/"
 
-rule all:
+rule qc:
     input:
         expand("results/fastqc/{sample}.fastqc.done", sample = samples),
         "results/coverage/infref_genome_depth.done",
@@ -45,6 +46,8 @@ rule covplot:
         "results/coverage/infref_genome_depth.tsv"
     output:
         temp("results/coverage/infref_genome_depth.done")
+    conda:
+        "../envs/covplot.yaml"
     shell:
         "Rscript workflow/Rplots.R ; touch {output}"
 

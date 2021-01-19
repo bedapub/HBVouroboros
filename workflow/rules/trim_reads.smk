@@ -27,7 +27,7 @@ trimmed_dir = abspath("trimmed")
 unpaired_dir = abspath("unpaired")
 log_dir = abspath("logs")
 
-rule all:
+rule trim:
     input:
         output_sample_annotation_fn,
         expand(join(trimmed_dir, "{sample}_R1.fastq.gz"), sample=samples),

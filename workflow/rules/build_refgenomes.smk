@@ -1,7 +1,6 @@
 from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
 from os.path import join
 
-include: "common.smk"
 localrules: download_refgenomes
 
 HTTP = HTTPRemoteProvider()

@@ -1,0 +1,4 @@
+channel:
+  - r
+dependencies:
+  - r-data.table = 1.12.2

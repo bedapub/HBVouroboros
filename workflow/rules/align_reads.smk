@@ -30,8 +30,6 @@ rule all:
         expand("results/bam/{sample}.bam", sample = samples),
         expand("results/bam/{sample}.sorted.bam",sample = samples),
         expand("results/bam/{sample}.sorted.bam.bai",sample = samples),
-        expand("results/stats/{sample}.sorted.bam.flagstat",sample = samples),
-        "results/stats/samples.mapping.flagstat",
         "results/bam/aggregated_mapped_reads.bam",
         "results/aggregated_mapped_reads_1.fq.gz",
         "results/aggregated_mapped_reads_2.fq.gz",
@@ -43,9 +41,14 @@ rule all:
         inferred_strain_gff,
         inferred_strain_dup_FASTA,
         infref_bowtie2_index,
+        expand("results/infref_bam/{sample}.bam",sample = samples),
+        expand("results/infref_bam/{sample}.temp.bam",sample = samples),
+        expand("results/infref_bam/{sample}.temp.bam.bai",sample = samples),
+        expand("results/infref_bam/{sample}.nofilter.bam.stat",sample = samples),
         expand("results/infref_bam/{sample}.sorted.bam",sample = samples),
         expand("results/infref_bam/{sample}.sorted.bam.bai",sample = samples),
         expand("results/infref_bam/{sample}.sorted.bam.stat",sample = samples),
+        expand("results/coverage/infref_genome_{sample}_feature_coverage.tsv", sample = samples),
         "results/coverage/infref_genome_count.tsv",
         "results/coverage/infref_genome_depth.tsv",
         "results/coverage/infref_genome_gene_coverage.gct",
@@ -57,7 +60,7 @@ rule bowtie2_map:
         f2 = lambda wildcards: fq2dict[wildcards.sample],
         bowtie2_index = bowtie2_index
     output:
-        "results/bam/{sample}.bam"
+        temp("results/bam/{sample}.bam")
     log:
         "logs/{sample}_bowtie2.log"
     threads:
@@ -108,7 +111,7 @@ rule aggregate_bam:
         expand("results/bam/{sample}.sorted.bam",
             sample=samples)
     output:
-        "results/bam/aggregated_mapped_reads.bam"
+        temp("results/bam/aggregated_mapped_reads.bam")
     threads:
         2
     shell:
@@ -205,6 +208,38 @@ rule infref_bowtie2_map:
             -1 {input.f1} -2 {input.f2} 2>{log} | \
             samtools view -Sb - > {output}"
 
+rule sort_infref_bam:
+    input:
+        "results/infref_bam/{sample}.bam"
+    output:
+        temp("results/infref_bam/{sample}.temp.bam")
+    log:
+        "logs/{sample}_infref_temp_bam.log"
+    threads:
+        2
+    shell:
+        "samtools sort -O bam -@ {threads} {input} > {output}"
+
+rule index_infref_bam_nofilter:
+    input:
+        "results/infref_bam/{sample}.temp.bam"
+    output:
+        temp("results/infref_bam/{sample}.temp.bam.bai")
+    threads: 2
+    shell:
+        "samtools index {input}"
+
+rule infref_stat_nofilter:
+    input:
+        bam = "results/infref_bam/{sample}.temp.bam",
+        bai = "results/infref_bam/{sample}.temp.bam.bai"
+    output:
+        "results/infref_bam/{sample}.nofilter.bam.stat"
+    threads:
+        2
+    shell:
+        "samtools stat -@ {threads} {input.bam} > {output}"        
+        
 rule filter_and_sort_infref_bam:
     input:
         "results/infref_bam/{sample}.bam"

@@ -6,13 +6,17 @@ dependencies:
   - python =3.7
   - requests
   - biopython
-  - snakemake >=5.3
-  - star =2.7
-  - bowtie2 =2.3
+  - snakemake >=3.5
+  - star =2.7.3a
+  - bowtie2 =2.3.5
   - samtools =1.10
   - bedtools =2.29
   - pandas
   - trinity
   - blast
   - bcbio-gff
+  - pisces =5.2.10.49
+  - fastqc
+  - multiqc
+  - qualimap
   - freebayes

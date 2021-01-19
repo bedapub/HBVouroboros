@@ -44,11 +44,13 @@ rule all:
         expand("results/infref_bam/{sample}.bam",sample = samples),
         expand("results/infref_bam/{sample}.temp.bam",sample = samples),
         expand("results/infref_bam/{sample}.temp.bam.bai",sample = samples),
-        expand("results/infref_bam/{sample}.nofilter.bam.stat",sample = samples),
+        expand("results/infref_bam/{sample}.nofilter.bam.stat",
+            sample = samples),
         expand("results/infref_bam/{sample}.sorted.bam",sample = samples),
         expand("results/infref_bam/{sample}.sorted.bam.bai",sample = samples),
         expand("results/infref_bam/{sample}.sorted.bam.stat",sample = samples),
-        expand("results/coverage/infref_genome_{sample}_feature_coverage.tsv", sample = samples),
+        expand("results/coverage/infref_genome_{sample}_feature_coverage.tsv",
+            sample = samples),
         "results/coverage/infref_genome_count.tsv",
         "results/coverage/infref_genome_depth.tsv",
         "results/coverage/infref_genome_gene_coverage.gct",
@@ -66,8 +68,11 @@ rule bowtie2_map:
     threads:
         8
     shell:
-        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -x {input.bowtie2_index} -1 {input.f1} -2 {input.f2} 2>{log} | samtools view -Sb - > {output}"
-        # --un-conc-gz {unmapped_dir}  ## Write paired-end reads that fail to align concordantly to fastq files
+        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive \
+        -x {input.bowtie2_index} -1 {input.f1} -2 {input.f2} 2>{log} | \
+        samtools view -Sb - > {output}"
+        # --un-conc-gz {unmapped_dir}  ## Write paired-end reads that fail \
+        # to align concordantly to fastq files
 
 rule filter_and_sort_bam:
     input: "results/bam/{sample}.bam"
@@ -104,7 +109,7 @@ rule aggregate_flagstat:
     input: expand("results/stats/{sample}.sorted.bam.flagstat", sample=samples)
     output: "results/stats/samples.mapping.flagstat"
     shell:
-    	"cat {input} > {output}"
+        "cat {input} > {output}"
 
 rule aggregate_bam:
     input:
@@ -238,8 +243,9 @@ rule infref_stat_nofilter:
     threads:
         2
     shell:
-        "samtools stat -@ {threads} {input.bam} > {output}"        
-        
+        "samtools stat -@ {threads} {input.bam} > {output}"
+
+
 rule filter_and_sort_infref_bam:
     input:
         "results/infref_bam/{sample}.bam"
@@ -250,7 +256,9 @@ rule filter_and_sort_infref_bam:
     threads:
         2
     shell:
-        "samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
+        "samtools view -F4 -h {input} | \
+        samtools sort -O bam -@ {threads} - > {output}"
+
 
 rule index_infref_bam:
     input:

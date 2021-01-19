@@ -8,7 +8,9 @@ png(file = "results/coverage/infref_genome_depth_mqc.png",
 par(mfrow=c(as.integer(ncol(dd)/3)+1,3))
 for (i in 3: ncol(dd)){
   heading = opts[i]
-  plot(dd$POS, dd[,i], main=heading, ylim = c(min(dd[,-1:-2]),max(dd[,-1:-2])),
+  plot(dd$POS, dd[,i],
+       main=heading,
+       ylim = c(min(dd[,-1:-2]),max(dd[,-1:-2])),
        cex.main = 2, cex.axis = 1.5, cex.lab = 1.5,
        col="blue", pch = ".",
        xlab = "Reference position (NT)",ylab = "Read Counts")
@@ -20,4 +22,6 @@ dev.off()
 
 cov.mean = colMeans(dd[,-1:-2])
 cov.mean = as.data.frame(cov.mean)
-write.table(cov.mean, file = "results/coverage/infref_genome_depth_mean.tsv",quote = F,sep = "\t",row.names = T,col.names = F)
+write.table(cov.mean,
+	    file = "results/coverage/infref_genome_depth_mean.tsv",
+	    quote = F,sep = "\t",row.names = T,col.names = F)

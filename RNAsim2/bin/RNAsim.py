@@ -74,7 +74,7 @@ def point_mutate(record_copy,theMutationPos,outF, makeSummary):
     Returns:
         Boolean
     """
-    NAs = ["A", "T", "G", "C"]
+    NAs = ["a", "t", "g", "c"]
     originalB = record_copy.seq[theMutationPos]
     mutated_seq = list(str(record_copy.seq))
     #identify the original base and replace in with another random base
@@ -82,8 +82,8 @@ def point_mutate(record_copy,theMutationPos,outF, makeSummary):
     mutated_seq[theMutationPos] = random.choice(NAs)
     #convert back the mutated sequqnce to str and replace the original sequence with it
     mutated_seq_final =""
-    for x in mutated_seq:
-        mutated_seq_final += x
+    for i in range(len(mutated_seq)):
+        mutated_seq_final += mutated_seq[i]
     record_copy.seq = Seq(mutated_seq_final)
     if makeSummary == True:
         outF.write(str(originalB) + str(theMutationPos) + str(mutated_seq[theMutationPos]))
@@ -148,7 +148,6 @@ def main(args):
     if args.fixedpos:
         posArray = list(map(int, args.fixedpos.split(" ")))
         if len(posArray) != noReads:
-            print("the number of specified positions does nto match the number of reads specified")
             return(False)
             sys.exit()
 
@@ -186,7 +185,8 @@ def main(args):
         mutpercent = args.percent
 
     #Find the input genome based on id
-    oneSequence = SeqIO.parse(os.path.join(srcDir +'/refGenomes/HBV_refgenomes.fasta'), 'fasta')
+    refGenDir = srcDir.replace('/RNAsim2', '')
+    oneSequence = SeqIO.parse(os.path.join(refGenDir +'/resources/ref/HBV_refgenomes.fasta'), 'fasta')
     record_copy = None
     for record in oneSequence:
         if record.id == args.genotypeId:

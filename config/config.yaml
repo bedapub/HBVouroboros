@@ -10,3 +10,19 @@ illumina_clip_opts: ':2:30:10:2:keepBothReads'
 # trimmomatic steps (excluding ILLUMINACLIP)
 trimmomatic_steps: 'LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:35 CROP:140'
 
+## Input ref strain
+inputRef: 'gnl|hbvnuc|AB064313_FT00000_C-G'
+
+
+## RNA simulation paramterts
+doSim: False
+sample_annotation_sm: RNAsim2/output/sampleAnnotation
+genomeId: gnl|hbvnuc|GQ924620_FT00000_C-C
+sampNum: "165000"
+pairedEndDist: "250"
+readLen: "150"
+mt: -mt
+mp: -mp 
+mtPos: "249"
+
+

@@ -201,7 +201,6 @@ def dedup_file(infile, outfile):
     Returns:
         value of pandas.DataFrame.to_csv
     """
-
     depth = read_table(infile)
     dedup_res = dedup(depth)
     res = dedup_res.to_csv(outfile, sep='\t', index=False)
@@ -406,7 +405,7 @@ def dup_and_conc_FASTA(infile, outfile):
     Returns:
         int: number of sequences
     """
-
+    print(str(infile))
     sequences = SeqIO.parse(infile, 'fasta')
     outseqs = (dup_and_conc(record) for record in sequences)
     res = SeqIO.write(outseqs, outfile, 'fasta')
@@ -434,3 +433,30 @@ def split_FASTA(infile, outdir=None, prefix=''):
                        prefix + seq.id.replace('|', '_') + '.fasta')
         SeqIO.write(seq, outfile, 'fasta')
         count += 1
+
+def vcfClean(vcfFile, outfile):
+	vcfile = open(vcfFile, "r")
+	vcfLines = vcfile.readlines()
+
+	gnLengths = dict()
+	for line in vcfLines:
+		if "##contig=<ID" in line:
+			x = line.split(',')
+			for term in x:
+				if ("length" in term)==True:
+					gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
+
+	with open(outfile, 'w') as filehandle:
+		print (outfile+'sample')
+		for i in range(len(vcfLines)):
+			aline = vcfLines[i]
+			if (aline[0:4] == 'gnl|'):
+				if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1])):
+					filehandle.write('%s' % aline)
+				else:
+					updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2 -1
+					aline = aline.replace(aline.split()[1],str(updatedPos))
+					filehandle.write('%s' % aline)
+			else: 
+				(filehandle.write('%s' % aline))
+	return(True)

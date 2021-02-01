@@ -8,7 +8,11 @@ import snakemake
 
 configfile: snakemake.workflow.srcdir("config/config.yaml")
 
-sample_annotation = config['sample_annotation']
+if config['doSim'] == True:
+	sample_annotation = config['sample_annotation_sm']
+else:
+	sample_annotation = config['sample_annotation']
+
 illumina_clip_file = config['illumina_clip_file']
 illumina_clip_opts = config['illumina_clip_opts']
 trimmomatic_steps = config['trimmomatic_steps']

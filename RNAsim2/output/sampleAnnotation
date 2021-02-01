@@ -1,2 +1,2 @@
 #ID	GROUP	FASTQ1	FASTQ2
-simSample	control	/home/milad/Documents/HBVouroboros/RNAsim2/output/simSample-1_1.fastq.gz	/home/milad/Documents/HBVouroboros/RNAsim2/output/simSample-1_2.fastq.gz
+simSample	control	/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/RNAsim2/output/simSample-1_1.fastq.gz	/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/RNAsim2/output/simSample-1_2.fastq.gz

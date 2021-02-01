@@ -16,3 +16,4 @@ dependencies:
   - blast
   - bcbio-gff
   - freebayes
+  - varscan

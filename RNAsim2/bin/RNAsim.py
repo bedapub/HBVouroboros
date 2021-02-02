@@ -219,22 +219,22 @@ def main(args):
                     print("mutation position exceeds the size fo the genome")
                     sys.exit()
                 makeSummary = True
-                point_mutate(record_copy, mutPos[j], outF, makeSummary)
+                point_mutate(record_copy, mutPos[j]-1, outF, makeSummary)
         outF.close()
 
     record_dup = dup_and_conc(record_copy)
     orgRecord_dup = dup_and_conc(orgRecord)
 
-    testSeqObj = SeqRecord(
-        Seq("tttcacagctttccaacaagccctacaagatcccagagt"),
-        id="gnl|hbvnuc|GQ924620_FT00000_C-C",
-        name="HokC",
-        description="gnl|hbvnuc|GQ924620_FT00000_C-C Feature FT:source AB076679_FT00000_P-A of [Viruses] Hepatitis B Virus genotype A (isolate HBV-Mala35). test fragment. [Hepadnaviridae] (length=39 residues).")
+    #testSeqObj = SeqRecord(
+        #Seq("tttcacagctttccaacaagccctacaagatcccagagt"),
+        #id="gnl|hbvnuc|GQ924620_FT00000_C-C",
+        #name="HokC",
+        #description="gnl|hbvnuc|GQ924620_FT00000_C-C Feature FT:source AB076679_FT00000_P-A of [Viruses] Hepatitis B Virus genotype A (isolate HBV-Mala35). test fragment. [Hepadnaviridae] (length=39 residues).")
     #arrays to be populated by reads
     leftSequences = []
     rightSequences = []
     fullFragment = []
-    counter = 0
+    #counter = 0
     # create_readPairs(10, 4, 1, testSeqObj, leftSequences, rightSequences, fullFragment, 1)
     # print(leftSequences[0].seq)
     # print(rightSequences[0].seq)
@@ -264,15 +264,6 @@ def main(args):
             else:
                 create_readPairs(pairedEndDist, readLen, posArray[i]-1, record_copy, leftSequences, rightSequences, fullFragment, i)
 
-
-    # else
-    # for i in range(0,noReads):
-    #
-    #     if posArray is None:
-    #         leftEnd = random.randint(0,len(record_dup.seq)/2)
-    #         create_readPairs(pairedEndDist, readLen, leftEnd, record_dup, leftSequences, rightSequences, fullFragment, i)
-    #     else:
-    #         create_readPairs(pairedEndDist, readLen, posArray[i]-1, record_dup, leftSequences, rightSequences, fullFragment, i)
         #Fake read quality
         leftSequences[i].letter_annotations["phred_quality"] = [50] * len(leftSequences[i].seq)
         rightSequences[i].letter_annotations["phred_quality"] = [50] * len(rightSequences[i].seq)

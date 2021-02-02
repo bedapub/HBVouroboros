@@ -7,7 +7,7 @@ This version addresses the issues 10, 11, 14.
 The vcf outputs of variant calling vcf output files of the form "results/variant calling/{reference genome}/{reference gemone}\_{sample}.vcf" are filtered and written to "{reference gemone}\_{sample}\_cleaned.vcf". These are then used to generate the aggrigated vcf.
 
 ## Issue 11: Use prespecified reference strain for variant calling and reporting
-All analysis preformed using the inferred reference strain is now prefomred in parallel using an input reference strain. the input reference is specified using the paramter "inputRef" in "config.yaml". The directories in "reults" are modified to contain output correponding to inferred reference (infref) and input reference (inpt). Currently the input referene is not optional, if not specified the piple exits with an error. 
+All analysis preformed using the inferred reference strain is now prefomred in parallel using an input reference strain. the input reference is specified using the paramter "inputRef" in "config.yaml". The directories in "results" are modified to contain output correponding to inferred reference (infref) and input reference (inpt). Currently the input referene is not optional, if not specified the piple exits with an error. 
 
 ## Issue 14: Make RNAsim2 part of the snakemake pipeline
 RNAsim2 can now be run with the pipeline by speifying corresponding paramers in "config.yaml". These parameters are to be found under the section "RNA simulation paramterts". If the paramter "doSim" is set to True. The RNAsim is ran and the pipeline is ran using the output.

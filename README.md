@@ -20,7 +20,7 @@ Currently variant calling on simulated dat using freebayes does not report the S
 of variant calling does not show any SNPs. Naviage to "HBVouroboro/". And run the following commands to generate variant calling output using varScan:
 
 ```bash
-samtools mpileup -f "results/infref/infref_strain_dup.fasta"  "results/infref_bam/infref_simSample.sorted.bam > myData.mpileup"
+samtools mpileup -f "results/infref/infref_strain_dup.fasta"  "results/infref_bam/infref_simSample.sorted.bam" > "myData.mpileup"
 java -jar VarScan.v2.3.9.jar pileup2snp myData.mpileup > varScanResults.txt
 ```
 The current paramters in "config.yaml" specify 5 mutations. Varscan reports 10 mutations (5 in the original and 5 in the duplicated region) while Freebayes does not report anything.

@@ -19,8 +19,8 @@ This issue is not resolved. The current problem can be reproduced by setting "do
 Currently variant calling on simulated dat using freebayes does not report the SNPs, while mutations are called correctly when VarScan is used. To reproduce thie observation the following steps have to be taken. Set "doSim" in "config.yaml" to True and run HBVouroboros. Navigate to "results/variant calling/infref". The vcf output 
 of variant calling does not show any SNPs. Naviage to "HBVouroboro/". And run the following commands to generate variant calling output using varScan:
 
-'''bash
+```bash
 samtools mpileup -f "results/infref/infref_strain_dup.fasta"  "results/infref_bam/infref_simSample.sorted.bam > mzData.mpileup"
 java -jar VarScan.v2.3.9.jar pileup2snp myData.mpileup > varScanResults.txt
-'''
+```
 The current paramters in "config.yaml" specify 5 mutations. Varscan reports 10 mutations (5 in the original and 5 in the duplicated region) while Freebayes does not report anything.

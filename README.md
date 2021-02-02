@@ -1,59 +1,26 @@
 *HBVouroboros* automates sequencing-based HBV genotyping and expression profiling
 ===
 
-*HBVouroboros* uses RNA-sequencing reads to infer HBV genotype, quantify HBV
-transcript expression, and perform variant calling of HBV genomes.
+This version addresses the issues 10, 11, 14.
 
-*HBVouroboros*, distributed under the GPL-3 license, is available at
-https://github.com/bedapub/HBVouroboros.
+# Issue 10: vcf files should remove/overlay duplicated genome parts
+The vcf outputs of variant calling vcf output files of the form "results/variant calling/{reference genome}/{reference gemone}\_{sample}.vcf" are filtered and written to "{reference gemone}\_{sample}\_cleaned.vcf". These are then used to generate the aggrigated vcf.
 
-## Installation and usage
+# Issue 11: Use prespecified reference strain for variant calling and reporting
+All analysis preformed using the inferred reference strain is now prefomred in parallel using an input reference strain. the input reference is specified using the paramter "inputRef" in "config.yaml". The directories in "reults" are modified to contain output correponding to inferred reference (infref) and input reference (inpt). Currently the input referene is not optional, if not specified the piple exits with an error. 
 
-### Download the source code
+# Issue 14: Make RNAsim2 part of the snakemake pipeline
+RNAsim2 can now be run with the pipeline by speifying corresponding paramers in "config.yaml". These parameters are to be found under the section "RNA simulation paramterts". If the paramter "doSim" is set to True. The RNAsim is ran and the pipeline is ran using the output.
 
-```bash
-git clone https://github.com/bedapub/HBVouroboros.git
-```
+# Issue 12: Allow genotype inference on either the study level or the sample level
+This issue is not resolved. The current problem can be reproduced by setting "doSim" to false and uncommenting the last line in the main SnakeFile ( this will cause rules generating the error to be run). The error is generated when trinity is run with a BAM file of a single sample.
 
-### Setup conda environment
+# Issue 12: VarScan vs Freebayes
+Currently variant calling on simulated dat using freebayes does not report the SNPs, while mutations are called correctly when VarScan is used. To reproduce thie observation the following steps have to be taken. Set "doSim" in "config.yaml" to True and run HBVouroboros. Navigate to "results/variant calling/infref". The vcf output 
+of variant calling does not show any SNPs. Naviage to "HBVouroboro/". And run the following commands to generate variant calling output using varScan:
 
-```bash
-## setup conda environment
-cd envs; conda env create; cd -
-## in case it has been installed, use the command below to update
-## conda env update
-conda activate HBVouroboros
-```
-
-### Run an example
-
-An out-of-box example can be run by starting the `snakemake` pipeline.
-
-```bash
-snakemake
-```
-
-### Run the pipeline with your own data
-
-Modify the `config/config.yaml` file to specify a sample annotation file.
-
-### Run HBVouroboros using unmapped reads from a Biokit output directory
-
-This feature has been disabled now. It may be activated in the future.
-
-### Validating the sensitivity and specificity of HBVouroboros with RNAsim2
-
-We created RNAsim2, a RNA-seq simulator to validate the sensitivity and
-specificity of HBVouroboros. See [RNAsim2/README.md](RNAsim2/README.md) for
-details.
-
-
-## Known issues and solutions
-
-### What to do if conda environment initialization takes too long?
-
-Above we use the default conda solver. If you suffer from slow speed of conda,
-consider using [mamba](https://github.com/mamba-org/mamba), which is a drop-in
-replacement of conda.
-
-If you met more issues, please raise them using the Issues function of GitHub.
+"""bash
+samtools mpileup -f "results/infref/infref_strain_dup.fasta"  "results/infref_bam/infref_simSample.sorted.bam > mzData.mpileup"
+java -jar VarScan.v2.3.9.jar pileup2snp myData.mpileup > varScanResults.txt
+"""
+The current paramters in "config.yaml" specify 5 mutations. Varscan reports 10 mutations (5 in the original and 5 in the duplicated region) while Freebayes does not report anything.

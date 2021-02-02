@@ -15,7 +15,7 @@ RNAsim2 can now be run with the pipeline by speifying corresponding paramers in 
 ## Issue 12: Allow genotype inference on either the study level or the sample level
 This issue is not resolved. The current problem can be reproduced by setting "doSim" to false and uncommenting the last line in the main SnakeFile ( this will cause rules generating the error to be run). The error is generated when trinity is run with a BAM file of a single sample.
 
-## Issue 12: VarScan vs Freebayes
+## VarScan vs Freebayes
 Currently variant calling on simulated dat using freebayes does not report the SNPs, while mutations are called correctly when VarScan is used. To reproduce thie observation the following steps have to be taken. Set "doSim" in "config.yaml" to True and run HBVouroboros. Navigate to "results/variant calling/infref". The vcf output 
 of variant calling does not show any SNPs. Naviage to "HBVouroboro/". And run the following commands to generate variant calling output using varScan:
 

@@ -454,7 +454,7 @@ def vcfClean(vcfFile, outfile):
 				if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1])):
 					filehandle.write('%s' % aline)
 				else:
-					updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2 -1
+					updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
 					aline = aline.replace(aline.split()[1],str(updatedPos))
 					filehandle.write('%s' % aline)
 			else: 

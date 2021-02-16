@@ -48,6 +48,8 @@ rule covplot:
         temp("results/coverage/infref_genome_depth.done")
     conda:
         "../envs/covplot.yaml"
+    envmodules:
+        "R"
     shell:
         "Rscript workflow/Rplots.R ; touch {output}"
 

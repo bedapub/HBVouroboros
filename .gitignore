@@ -39,3 +39,6 @@ docs/_build
 test-outputs
 resources/ref
 results
+dag.pdf
+dag.png
+dag.svg

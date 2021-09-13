@@ -1,26 +1,85 @@
 *HBVouroboros* automates sequencing-based HBV genotyping and expression profiling
 ===
 
-This version addresses the issues 10, 11, 14.
+*HBVouroboros* uses RNA-sequencing reads to infer HBV genotype, quantify HBV
+transcript expression, and perform variant calling of HBV genomes.
 
-## Issue 10: vcf files should remove/overlay duplicated genome parts
-The vcf outputs of variant calling vcf output files of the form "results/variant calling/{reference genome}/{reference gemone}\_{sample}.vcf" are filtered and written to "{reference gemone}\_{sample}\_cleaned.vcf". These are then used to generate the aggrigated vcf.
+*HBVouroboros*, distributed under the GPL-3 license, is available at
+https://github.com/bedapub/HBVouroboros.
 
-## Issue 11: Use prespecified reference strain for variant calling and reporting
-All analysis preformed using the inferred reference strain is now prefomred in parallel using an input reference strain. the input reference is specified using the paramter "inputRef" in "config.yaml". The directories in "results" are modified to contain output correponding to inferred reference (infref) and input reference (inpt). Currently the input referene is not optional, if not specified the piple exits with an error. 
+## Installation and usage
 
-## Issue 14: Make RNAsim2 part of the snakemake pipeline
-RNAsim2 can now be run with the pipeline by speifying corresponding paramers in "config.yaml". These parameters are to be found under the section "RNA simulation paramterts". If the paramter "doSim" is set to True. The RNAsim is ran and the pipeline is ran using the output.
-
-## Issue 12: Allow genotype inference on either the study level or the sample level
-This issue is not resolved. The current problem can be reproduced by setting "doSim" to false and uncommenting the last line in the main SnakeFile ( this will cause rules generating the error to be run). The error is generated when trinity is run with a BAM file of a single sample.
-
-## VarScan vs Freebayes
-Currently variant calling on simulated dat using freebayes does not report the SNPs, while mutations are called correctly when VarScan is used. To reproduce thie observation the following steps have to be taken. Set "doSim" in "config.yaml" to True and run HBVouroboros. Navigate to "results/variant calling/infref". The vcf output 
-of variant calling does not show any SNPs. Naviage to "HBVouroboro/". And run the following commands to generate variant calling output using varScan:
+### Download the source code
 
 ```bash
-samtools mpileup -f "results/infref/infref_strain_dup.fasta"  "results/infref_bam/infref_simSample.sorted.bam" > "myData.mpileup"
-java -jar VarScan.v2.3.9.jar pileup2snp myData.mpileup > varScanResults.txt
+git clone https://github.com/bedapub/HBVouroboros.git
 ```
-The current paramters in "config.yaml" specify 5 mutations. Varscan reports 10 mutations (5 in the original and 5 in the duplicated region) while Freebayes does not report anything.
+
+### Setup conda environment
+
+```bash
+## setup conda environment
+cd envs; conda env create; cd -
+## in case it has been installed, use the command below to update
+## conda env update
+conda activate HBVouroboros
+```
+
+### Run an example
+
+An out-of-box example can be run by starting the `snakemake` pipeline.
+
+```bash
+snakemake -j 99 --use-envmodules ## use --use-conda if no R module is present
+```
+
+### Run the pipeline with your own data
+
+Modify the `config/config.yaml` file to specify a sample annotation file.
+
+### Run HBVouroboros using unmapped reads from a Biokit output directory
+
+This feature has been disabled now. It may be activated in the future.
+
+### Validating the sensitivity and specificity of HBVouroboros with RNAsim2
+
+We created RNAsim2, a RNA-seq simulator to validate the sensitivity and
+specificity of HBVouroboros. See [RNAsim2/README.md](RNAsim2/README.md) for
+details.
+
+## New version 13_09_2-21
+
+
+### Variant calling against a circular genome
+
+While the duplication solution works well for reference genome inference, it cannot be used for the variant calling purposes in the same way. A duplicated genome contrain two mapping possibilities for reads not spanning over the either ends of the linear version of the genome. This influences the confidence in mapping of reads with a position-based bias. To improve this, we edit the bam files mapped against the duplicated genome by shifting back the reads whose leftmost position is in the duplicated region, to their corresponding location on the linear single genome. However after the shift, the reads that span the end of the genome will still map to locations beyond the original length. therefore the reads are mapped to a genome that is longer that the orignal by up to the maximum length of the reads. This means reads within the range of the maximum read length from the origin will map to two locations. the outcome is a relatively lower precision in variant calling int he aformentioned region of the genome which would be only noticable with significantly low read coverage.
+
+### Variant calling using an input reference
+
+The pipeline can be run with a user-provided reference genome. To do so, in the config file set the parameter 'doInputRef' to 'True' and set 'inputRef'to a genome present in the list of reference genomes provided in the folder 'resources'.
+
+### inference of reference gneome on a per sample basis
+
+The pipeline can be used to infere reference gneomes at the level of each sample. To do so, in the config file set the parameter 'doPerSamp' to true.
+
+
+### Simulated samples for testing the new version
+
+The folder 'simSamples' is added th the 'RNAsim2' folder. It contains two simualted samples for testing the pipline using the default setting int he config file. The samples are as follows
+
+* python RNAsim.py 'gnl|hbvnuc|GQ924620_FT00000_C-C' '90000' '95' '45' --mutate --mutpos "100 1000"
+* python RNAsim.py 'gnl|hbvnuc|AB064313_FT00000_C-G' '90000' '95' '45' --mutate --mutpos "200 2000"
+
+
+
+
+## Known issues and solutions
+
+### What to do if conda environment initialization takes too long?
+
+Above we use the default conda solver. If you suffer from slow speed of conda,
+consider using [mamba](https://github.com/mamba-org/mamba), which is a drop-in
+replacement of conda.
+
+If you met more issues, please raise them using the Issues function of GitHub.
+

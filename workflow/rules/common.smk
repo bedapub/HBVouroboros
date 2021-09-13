@@ -88,7 +88,7 @@ def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
     """Collect gene coverage files into a GCT outfile
 
     Args:
-        coverage_files (str): a list of coverage files exported by
+        coverage_files (list(str)): a list of coverage files exported by
             'bedtools coverage'. They must be generated from the same
             GFF3 files.
         outfile (str): Output file name
@@ -446,8 +446,9 @@ def vcfClean(vcfFile, outfile):
 				if ("length" in term)==True:
 					gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
 
+	varPos =list()	
 	with open(outfile, 'w') as filehandle:
-		print (outfile+'sample')
+		print (outfile)
 		for i in range(len(vcfLines)):
 			aline = vcfLines[i]
 			if (aline[0:4] == 'gnl|'):
@@ -456,7 +457,9 @@ def vcfClean(vcfFile, outfile):
 				else:
 					updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
 					aline = aline.replace(aline.split()[1],str(updatedPos))
-					filehandle.write('%s' % aline)
+					if str(aline.split()[1]) not in varPos:
+						filehandle.write('%s' % aline)
+						varPos.append(str(aline.split()[1]))
 			else: 
 				(filehandle.write('%s' % aline))
 	return(True)

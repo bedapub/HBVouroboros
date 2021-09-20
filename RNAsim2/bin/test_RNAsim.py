@@ -5,7 +5,7 @@ import sys
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
-
+####################  RNAsim2 pytest  ###############################
 pytest.testSeqObject = SeqRecord(
     Seq("tttcacagctttccaacaagccctacaagatcccagagt"),
     id="gnl|hbvnuc|GQ924620_FT00000_C-C",

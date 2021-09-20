@@ -1,7 +1,5 @@
 name: Python Package using Conda
 
-name: Python Package using Conda
-
 on: [push]
 
 jobs:

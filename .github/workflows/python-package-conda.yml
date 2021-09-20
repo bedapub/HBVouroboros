@@ -1,5 +1,7 @@
 name: Python Package using Conda
 
+name: Python Package using Conda
+
 on: [push]
 
 jobs:
@@ -17,7 +19,8 @@ jobs:
           activate-environment: explicit-env
           environment-file: spec_file.txt
       - run: |
-          conda install flake8
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-          conda install pytest
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
+          printenv | sort

@@ -16,6 +16,11 @@ jobs:
           auto-update-conda: false
           activate-environment: explicit-env
           environment-file: spec_file.txt
+      - uses: BSFishy/pip-action@v1
+        with:
+          packages: |
+            zict
+            werkzeug    
       - run: |
           conda info
           conda list

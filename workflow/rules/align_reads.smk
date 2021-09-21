@@ -320,7 +320,7 @@ acc_inpt = config['inputRef']
 gb_acc_inpt = acc_inpt.split("|")[2].split("_")[0]
 
 rule get_ref_strain_seq_inpt:
-    input:
+    input: blast_out 
     output: "results/inpt/inpt_strain.fasta"
     run:
         write_seq_by_acc(blast_db, acc_inpt, inpt_strain_FASTA)
@@ -334,14 +334,14 @@ rule ref_dup_inpt:
 
 
 rule get_ref_strain_gb_inpt:
-    	input:
+    	input: blast_out 
     	output: "results/inpt/inpt_strain.gb"
     	run:
         	download_gb(gb_acc_inpt, output[0])
 
 
 rule ref_strain_gb2gff_inpt:
-    	input:
+    	input: blast_out 
        		"results/inpt/inpt_strain.gb"
     	output:
        		"results/inpt/inpt_strain.gff"

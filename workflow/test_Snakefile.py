@@ -13,7 +13,7 @@ import common
 
 def test_snakemake_output_files():
     #Run the pipeline
-    p= Popen('snakemake --cores 4 --forceall', shell=True, stdout= PIPE, stderr= STDOUT)
+    p= Popen('snakemake --cores 20 --latency-wait 900', shell=True, stdout= PIPE, stderr= STDOUT)
     pout= p.stdout.read()
     print(pout.decode('utf-8'))
     

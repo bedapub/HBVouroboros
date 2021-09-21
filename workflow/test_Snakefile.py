@@ -120,7 +120,6 @@ def test_snakemake_output_files():
     assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/perSamp/simSample2/simSample2.vcf') == 1
     assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/perSamp/simSample2/simSample2_cleaned.vcf') == 1
 
-
 def test_snakemake_variant_calling_results():
 
     #Check whether the correct variations have been detected for  the smaples

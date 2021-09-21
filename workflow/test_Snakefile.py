@@ -6,7 +6,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 import subprocess as sp
 
-sys.path.insert(0, 'rules/')
+sys.path.insert(0, 'workflow/rules/')
 import common
 
 #include: "rules/common.py"

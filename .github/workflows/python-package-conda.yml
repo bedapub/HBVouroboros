@@ -24,5 +24,6 @@ jobs:
             bio
             pytest
             pandas
+            bcbio-gff
       - run: |
           pytest

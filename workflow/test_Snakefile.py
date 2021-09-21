@@ -17,7 +17,7 @@ def test_snakemake_output_files():
      
     #Optionally, get stdout and stderr
     stdout, stderr= p.communicate()
-
+    print(stdout.decode("utf-8"))
     #Check exits code and other expected output            
     assert 0 == p.returncode
     #Read bam files

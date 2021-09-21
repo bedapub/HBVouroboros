@@ -23,5 +23,6 @@ jobs:
             werkzeug   
             bio
             pytest
+            pandas
       - run: |
           pytest

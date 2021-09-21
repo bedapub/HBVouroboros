@@ -1,15 +1,60 @@
-include: "rules/common.smk"
+import os
+configfile: "config/config.yaml"
+if config['doSim'] == True:
+	sample_annotation = config['sample_annotation_sm']
+else:
+	sample_annotation = config['sample_annotation']
+
+
+
+if config['doSim'] == True:
+	genomeId = config['genomeId']
+	sampNum = config['sampNum']
+	pairedEndDist = config['pairedEndDist']
+	readLen = config['readLen']
+	mt = config['mt']
+	mp = config['mp']
+	mtPos = config['mtPos']
+
+	stream = os.system ("python RNAsim2/bin/RNAsim.py '{}' '{}' '{}' '{}' '{}' '{}' '{}' " .format(genomeId, 	 sampNum, pairedEndDist, readLen, mt, mp, mtPos))
+	sample_annotation = config['sample_annotation_sm']
+else:
+	sample_annotation = config['sample_annotation']
+
+
+
+include: "rules/common.py"
 include: "rules/build_refgenomes.smk"
 include: "rules/align_reads.smk"
 include: "rules/freebayes_vc.smk"
 
-configfile: "config/config.yaml"
+rule_all_input_list = list()
+samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
+
+
+rule_all_input_list .extend(["results/stats/samples.mapping.flagstat",
+                "results/coverage/infref_genome_count.tsv",
+                "results/coverage/infref_genome_depth.tsv",
+                "results/coverage/infref_genome_gene_coverage.gct",
+	        "results/coverage/infref_genome_CDS_coverage.gct",
+                expand("results/variant-calling/infref/infref_{sample}_cleaned.vcf", sample=samples)])
+
+if config['doInputRef'] == True:
+	rule_all_input_list .extend(["results/coverage/inpt_genome_count.tsv",
+	"results/coverage/inpt_genome_depth.tsv",
+        "results/coverage/inpt_genome_gene_coverage.gct",
+	"results/coverage/inpt_genome_CDS_coverage.gct",
+        expand("results/variant-calling/inpt/inpt_{sample}_cleaned.vcf", sample=samples)])
+
+if config['doPerSamp'] == True:
+	rule_all_input_list .extend([expand("results/variant-calling/perSamp/{sample}/{sample}_cleaned.vcf", sample=samples), 
+        expand("results/coverage/{sample}/genome_depth.tsv", sample=samples), 
+        expand("results/coverage/{sample}/genome_count.tsv", sample=samples), 
+        expand("results/coverage/{sample}/infref_genome_gene_coverage.gct" , sample=samples), 
+        expand("results/coverage/{sample}/infref_genome_CDS_coverage.gct" , sample=samples)])
+
 
 rule all:
-    input:
-        "results/stats/samples.mapping.flagstat",
-        "results/coverage/infref_genome_count.tsv",
-        "results/coverage/infref_genome_depth.tsv",
-        "results/coverage/infref_genome_gene_coverage.gct",
-        "results/coverage/infref_genome_CDS_coverage.gct",
-        "results/variant-calling/aggregated.vcf"
+	input:
+		rule_all_input_list
+

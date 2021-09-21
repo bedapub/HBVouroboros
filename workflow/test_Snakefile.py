@@ -19,4 +19,7 @@ def test_snakemake_output_files():
     stdout, stderr= p.communicate()
 
     #Check exits code and other expected output            
-    #assert 0 == p.returncode
+    assert 0 == p.returncode
+    #Read bam files
+    assert os.path.exists('results/bam/simSample1.sorted.bam') == 1
+    assert os.path.exists('results/bam/simSample2.sorted.bam') == 1

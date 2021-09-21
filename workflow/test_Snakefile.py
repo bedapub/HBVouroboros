@@ -16,10 +16,7 @@ def test_snakemake_output_files():
     p= Popen('snakemake --cores 4 --forceall', shell=True, stdout= PIPE, stderr= STDOUT)
     pout= p.stdout.read()
     print(pout.decode('utf-8'))
-     
-    #Optionally, get stdout and stderr
-    stdout, stderr= p.communicate()
-    print(stdout.decode("utf-8"))
+    
     #Check exits code and other expected output            
     #assert 0 == p.returncode
     #Read bam files

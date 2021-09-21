@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   pytest_pipeline:
-    name: Ex7 Explicit
+    name: setup_env_pytest
     runs-on: "ubuntu-latest"
     defaults:
       run:

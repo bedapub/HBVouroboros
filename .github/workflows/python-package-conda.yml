@@ -3,7 +3,7 @@ name: Python Package using Conda
 on: [push]
 
 jobs:
-  example-7:
+  pytest_pipeline:
     name: Ex7 Explicit
     runs-on: "ubuntu-latest"
     defaults:

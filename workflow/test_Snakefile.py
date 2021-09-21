@@ -109,18 +109,18 @@ def test_snakemake_output_files():
     assert os.path.exists('results/coverage/simSample2/infref_genome_CDS_coverage.gct') == 1
 
     #Variant calling files
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/infref/infref_simSample1.vcf') == 1
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/infref/infref_simSample2.vcf') == 1
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/infref/infref_simSample1_cleaned.vcf') == 1
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/infref/infref_simSample2_cleaned.vcf') == 1
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/inpt/inpt_simSample1.vcf') == 1
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/inpt/inpt_simSample2.vcf') == 1
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/inpt/inpt_simSample1_cleaned.vcf') == 1
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/inpt/inpt_simSample2_cleaned.vcf') == 1
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/perSamp/simSample1/simSample1.vcf') == 1
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/perSamp/simSample1/simSample1_cleaned.vcf') == 1
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/perSamp/simSample2/simSample2.vcf') == 1
-    assert os.path.exists('/pstore/home/adibim/Desktop/HBVouroboros_/HBVouroboros/results/variant-calling/perSamp/simSample2/simSample2_cleaned.vcf') == 1
+    assert os.path.exists('results/variant-calling/infref/infref_simSample1.vcf') == 1
+    assert os.path.exists('results/variant-calling/infref/infref_simSample2.vcf') == 1
+    assert os.path.exists('results/variant-calling/infref/infref_simSample1_cleaned.vcf') == 1
+    assert os.path.exists('results/variant-calling/infref/infref_simSample2_cleaned.vcf') == 1
+    assert os.path.exists('results/variant-calling/inpt/inpt_simSample1.vcf') == 1
+    assert os.path.exists('results/variant-calling/inpt/inpt_simSample2.vcf') == 1
+    assert os.path.exists('results/variant-calling/inpt/inpt_simSample1_cleaned.vcf') == 1
+    assert os.path.exists('results/variant-calling/inpt/inpt_simSample2_cleaned.vcf') == 1
+    assert os.path.exists('results/variant-calling/perSamp/simSample1/simSample1.vcf') == 1
+    assert os.path.exists('results/variant-calling/perSamp/simSample1/simSample1_cleaned.vcf') == 1
+    assert os.path.exists('results/variant-calling/perSamp/simSample2/simSample2.vcf') == 1
+    assert os.path.exists('results/variant-calling/perSamp/simSample2/simSample2_cleaned.vcf') == 1
 
 def test_snakemake_variant_calling_results():
 

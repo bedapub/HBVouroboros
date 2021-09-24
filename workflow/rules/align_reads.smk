@@ -89,7 +89,7 @@ rule aggregate_bam:
         expand("results/bam/{sample}.sorted.bam",
             sample=samples)
     output:
-        "results/bam/aggregated_mapped_reads.bam"
+        temp("results/bam/aggregated_mapped_reads.bam")
     threads:
         2
     shell:
@@ -378,7 +378,7 @@ rule aggregate_bam_perSamp:
         	"results/bam/{sample}.sorted.bam"
             
     	output:
-        	"results/bam/aggregated_mapped_reads_{sample}.bam"
+        	temp("results/bam/aggregated_mapped_reads_{sample}.bam")
     	threads:
         	2
     	shell:

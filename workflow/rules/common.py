@@ -405,7 +405,6 @@ def dup_and_conc_FASTA(infile, outfile):
     Returns:
         int: number of sequences
     """
-    print(str(infile))
     sequences = SeqIO.parse(infile, 'fasta')
     outseqs = (dup_and_conc(record) for record in sequences)
     res = SeqIO.write(outseqs, outfile, 'fasta')
@@ -423,7 +422,6 @@ def split_FASTA(infile, outdir=None, prefix=''):
        Returns:
            int: number of sequences
     """
-
     count = 0
     if outdir is None:
         outdir = dirname(infile)
@@ -434,6 +432,8 @@ def split_FASTA(infile, outdir=None, prefix=''):
         SeqIO.write(seq, outfile, 'fasta')
         count += 1
 
+
+## TODO: Milad (1) refactor the code, and (2) document the functions
 def vcfClean(vcfFile, outfile):
 	vcfile = open(vcfFile, "r")
 	vcfLines = vcfile.readlines()
@@ -448,20 +448,19 @@ def vcfClean(vcfFile, outfile):
 
 	varPos =list()	
 	with open(outfile, 'w') as filehandle:
-		print (outfile)
 		for i in range(len(vcfLines)):
 			aline = vcfLines[i]
 			if (aline[0:4] == 'gnl|'):
 				if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1])):
-					filehandle.write('%s' % aline)
+					filehandle.write(aline)
 				else:
 					updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
 					aline = aline.replace(aline.split()[1],str(updatedPos))
 					if str(aline.split()[1]) not in varPos:
-						filehandle.write('%s' % aline)
+						filehandle.write(aline)
 						varPos.append(str(aline.split()[1]))
 			else: 
-				(filehandle.write('%s' % aline))
+				(filehandle.write(aline))
 	return(True)
 
 

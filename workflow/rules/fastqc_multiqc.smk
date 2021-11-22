@@ -61,4 +61,4 @@ rule multiqc:
     output:
         "results/multiqc/multiqc_report.html"
     shell:
-        "multiqc {fastqc_dir} {bam_dir} results/coverage/ -o {multiqc_dir}"
+        "multiqc --force {fastqc_dir} {bam_dir} results/coverage/ -o {multiqc_dir}"

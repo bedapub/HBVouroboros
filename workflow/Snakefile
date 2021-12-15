@@ -3,6 +3,7 @@ include: "rules/build_refgenomes.smk"
 include: "rules/align_reads.smk"
 include: "rules/fastqc_multiqc.smk"
 include: "rules/freebayes_vc.smk"
+include: "rules/AA_vc.smk"
 
 configfile: "config/config.yaml"
 
@@ -16,4 +17,7 @@ rule all:
         "results/variant-calling/aggregated.vcf",
         expand("results/fastqc/{sample}.fastqc.done", sample = samples),
         "results/coverage/infref_genome_depth.done",
-        "results/multiqc/multiqc_report.html"
+        "results/multiqc/multiqc_report.html",
+        expand("results/variant-calling-AA/{sample}.sorted.sam", sample = samples),
+        "results/infref/inferred_strain_dup.fasta",
+        expand("results/variant-calling-AA/{sample}.sam2AAFreq.done", sample = samples)

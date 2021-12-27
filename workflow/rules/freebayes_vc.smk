@@ -1,6 +1,9 @@
 import snakemake
 
-sample_annotation = set_samp_anno(False)
+if config['doSim'] == True:
+	sample_annotation = config['sample_annotation_sm']
+else:
+	sample_annotation = config['sample_annotation']
 
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
@@ -103,4 +106,5 @@ rule make_vcfallelicprimitives_perSamp:
     output:
        "results/variant-calling/perSamp/{sample}/{sample}_cleaned_allelicprimitives.vcf"
     run:
-shell("vcfallelicprimitives {input} > {output}" )
+       shell("vcfallelicprimitives {input} > {output}" )
+

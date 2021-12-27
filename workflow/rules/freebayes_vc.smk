@@ -1,15 +1,12 @@
 import snakemake
 
-if config['doSim'] == True:
-	sample_annotation = config['sample_annotation_sm']
-else:
-	sample_annotation = config['sample_annotation']
+sample_annotation = set_samp_anno(False)
 
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 rule aggregated_var_inf:
     input:
-        expand("results/variant-calling/infref/infref_{sample}_cleaned.vcf", sample=samples)
+        expand("results/variant-calling/infref/infref_{sample}_cleaned_allelicprimitives.vcf", sample=samples)
     output:
     	"results/variant-calling/infref/infref_aggregated.vcf"
     shell:
@@ -17,7 +14,7 @@ rule aggregated_var_inf:
 
 rule aggregated_var_inpt:
     input:
-        expand("results/variant-calling/inpt/inpt_{sample}_cleaned.vcf", sample=samples)
+        expand("results/variant-calling/inpt/inpt_{sample}_cleaned_allelicprimitives.vcf", sample=samples)
     output:
     	"results/variant-calling/inpt/inpt_aggregated.vcf"
     shell:
@@ -39,9 +36,8 @@ rule correct_bam:
        sortBam ="results/{inpt}_bam/{inpt}_{sample}.sorted.bam"
     output:
        "results/{inpt}_bam/{inpt}_{sample}.corrected.sorted.bam"
-    run:
-       shell("""set +u; line=$(awk "NR==1{{print $1}}" {input.refDup} | cut -d"=" -f2 | cut -d" " -f1 ); samtools view -h {input.sortBam} | awk -v FS="\\t" -v Line="$line" -v OFS="\\t" '{{{{if ($0 ~ "^[^@]" && $4>Line) {{$4 =$4-Line;}}}} print $0 }}' | samtools sort | samtools view -b  > {output}; set -u """)
-
+    shell:
+       "workflow/rules/correct_bam.sh -f {input.refDup} -s {input.sortBam} -o {output}"
 
 rule correct_bam_perSamp:
     input:
@@ -49,8 +45,8 @@ rule correct_bam_perSamp:
        sortBam ="results/perSamp/{sample}/bam/{sample}.sorted.bam"
     output:
        "results/perSamp/{sample}/bam/{sample}.corrected.sorted.bam"
-    run:
-       shell("""set +u; line=$(awk "NR==1{{print $1}}" {input.refDup} | cut -d"=" -f2 | cut -d" " -f1 ); samtools view -h {input.sortBam} | awk -v Line="$line" -v FS="\\t" -v OFS="\\t" '{{{{if ($0 ~ "^[^@]" && $4>Line) {{$4 =$4-Line;}}}} print $0 }}' | samtools sort | samtools view -b > {output}; set -u """)    
+    shell:
+       "workflow/rules/correct_bam.sh -f {input.refDup} -s {input.sortBam} -o {output}"    
 
 
 rule freebayes_var:
@@ -60,7 +56,7 @@ rule freebayes_var:
     output:
        "results/variant-calling/{inpt}/{inpt}_{sample}.vcf"
     shell:
-       "freebayes -p 1 -K -m 20 -q 30 -f {input.refDup}  {input.sortBam} > {output}"
+       "freebayes -p 1 -K -m 20 -q 30 --haplotype-length 0 -f  {input.refDup}  {input.sortBam} | vcffilter -f 'QUAL > 20' > {output}"
 
 
 rule freebayes_var_perSamp:
@@ -70,7 +66,7 @@ rule freebayes_var_perSamp:
     output:
        "results/variant-calling/perSamp/{sample}/{sample}.vcf"
     shell:
-       "freebayes -p 1 -K -m 20 -q 30 -f {input.refDup}  {input.sortBam} > {output}"
+       "freebayes -p 1 -K -m 20 -q 30  --haplotype-length 0 -f {input.refDup}  {input.sortBam} | vcffilter -f 'QUAL > 20' > {output}"
 
 
 
@@ -92,4 +88,19 @@ rule clean_vcfFile_perSamp:
        vcfClean(str(input),str(output))
 
 
+rule make_vcfallelicprimitives:
+    input:
+       "results/variant-calling/{inpt}/{inpt}_{sample}_cleaned.vcf"
+    output:
+       "results/variant-calling/{inpt}/{inpt}_{sample}_cleaned_allelicprimitives.vcf"
+    run:
+       shell("vcfallelicprimitives {input} > {output}" )
 
+
+rule make_vcfallelicprimitives_perSamp:
+    input:
+       "results/variant-calling/perSamp/{sample}/{sample}_cleaned.vcf"
+    output:
+       "results/variant-calling/perSamp/{sample}/{sample}_cleaned_allelicprimitives.vcf"
+    run:
+shell("vcfallelicprimitives {input} > {output}" )

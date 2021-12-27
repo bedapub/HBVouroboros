@@ -351,3 +351,4 @@ https://conda.anaconda.org/bioconda/noarch/snakemake-5.28.0-0.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/widgetsnbextension-3.5.1-py37h89c1867_4.tar.bz2
 https://conda.anaconda.org/conda-forge/noarch/ipywidgets-7.6.4-pyhd8ed1ab_0.tar.bz2
 https://conda.anaconda.org/conda-forge/linux-64/jupyter-1.0.0-py37h89c1867_6.tar.bz2
+https://anaconda.org/bioconda/vcflib/1.0.2/download/linux-64/vcflib-1.0.2-h3198e80_5.tar.bz2

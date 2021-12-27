@@ -1,27 +1,3 @@
-
-Skip to content
-Pull requests
-Issues
-Marketplace
-Explore
-@Milad4849
-bedapub /
-HBVouroboros
-Public
-
-    Code
-    Issues 6
-    Pull requests 4
-    Actions
-    Projects
-    Wiki
-    Security
-    Insights
-
-HBVouroboros/workflow/rules/common.py /
- 
- 
-547 lines (429 sloc) 15.5 KB
 #!/usr/bin/env python3
 
 from os.path import join, exists, isdir, isfile, expanduser, \
@@ -544,19 +520,5 @@ def set_samp_anno(perform_sim):
 		return(config['sample_annotation_sm'])
 	else:
 		return(config['sample_annotation'])
-
-    © 2021 GitHub, Inc.
-
-    Terms
-    Privacy
-    Security
-    Status
-    Docs
-    Contact GitHub
-    Pricing
-    API
-    Training
-    Blog
-    About
 
 

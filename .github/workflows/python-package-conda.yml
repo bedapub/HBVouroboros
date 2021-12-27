@@ -26,4 +26,5 @@ jobs:
             pandas
             bcbio-gff
       - run: |
+          conda install -c bioconda vcflib
           pytest -s

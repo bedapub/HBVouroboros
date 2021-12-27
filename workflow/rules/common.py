@@ -488,3 +488,33 @@ def test_cleanvcf(vcfFile):
 					varPos.append(str(aline.split()[1]))
 
 	return(varPos)
+
+
+
+def set_samp_anno(perform_sim):
+
+	"""Sets the appropriate smaples annotation file
+	   based on whether the pipeline is to be run with 
+	   simulated data, as specified by the 'do_sim' config 
+	   parameter"""
+
+	if config['doSim'] == True:
+		if perform_sim == True:
+			sample_annotation = config['sample_annotation_sm']
+			genomeId = config['genomeId']
+			sampNum = config['sampNum']
+			pairedEndDist = config['pairedEndDist']
+			readLen = config['readLen']
+			mt = config['mt']
+			mp = config['mp']
+			mtPos = config['mtPos']
+
+			stream = os.system ('python RNAsim2/bin/RNAsim.py ' + ' '+" '"+genomeId+"' "+ "' "+sampNum+"' "+" '"+ pairedEndDist+"' "+" '"+ readLen+"' "+" '"+ mt+"' "+" '"+ mp+"' "+" '"+ mtPos+"' ")
+		return(config['sample_annotation_sm'])
+	else:
+                return(config['sample_annotation'])
+
+
+
+
+

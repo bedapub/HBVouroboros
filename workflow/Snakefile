@@ -1,33 +1,14 @@
 import os
 configfile: "config/config.yaml"
-# organization of configuration
-if config['doSim'] == True:
-	sample_annotation = config['sample_annotation_sm']
-else:
-	sample_annotation = config['sample_annotation']
-
-
-
-if config['doSim'] == True:
-	genomeId = config['genomeId']
-	sampNum = config['sampNum']
-	pairedEndDist = config['pairedEndDist']
-	readLen = config['readLen']
-	mt = config['mt']
-	mp = config['mp']
-	mtPos = config['mtPos']
-
-	stream = os.system ('python RNAsim2/bin/RNAsim.py ' + ' '.join([genomeId, sampNum, pairedEndDist, readLen, mt, mp, mtPos]))
-	sample_annotation = config['sample_annotation_sm']
-else:
-	sample_annotation = config['sample_annotation']
-
-
-
 include: "rules/common.py"
 include: "rules/build_refgenomes.smk"
 include: "rules/align_reads.smk"
 include: "rules/freebayes_vc.smk"
+
+
+# organization of configuration
+
+sample_annotation = set_samp_anno(True)
 
 rule_all_input_list = list()
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)

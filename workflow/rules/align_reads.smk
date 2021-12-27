@@ -1,9 +1,5 @@
 import snakemake
-
-if config['doSim'] == True:
-	sample_annotation = config['sample_annotation_sm']
-else:
-	sample_annotation = config['sample_annotation']
+sample_annotation = set_samp_anno(False)
 
 bowtie2_index = 'resources/ref/HBV_refgenomes_dup_BOWTIE2'
 blast_db = 'resources/ref/HBV_allgenomes.fasta'

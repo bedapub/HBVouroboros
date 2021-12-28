@@ -56,7 +56,7 @@ rule covplot:
 rule multiqc:
     input:
         expand("results/fastqc/{sample}.fastqc.done",sample = samples),
-        expand("results/infref_bam/{sample}.sorted.bam.bai",sample = samples),
+        expand("results/infref_bam/infref_{sample}.sorted.bam.bai",sample = samples),
         "results/coverage/infref_genome_depth.done"
     output:
         "results/multiqc/multiqc_report.html"

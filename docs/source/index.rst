@@ -12,10 +12,10 @@ Features
 
 - Automate majority of tasks for sequencing-based HBV genotyping and expression quantification
 
-Installation
-------------
+.. toctree::
 
-Install HBVouroboros by running:
+   Installation
+
 
 Contribute
 ----------
@@ -45,3 +45,14 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+Contents
+--------
+
+.. toctree::
+
+   usage
+
+
+
+

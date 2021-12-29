@@ -122,6 +122,8 @@ urllib3==1.26.6
     #   transifex-client
 zipp==3.5.0
     # via importlib-metadata
+biopython==1.78
+bcbio-gff==0.6
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

@@ -28,3 +28,5 @@ python:
    install:
    - requirements: docs/requirements.txt
 
+conda:
+  environment: envs/environment.yml

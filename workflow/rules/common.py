@@ -422,6 +422,7 @@ def dup_and_conc_FASTA(infile, outfile):
 def split_FASTA(infile, outdir=None, prefix=''):
     """	Split sequences in a FASTA file into separate files
     output file name is given by the ids (with pipes replaced by underscore)
+    
    Args:
        infile (str): The input FASTA file name
        outdir (str): The output directory. Default: input file folder

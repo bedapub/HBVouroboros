@@ -125,7 +125,6 @@ zipp==3.5.0
 biopython==1.78
 bcbio-gff==0.6.6
 pandas==1.2.4
-sphinx-rtd-theme==1.0.0
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

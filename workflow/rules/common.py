@@ -459,36 +459,35 @@ def vcfClean(vcfFile, outfile):
 	 bool: If function ran succefully. 
 	    
 	"""
+     vcfile = open(vcfFile, "r")
+     vcfLines = vcfile.readlines()
 
-	vcfile = open(vcfFile, "r")
-	vcfLines = vcfile.readlines()
+     gnLengths = dict()
+     for line in vcfLines:
+	     if "##contig=<ID" in line:
+		     x = line.split(',')
+		    for term in x:
+			    if ("length" in term)==True:
+				    gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
 
-	gnLengths = dict()
-	for line in vcfLines:
-		if "##contig=<ID" in line:
-			x = line.split(',')
-			for term in x:
-				if ("length" in term)==True:
-					gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
-
-	varPos =list()	
-	with open(outfile, 'w') as filehandle:
-		for i in range(len(vcfLines)):
-			aline = vcfLines[i]
-			if (aline[0:4] == 'gnl|'):
-				aline = aline.replace('|DupConc', '')
-				if (aline.split("\t")[3] != 'N'):
-					if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1]) ):
-						filehandle.write(aline)
-					else:
-						updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
-						aline = aline.replace(aline.split()[1],str(updatedPos))
-						if str(aline.split()[1]) not in varPos:
-							filehandle.write(aline)
-							varPos.append(str(aline.split()[1]))
-			else: 
-				(filehandle.write(aline))
-	return(True)
+    varPos =list()	
+    with open(outfile, 'w') as filehandle:
+	    for i in range(len(vcfLines)):
+		    aline = vcfLines[i]
+		    if (aline[0:4] == 'gnl|'):
+			    aline = aline.replace('|DupConc', '')
+			    if (aline.split("\t")[3] != 'N'):
+				    if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1]) ):
+					    filehandle.write(aline)
+				    else:
+					    updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
+					    aline = aline.replace(aline.split()[1],str(updatedPos))
+					    if str(aline.split()[1]) not in varPos:
+						    filehandle.write(aline)
+						    varPos.append(str(aline.split()[1]))
+		    else: 
+			    (filehandle.write(aline))
+    return(True)
 
 def test_cleanvcf(vcfFile):
 
@@ -503,30 +502,30 @@ def test_cleanvcf(vcfFile):
 	    
 	"""
 
-	vcfile = open(vcfFile, "r")
-	vcfLines = vcfile.readlines()
+    vcfile = open(vcfFile, "r")
+    vcfLines = vcfile.readlines()
 
-	gnLengths = dict()
-	for line in vcfLines:
-		if "##contig=<ID" in line:
-			x = line.split(',')
-			for term in x:
-				if ("length" in term)==True:
-					gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
+    gnLengths = dict()
+    for line in vcfLines:
+	    if "##contig=<ID" in line:
+		    x = line.split(',')
+		    for term in x:
+			    if ("length" in term)==True:
+				    gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
 
-	varPos =list()	
-	for i in range(len(vcfLines)):
-		aline = vcfLines[i]
-		if (aline[0:4] == 'gnl|'):
+    varPos =list()	
+    for i in range(len(vcfLines)):
+	    aline = vcfLines[i]
+	    if (aline[0:4] == 'gnl|'):
 			
-			if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1])):
-				varPos.append(str(aline.split()[1]))
-			else:
-				updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
-				if str(aline.split()[1]) not in varPos:
-					varPos.append(str(aline.split()[1]))
+		    if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1])):
+			    varPos.append(str(aline.split()[1]))
+		    else:
+			    updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
+			    if str(aline.split()[1]) not in varPos:
+				    varPos.append(str(aline.split()[1]))
 
-	return(varPos)
+    return(varPos)
 
 def set_samp_anno(perform_sim):
 
@@ -535,20 +534,20 @@ def set_samp_anno(perform_sim):
     simulated data, as specified by the 'do_sim' config 
     parameter"""
 
-	if config['doSim'] == True:
-		if perform_sim == True:
-			sample_annotation = config['sample_annotation_sm']
-			genomeId = config['genomeId']
-			sampNum = config['sampNum']
-			pairedEndDist = config['pairedEndDist']
-			readLen = config['readLen']
-			mt = config['mt']
-			mp = config['mp']
-			mtPos = config['mtPos']
+    if config['doSim'] == True:
+	    if perform_sim == True:
+		    sample_annotation = config['sample_annotation_sm']
+		    genomeId = config['genomeId']
+		    sampNum = config['sampNum']
+		    pairedEndDist = config['pairedEndDist']
+		    readLen = config['readLen']
+		    mt = config['mt']
+		    mp = config['mp']
+		    mtPos = config['mtPos']
 
-			stream = os.system ('python RNAsim2/bin/RNAsim.py ' + ' '+" '"+genomeId+"' "+ "' "+sampNum+"' "+" '"+ pairedEndDist+"' "+" '"+ readLen+"' "+" '"+ mt+"' "+" '"+ mp+"' "+" '"+ mtPos+"' ")
-		return(config['sample_annotation_sm'])
-	else:
-		return(config['sample_annotation'])
+		    stream = os.system ('python RNAsim2/bin/RNAsim.py ' + ' '+" '"+genomeId+"' "+ "' "+sampNum+"' "+" '"+ pairedEndDist+"' "+" '"+ readLen+"' "+" '"+ mt+"' "+" '"+ mp+"' "+" '"+ mtPos+"' ")
+	    return(config['sample_annotation_sm'])
+    else:
+	    return(config['sample_annotation'])
 
 

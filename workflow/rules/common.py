@@ -465,7 +465,7 @@ def vcfClean(vcfFile, outfile):
      gnLengths = dict()
      for line in vcfLines:
 	     if "##contig=<ID" in line:
-		     x = line.split(',')
+		    x = line.split(',')
 		    for term in x:
 			    if ("length" in term)==True:
 				    gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]

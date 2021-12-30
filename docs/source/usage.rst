@@ -10,7 +10,6 @@ Common:
 .. autofunction:: common.collect_gene_coverage
 .. autofunction:: common.dedup_file
 .. autofunction:: common.get_infref_acc
-.. autofunction:: common.get_infref_acc
 .. autofunction:: common.get_infref_gb_acc
 .. autofunction:: common.download_gb
 .. autofunction:: common.write_seq_by_acc

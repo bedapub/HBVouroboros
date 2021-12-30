@@ -443,111 +443,113 @@ def split_FASTA(infile, outdir=None, prefix=''):
 ## TODO: Milad (1) refactor the code, and (2) document the functions
 def vcfClean(vcfFile, outfile):
 
-     """ 
-     This function corrects the positions where 
-     variation has been called past the original 
-     length of the genome (within the duplicated genome).
-     It removes such entries from the vcf file. In case 
-     a variation is called within the duplicated region 
-     and not in the original position, an entry for the
-     original position is added to the file. Furtheremore
-     it removes the 'Dupconc' substring from the genome name
-     as well as enteries with reference "N". 
-     Args:
-         vcfFile(str, byte or os.PathLike): A vcf output of the variant clling piepline.
-     Returns:
-	 bool: If function ran succefully. 
+	""" This function corrects the positions where
+	variation has been called past the original 
+	length of the genome (within the duplicated genome).
+	It removes such entries from the vcf file. In case
+	a variation is called within the duplicated region 
+	and not in the original position, an entry for the
+	original position is added to the file. Furtheremore
+        it removes the 'Dupconc' substring from the genome name
+        as well as enteries with reference "N". 
+	    
+	Args:
+		vcfFile(str, byte or os.PathLike): A vcf output of the variant clling piepline.
+	Returns:
+		bool: If function ran succefully. 
 	    
 	"""
-     vcfile = open(vcfFile, "r")
-     vcfLines = vcfile.readlines()
 
-     gnLengths = dict()
-     for line in vcfLines:
-	     if "##contig=<ID" in line:
-		    x = line.split(',')
-		    for term in x:
-			    if ("length" in term)==True:
-				    gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
+	vcfile = open(vcfFile, "r")
+	vcfLines = vcfile.readlines()
 
-    varPos =list()	
-    with open(outfile, 'w') as filehandle:
-	    for i in range(len(vcfLines)):
-		    aline = vcfLines[i]
-		    if (aline[0:4] == 'gnl|'):
-			    aline = aline.replace('|DupConc', '')
-			    if (aline.split("\t")[3] != 'N'):
-				    if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1]) ):
-					    filehandle.write(aline)
-				    else:
-					    updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
-					    aline = aline.replace(aline.split()[1],str(updatedPos))
-					    if str(aline.split()[1]) not in varPos:
-						    filehandle.write(aline)
-						    varPos.append(str(aline.split()[1]))
-		    else: 
-			    (filehandle.write(aline))
-    return(True)
+	gnLengths = dict()
+	for line in vcfLines:
+		if "##contig=<ID" in line:
+			x = line.split(',')
+			for term in x:
+				if ("length" in term)==True:
+					gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
+
+	varPos =list()	
+	with open(outfile, 'w') as filehandle:
+		for i in range(len(vcfLines)):
+			aline = vcfLines[i]
+			if (aline[0:4] == 'gnl|'):
+				aline = aline.replace('|DupConc', '')
+				if (aline.split("\t")[3] != 'N'):
+					if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1]) ):
+						filehandle.write(aline)
+					else:
+						updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
+						aline = aline.replace(aline.split()[1],str(updatedPos))
+						if str(aline.split()[1]) not in varPos:
+							filehandle.write(aline)
+							varPos.append(str(aline.split()[1]))
+			else: 
+				(filehandle.write(aline))
+	return(True)
 
 def test_cleanvcf(vcfFile):
 
-    """ This function is used by pytest only. It takes a
-    final vcf output of the variant calling pipeline 
-    and returns all the positions where variation has 
-    been called within the file. 
-    Args:
-        vcfFile(str, byte or os.PathLike): A vcf output of the variant calling piepline.
-    Returns:
-        varPos(list(int)): A list of positions where variation has been detected. 
+	""" This function is used by pytest only. It takes a
+	final vcf output of the variant calling pipeline 
+	and returns all the positions where variation has 
+	ben called within the file. 
+	
+	Args:
+		vcfFile(str, byte or os.PathLike): A vcf output of the variant calling piepline.
+	Returns:
+		varPos(list(int)): A list of positions where variation has been detected. 
 	    
 	"""
 
-    vcfile = open(vcfFile, "r")
-    vcfLines = vcfile.readlines()
+	vcfile = open(vcfFile, "r")
+	vcfLines = vcfile.readlines()
 
-    gnLengths = dict()
-    for line in vcfLines:
-	    if "##contig=<ID" in line:
-		    x = line.split(',')
-		    for term in x:
-			    if ("length" in term)==True:
-				    gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
+	gnLengths = dict()
+	for line in vcfLines:
+		if "##contig=<ID" in line:
+			x = line.split(',')
+			for term in x:
+				if ("length" in term)==True:
+					gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
 
-    varPos =list()	
-    for i in range(len(vcfLines)):
-	    aline = vcfLines[i]
-	    if (aline[0:4] == 'gnl|'):
+	varPos =list()	
+	for i in range(len(vcfLines)):
+		aline = vcfLines[i]
+		if (aline[0:4] == 'gnl|'):
 			
-		    if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1])):
-			    varPos.append(str(aline.split()[1]))
-		    else:
-			    updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
-			    if str(aline.split()[1]) not in varPos:
-				    varPos.append(str(aline.split()[1]))
+			if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1])):
+				varPos.append(str(aline.split()[1]))
+			else:
+				updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
+				if str(aline.split()[1]) not in varPos:
+					varPos.append(str(aline.split()[1]))
 
-    return(varPos)
+	return(varPos)
 
 def set_samp_anno(perform_sim):
 
-    """Sets the appropriate smaples annotation file
-    based on whether the pipeline is to be run with 
-    simulated data, as specified by the 'do_sim' config 
-    parameter"""
+	"""Sets the appropriate smaples annotation file
+	based on whether the pipeline is to be run with 
+	simulated data, as specified by the 'do_sim' config 
+	parameter"""
 
-    if config['doSim'] == True:
-	    if perform_sim == True:
-		    sample_annotation = config['sample_annotation_sm']
-		    genomeId = config['genomeId']
-		    sampNum = config['sampNum']
-		    pairedEndDist = config['pairedEndDist']
-		    readLen = config['readLen']
-		    mt = config['mt']
-		    mp = config['mp']
-		    mtPos = config['mtPos']
+	if config['doSim'] == True:
+		if perform_sim == True:
+			sample_annotation = config['sample_annotation_sm']
+			genomeId = config['genomeId']
+			sampNum = config['sampNum']
+			pairedEndDist = config['pairedEndDist']
+			readLen = config['readLen']
+			mt = config['mt']
+			mp = config['mp']
+			mtPos = config['mtPos']
 
-		    stream = os.system ('python RNAsim2/bin/RNAsim.py ' + ' '+" '"+genomeId+"' "+ "' "+sampNum+"' "+" '"+ pairedEndDist+"' "+" '"+ readLen+"' "+" '"+ mt+"' "+" '"+ mp+"' "+" '"+ mtPos+"' ")
-	    return(config['sample_annotation_sm'])
-    else:
-	    return(config['sample_annotation'])
+			stream = os.system ('python RNAsim2/bin/RNAsim.py ' + ' '+" '"+genomeId+"' "+ "' "+sampNum+"' "+" '"+ pairedEndDist+"' "+" '"+ readLen+"' "+" '"+ mt+"' "+" '"+ mp+"' "+" '"+ mtPos+"' ")
+		return(config['sample_annotation_sm'])
+	else:
+		return(config['sample_annotation'])
 
 

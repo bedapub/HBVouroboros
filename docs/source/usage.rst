@@ -2,7 +2,7 @@
 Usage
 ------------
 
-Common:
+Common
 ==================
 
 .. autofunction:: common.biokit_sample_annotation_filename
@@ -26,7 +26,8 @@ Common:
 .. autofunction:: common.test_cleanvcf
 .. autofunction:: common.set_samp_anno
 
-
+Common
+==================
 
 
 

@@ -96,17 +96,20 @@ def test_snakemake_output_files():
 
     #CDS coverage, gene coverage, depth and count files
     assert os.path.exists('results/coverage/infref_genome_CDS_coverage.gct') == 1
-    assert os.path.exists('results/coverage/infref_genome_count.tsv') == 1
-    assert os.path.exists('results/coverage/infref_genome_depth.tsv') == 1
-    assert os.path.exists('results/coverage/infref_genome_gene_coverage.gct') == 1
-    assert os.path.exists('results/coverage/inpt_genome_CDS_coverage.gct') == 1
-    assert os.path.exists('results/coverage/inpt_genome_count.tsv') == 1
-    assert os.path.exists('results/coverage/inpt_genome_depth.tsv') == 1
-    assert os.path.exists('results/coverage/inpt_genome_gene_coverage.gct') == 1
+    assert os.path.exists('results/coverage/infref/infref_genome_count.tsv') == 1
+    assert os.path.exists('results/coverage/infref/infref_genome_depth.tsv') == 1
+    assert os.path.exists('results/coverage/infref/infref_genome_gene_coverage.gct') == 1
+    assert os.path.exists('results/coverage/inpt/inpt_genome_CDS_coverage.gct') == 1
+    assert os.path.exists('results/coverage/inpt/inpt_genome_count.tsv') == 1
+    assert os.path.exists('results/coverage/inpt/inpt_genome_depth.tsv') == 1
+    assert os.path.exists('results/coverage/inpt/inpt_genome_gene_coverage.gct') == 1
     assert os.path.exists('results/coverage/simSample1/infref_genome_gene_coverage.gct') == 1
     assert os.path.exists('results/coverage/simSample1/infref_genome_CDS_coverage.gct') == 1
-    assert os.path.exists('results/coverage/simSample2/infref_genome_gene_coverage.gct') == 1
+    assert os.path.exists('results/coverage/simSample2/infref_genome_depth_mean.tsv') == 1
     assert os.path.exists('results/coverage/simSample2/infref_genome_CDS_coverage.gct') == 1
+    assert os.path.exists('results/coverage/infref/infref_genome_gene_coverage.gct') == 1
+    assert os.path.exists('results/coverage/infref/infref_genome_depth_mqc.png') == 1
+    
 
     #Variant calling files
     assert os.path.exists('results/variant-calling/infref/infref_simSample1.vcf') == 1

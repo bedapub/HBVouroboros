@@ -6,7 +6,7 @@ args <- commandArgs(trailingOnly=TRUE)
 dd = as.data.frame(fread(args[1]))
 opts = colnames(dd)
 refgenome = strsplit(dd$`#CHROM`[1], split='\\|')[[1]][3]
-png(file = "results/coverage/infref_genome_depth_mqc.png",
+png(file = args[3],
     width = 1500, height = 420*(as.integer(ncol(dd)/3)+1))
 par(mfrow=c(as.integer(ncol(dd)/3)+1,3))
 for (i in 3: ncol(dd)){

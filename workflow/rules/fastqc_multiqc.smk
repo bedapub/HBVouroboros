@@ -46,20 +46,20 @@ rule covplot:
         "results/coverage/{inpt}/{inpt}_genome_depth.tsv"
     output:
         done=temp("results/coverage/{inpt}/{inpt}_genome_depth.done"),
-        mean="results/coverage/{inpt}/{inpt}_genome_depth_mean.tsv"
+        mean="results/coverage/{inpt}/{inpt}_genome_depth_mean.tsv", 
+        pngf="results/coverage/{inpt}/{inpt}_genome_depth_mqc.png"
     conda:
         "../envs/covplot.yaml"
     envmodules:
         "R"
     shell:
-        "Rscript workflow/Rplots.R {input} {output.mean}; touch {output.done}"
+        "Rscript workflow/Rplots.R {input} {output.mean} {output.pngf}; touch {output.done}"
 
 
 rule multiqc_inf:
     input:
         expand("results/fastqc/{sample}.fastqc.done",sample = samples),
         expand("results/infref_bam/infref_{sample}.sorted.bam.bai",sample = samples),
-        "results/coverage/infref/infref_genome_depth.done"
     output:
         "results/multiqc/infref/infref_multiqc_report.html"
     shell:
@@ -69,7 +69,6 @@ rule multiqc_inpt:
     input:
         expand("results/fastqc/{sample}.fastqc.done",sample = samples),
         expand("results/inpt_bam/inpt_{sample}.sorted.bam.bai",sample = samples),
-        "results/coverage/inpt/inpt_genome_depth.done"
     output:
         "results/multiqc/inpt/inpt_multiqc_report.html"
     shell:

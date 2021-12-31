@@ -13,6 +13,8 @@ trimmomatic_steps: 'LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:35 CROP:140
 ## Input ref strain
 doInputRef: True
 inputRef: 'gnl|hbvnuc|AB064313_FT00000_C-G'
+
+## run the analysis per-sample
 doPerSamp: True
 
 ## RNA simulation paramterts

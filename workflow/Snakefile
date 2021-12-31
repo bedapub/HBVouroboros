@@ -16,31 +16,40 @@ samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 
 rule_all_input_list.extend(["results/stats/samples.mapping.flagstat",
-                "results/coverage/infref_genome_count.tsv",
-                "results/coverage/infref_genome_depth.tsv",
-                "results/coverage/infref_genome_gene_coverage.gct",
-	        "results/coverage/infref_genome_CDS_coverage.gct",
+                "results/infref/infref_strain_dup.fasta",
+                "results/coverage/infref/infref_genome_count.tsv",
+                "results/coverage/infref/infref_genome_depth.tsv",
+                "results/coverage/infref/infref_genome_gene_coverage.gct",
+	        "results/coverage/infref/infref_genome_CDS_coverage.gct",
                 expand("results/variant-calling/infref/infref_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
-                #"results/multiqc/multiqc_report.html",
-                #expand("results/variant-calling-AA/{sample}.sorted.sam", sample = samples),
-                "results/infref/infref_strain_dup.fasta"
-                #expand("results/variant-calling-AA/{sample}.sam2AAFreq.done", sample = samples)
+                "results/multiqc/infref/infref_multiqc_report.html",
+                expand("results/variant-calling-AA/infref/infref_{sample}.sorted.sam", sample = samples),
+                expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples),
+
 ])
 
 if config['doInputRef'] == True:
-	rule_all_input_list.extend(["results/coverage/inpt_genome_count.tsv",
-	"results/coverage/inpt_genome_depth.tsv",
-        "results/coverage/inpt_genome_gene_coverage.gct",
-	"results/coverage/inpt_genome_CDS_coverage.gct",
-        expand("results/variant-calling/inpt/inpt_{sample}_cleaned_allelicprimitives.vcf", sample=samples)])
+	rule_all_input_list.extend(["results/coverage/inpt/inpt_genome_count.tsv",
+	"results/coverage/inpt/inpt_genome_depth.tsv",
+        "results/inpt/inpt_strain_dup.fasta",
+        "results/coverage/inpt/inpt_genome_count.tsv",
+        "results/coverage/inpt/inpt_genome_depth.tsv",
+        "results/coverage/inpt/inpt_genome_gene_coverage.gct",
+	"results/coverage/inpt/inpt_genome_CDS_coverage.gct",
+        "results/multiqc/inpt/inpt_multiqc_report.html",
+        expand("results/variant-calling/inpt/inpt_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
+        expand("results/variant-calling-AA/inpt/inpt_{sample}.sorted.sam", sample = samples),
+        expand("results/variant-calling-AA/inpt/inpt_{sample}.sam2AAFreq.done", sample = samples)])
+
 
 if config['doPerSamp'] == True:
 	rule_all_input_list.extend([expand("results/variant-calling/perSamp/{sample}/{sample}_cleaned_allelicprimitives.vcf", sample=samples), 
         expand("results/coverage/{sample}/genome_depth.tsv", sample=samples), 
         expand("results/coverage/{sample}/genome_count.tsv", sample=samples), 
         expand("results/coverage/{sample}/infref_genome_gene_coverage.gct" , sample=samples), 
-        expand("results/coverage/{sample}/infref_genome_CDS_coverage.gct" , sample=samples)])
-
+        expand("results/coverage/{sample}/infref_genome_CDS_coverage.gct" , sample=samples),
+        expand("results/variant-calling-AA/perSamp/{sample}/{sample}.sorted.sam",sample=samples),
+        expand("results/variant-calling-AA/perSamp/{sample}/{sample}.sam2AAFreq.done",sample=samples)])
 
 rule all:
 	input:

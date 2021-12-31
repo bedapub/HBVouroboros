@@ -231,7 +231,7 @@ rule genome_count:
         expand("results/{{inpt}}_bam/{{inpt}}_{sample}.sorted.bam.stat",
                sample=samples)
     output:
-        "results/coverage/{inpt}_genome_count.tsv"
+        "results/coverage/{inpt}/{inpt}_genome_count.tsv"
     shell:
          "echo -e 'ID\tcoverage' > {output}; "
          "grep -H '^SN' {input} | \
@@ -250,16 +250,16 @@ rule dupconc_depth:
         bai = expand("results/{{inpt}}_bam/{{inpt}}_{sample}.sorted.bam.bai",
                      sample=samples)
     output:
-        temp("results/coverage/{inpt}_genome_dupconc_depth.tsv")
+        temp("results/coverage/{inpt}/{inpt}_genome_dupconc_depth.tsv")
     shell:
         "samtools depth -a -H -d 0 {input.bam} -o {output} "
 
 
 rule depth:
     input:
-       "results/coverage/{inpt}_genome_dupconc_depth.tsv"
+       "results/coverage/{inpt}/{inpt}_genome_dupconc_depth.tsv"
     output:
-       "results/coverage/{inpt}_genome_depth.tsv"
+       "results/coverage/{inpt}/{inpt}_genome_depth.tsv"
     run:
        dedup_file(input[0], output[0])
        dedup_file(input[0], output[0])
@@ -281,7 +281,7 @@ rule individual_coverage:
         bai = "results/{inpt}_bam/{inpt}_{sample}.sorted.bam.bai",
         gff = "results/{inpt}/{inpt}_strain_dup.gff"
     output:
-        temp("results/coverage/{inpt}_genome_{sample}_feature_coverage.tsv")
+        temp("results/coverage/{inpt}/{inpt}_genome_{sample}_feature_coverage.tsv")
     shell:
         "coverageBed -counts -a {input.gff} -b {input.bam} > {output}"
 
@@ -289,19 +289,19 @@ rule individual_coverage:
 rule gene_coverage_infref:
      input:
         expand(
-          "results/coverage/infref_genome_{sample}_feature_coverage.tsv",
+          "results/coverage/infref/infref_genome_{sample}_feature_coverage.tsv",
           sample=samples)
      output:
-          "results/coverage/infref_genome_gene_coverage.gct"
+          "results/coverage/infref/infref_genome_gene_coverage.gct"
      run:
         collect_gene_coverage(input, output[0], feat_type='gene')
 
 
 rule CDS_coverage_infref:
      input:
-          expand("results/coverage/infref_genome_{sample}_feature_coverage.tsv", sample=samples)
+          expand("results/coverage/infref/infref_genome_{sample}_feature_coverage.tsv", sample=samples)
      output:
-          "results/coverage/infref_genome_CDS_coverage.gct"
+          "results/coverage/infref/infref_genome_CDS_coverage.gct"
      run:
           collect_gene_coverage(input, output[0], feat_type='CDS')
 
@@ -347,18 +347,18 @@ rule ref_strain_gb2gff_inpt:
 
 rule gene_coverage_inpt:
      	input:
-          	expand("results/coverage/inpt_genome_{sample}_feature_coverage.tsv", sample=samples)
+          	expand("results/coverage/inpt/inpt_genome_{sample}_feature_coverage.tsv", sample=samples)
      	output:
-          	"results/coverage/inpt_genome_gene_coverage.gct"
+          	"results/coverage/inpt/inpt_genome_gene_coverage.gct"
      	run:
         	collect_gene_coverage(input, output[0], feat_type='gene')
 
 
 rule CDS_coverage_inpt:
      	input:
-        	expand("results/coverage/inpt_genome_{sample}_feature_coverage.tsv",sample=samples)
+        	expand("results/coverage/inpt/inpt_genome_{sample}_feature_coverage.tsv",sample=samples)
      	output:
-          	"results/coverage/inpt_genome_CDS_coverage.gct"
+          	"results/coverage/inpt/inpt_genome_CDS_coverage.gct"
      	run:
           	collect_gene_coverage(input, output[0], feat_type='CDS')
 

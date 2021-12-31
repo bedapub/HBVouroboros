@@ -2,7 +2,7 @@
 Usage
 ------------
 
-Common
+common.py
 ==================
 
 .. autofunction:: common.biokit_sample_annotation_filename
@@ -26,8 +26,15 @@ Common
 .. autofunction:: common.test_cleanvcf
 .. autofunction:: common.set_samp_anno
 
-Common
+RNAsim.py
 ==================
+
+.. autofunction:: RNAsim.dup_and_conc
+.. autofunction:: RNAsim.point_mutate
+.. autofunction:: RNAsim.create_readPairs
+
+
+
 
 
 

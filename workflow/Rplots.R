@@ -1,6 +1,9 @@
 rm(list = ls())
 library(data.table)
-dd = as.data.frame(fread("results/coverage/infref_genome_depth.tsv"))
+
+args <- commandArgs(trailingOnly=TRUE)
+
+dd = as.data.frame(fread(args[1]))
 opts = colnames(dd)
 refgenome = strsplit(dd$`#CHROM`[1], split='\\|')[[1]][3]
 png(file = "results/coverage/infref_genome_depth_mqc.png",
@@ -23,5 +26,5 @@ dev.off()
 cov.mean = colMeans(dd[,-1:-2])
 cov.mean = as.data.frame(cov.mean)
 write.table(cov.mean,
-	    file = "results/coverage/infref_genome_depth_mean.tsv",
+	    file = args[2],
 	    quote = F,sep = "\t",row.names = T,col.names = F)

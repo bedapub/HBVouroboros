@@ -20,7 +20,7 @@ Features
 Contribute
 ----------
 
-- Source code:
+- Source code: https://github.com/bedapub/HBVouroboros
 - Issue tracker:
 
 Support

@@ -26,6 +26,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'workflow/rules')))
+sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'RNAsim2/bin')))
 sys.path.insert(0, os.path.abspath('./../..'))
 
 # -- General configuration ------------------------------------------------

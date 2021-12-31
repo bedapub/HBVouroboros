@@ -42,7 +42,7 @@ aa2indexDic = build_aa2indexMap(uniq_aa_seq)
 uniq_aa_num = len(uniq_aa_seq)
 
 # read reference genome
-ref_file = 'results/infref/infref_strain_dup.fasta'
+ref_file = sys.argv[2]
 ref_id_list, ref_seq_list = parse_multi_seq_fa(ref_file)
 ref_id = ref_id_list[0]
 ref_seq = ref_seq_list[0]

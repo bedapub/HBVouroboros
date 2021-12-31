@@ -15,13 +15,13 @@ sample_annotation = config['sample_annotation']
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 fastqc_dir = "results/fastqc/"
-multiqc_dir = "results/multiqc/"
-bam_dir = "results/infref_bam/"
+bam_dir_infref = "results/infref_bam/"
+bam_dir_inpt = "results/inpt_bam/"
 
 rule qc:
     input:
         expand("results/fastqc/{sample}.fastqc.done", sample = samples),
-        "results/coverage/infref_genome_depth.done",
+        "results/coverage/{inpt}/{inpt}_genome_depth.done",
         "results/multiqc/multiqc_report.html"
 
 rule fastqc:
@@ -31,34 +31,46 @@ rule fastqc:
     output:
         "results/fastqc/{sample}.fastqc.done"
     shell:
-        "fastqc -o {fastqc_dir} {input.f1} {input.f2}; touch {output}"
+        "fastqc -o results/fastqc/ {input.f1} {input.f2}; touch {output}"
 
 rule qualimap:
     input:
-        "results/infref_bam/{sample}.sorted.bam"
+        "results/{inpt}_bam/{inpt}_{sample}.sorted.bam"
     output:
-        temp("results/infref_bam/bamqc/{sample}.bamqc.done")
+        temp("results/{inpt}_bam/bamqc/{sample}.bamqc.done")
     shell:
         "qualimap bamqc -bam {input} -c -nw 400 -hm 3 ; touch {output}"
 
 rule covplot:
     input:
-        "results/coverage/infref_genome_depth.tsv"
+        "results/coverage/{inpt}/{inpt}_genome_depth.tsv"
     output:
-        temp("results/coverage/infref_genome_depth.done")
+        done=temp("results/coverage/{inpt}/{inpt}_genome_depth.done"),
+        mean="results/coverage/{inpt}/{inpt}_genome_depth_mean.tsv"
     conda:
         "../envs/covplot.yaml"
     envmodules:
         "R"
     shell:
-        "Rscript workflow/Rplots.R ; touch {output}"
+        "Rscript workflow/Rplots.R {input} {output.mean}; touch {output.done}"
 
-rule multiqc:
+
+rule multiqc_inf:
     input:
         expand("results/fastqc/{sample}.fastqc.done",sample = samples),
         expand("results/infref_bam/infref_{sample}.sorted.bam.bai",sample = samples),
-        "results/coverage/infref_genome_depth.done"
+        "results/coverage/infref/infref_genome_depth.done"
     output:
-        "results/multiqc/multiqc_report.html"
+        "results/multiqc/infref/infref_multiqc_report.html"
     shell:
-        "multiqc {fastqc_dir} {bam_dir} results/coverage/ -o {multiqc_dir}"
+        "multiqc {fastqc_dir} {bam_dir_infref} results/coverage/infref  --filename 'infref_multiqc_report.html' -o results/multiqc/infref"
+
+rule multiqc_inpt:
+    input:
+        expand("results/fastqc/{sample}.fastqc.done",sample = samples),
+        expand("results/inpt_bam/inpt_{sample}.sorted.bam.bai",sample = samples),
+        "results/coverage/inpt/inpt_genome_depth.done"
+    output:
+        "results/multiqc/inpt/inpt_multiqc_report.html"
+    shell:
+        "multiqc {fastqc_dir} {bam_dir_inpt} results/coverage/inpt  --filename 'inpt_multiqc_report.html' -o results/multiqc/inpt"

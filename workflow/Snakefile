@@ -4,7 +4,7 @@ include: "rules/common.py"
 include: "rules/build_refgenomes.smk"
 include: "rules/align_reads.smk"
 include: "rules/freebayes_vc.smk"
-#include: "rules/fastqc_multiqc.smk"
+include: "rules/fastqc_multiqc.smk"
 include: "rules/AA_vc.smk"
 
 # organization of configuration

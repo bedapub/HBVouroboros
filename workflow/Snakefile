@@ -24,8 +24,8 @@ rule_all_input_list.extend(["results/stats/samples.mapping.flagstat",
                 #"results/coverage/infref/infref_genome_depth_mqc.png",
                 expand("results/variant-calling/infref/infref_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
                 #"results/multiqc/infref/infref_multiqc_report.html",
-                #expand("results/variant-calling-AA/infref/infref_{sample}.sorted.sam", sample = samples),
-                #expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples),
+                expand("results/variant-calling-AA/infref/infref_{sample}.sorted.sam", sample = samples),
+                expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples),
 
 ])
 

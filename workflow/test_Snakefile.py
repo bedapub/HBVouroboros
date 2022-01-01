@@ -114,22 +114,22 @@ def test_snakemake_output_files():
     #Variant calling files
     assert os.path.exists('results/variant-calling/infref/infref_simSample1.vcf') == 1
     assert os.path.exists('results/variant-calling/infref/infref_simSample2.vcf') == 1
-    assert os.path.exists('results/variant-calling/infref/infref_simSample1_cleaned_allelicprimitives.vcf"') == 1
-    assert os.path.exists('results/variant-calling/infref/infref_simSample2_cleaned_allelicprimitives.vcf"') == 1
+    assert os.path.exists('results/variant-calling/infref/infref_simSample1_cleaned_allelicprimitives.vcf') == 1
+    assert os.path.exists('results/variant-calling/infref/infref_simSample2_cleaned_allelicprimitives.vcf') == 1
     assert os.path.exists('results/variant-calling/inpt/inpt_simSample1.vcf') == 1
     assert os.path.exists('results/variant-calling/inpt/inpt_simSample2.vcf') == 1
-    assert os.path.exists('results/variant-calling/inpt/infref_simSample2_cleaned_allelicprimitives.vcf.vcf') == 1
-    assert os.path.exists('results/variant-calling/inpt/iinfref_simSample2_cleaned_allelicprimitives.vcf.vcf') == 1
+    assert os.path.exists('results/variant-calling/inpt/inpt_simSample2_cleaned_allelicprimitives.vcf') == 1
+    assert os.path.exists('results/variant-calling/inpt/inpt_simSample2_cleaned_allelicprimitives.vcf') == 1
     assert os.path.exists('results/variant-calling/perSamp/simSample1/simSample1.vcf') == 1
-    assert os.path.exists('results/variant-calling/perSamp/simSample1/_cleaned_allelicprimitives.vcf') == 1
+    assert os.path.exists('results/variant-calling/perSamp/simSample1/simSample1_cleaned_allelicprimitives.vcf') == 1
     assert os.path.exists('results/variant-calling/perSamp/simSample2/simSample2.vcf') == 1
-    assert os.path.exists('results/variant-calling/perSamp/simSample2/_cleaned_allelicprimitives.vcf') == 1
+    assert os.path.exists('results/variant-calling/perSamp/simSample2/simSample2_cleaned_allelicprimitives.vcf') == 1
 
 def test_snakemake_variant_calling_results():
 
     #Check whether the correct variations have been detected for  the smaples
 
-    simSample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_simSample1_cleaned.vcf')
-    simSample2_var = common.test_cleanvcf('results/variant-calling/inpt/inpt_simSample2_cleaned.vcf')
+    simSample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_simSample1_cleaned_allelicprimitives.vcf.vcf')
+    simSample2_var = common.test_cleanvcf('results/variant-calling/inptinpt_simSample2_cleaned_allelicprimitives.vcf')
     assert simSample1_var == ['100', '1000']
     assert simSample2_var == ['200', '2000']

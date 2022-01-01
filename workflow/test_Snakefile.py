@@ -95,7 +95,7 @@ def test_snakemake_output_files():
     assert os.path.exists('results/stats/simSample2.sorted.bam.flagstat') == 1	
 
     #CDS coverage, gene coverage, depth and count files
-    assert os.path.exists('results/coverage/infref_genome_CDS_coverage.gct') == 1
+    assert os.path.exists('results/coverage/infref/infref_genome_CDS_coverage.gct') == 1
     assert os.path.exists('results/coverage/infref/infref_genome_count.tsv') == 1
     assert os.path.exists('results/coverage/infref/infref_genome_depth.tsv') == 1
     assert os.path.exists('results/coverage/infref/infref_genome_gene_coverage.gct') == 1

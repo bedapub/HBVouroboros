@@ -129,7 +129,7 @@ def test_snakemake_variant_calling_results():
 
     #Check whether the correct variations have been detected for  the smaples
 
-    simSample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_simSample1_cleaned_allelicprimitives.vcf.vcf')
+    simSample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_simSample1_cleaned_allelicprimitives.vcf')
     simSample2_var = common.test_cleanvcf('results/variant-calling/inptinpt_simSample2_cleaned_allelicprimitives.vcf')
     assert simSample1_var == ['100', '1000']
     assert simSample2_var == ['200', '2000']

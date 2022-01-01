@@ -120,6 +120,8 @@ def test_snakemake_output_files():
     assert os.path.exists('results/variant-calling/inpt/inpt_simSample2.vcf') == 1
     assert os.path.exists('results/variant-calling/inpt/inpt_simSample2_cleaned_allelicprimitives.vcf') == 1
     assert os.path.exists('results/variant-calling/inpt/inpt_simSample2_cleaned_allelicprimitives.vcf') == 1
+    assert os.path.exists('results/variant-calling/inpt/infref_simSample2_cleaned_allelicprimitives.vcf') == 1
+    assert os.path.exists('results/variant-calling/inpt/iinfref_simSample2_cleaned_allelicprimitives.vcf') == 1
     assert os.path.exists('results/variant-calling/perSamp/simSample1/simSample1.vcf') == 1
     assert os.path.exists('results/variant-calling/perSamp/simSample1/simSample1_cleaned_allelicprimitives.vcf') == 1
     assert os.path.exists('results/variant-calling/perSamp/simSample2/simSample2.vcf') == 1

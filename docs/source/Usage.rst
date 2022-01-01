@@ -2,7 +2,7 @@
 Usage
 ------------
 
-common.py
+common
 ==================
 
 .. automodule:: common
@@ -12,14 +12,10 @@ common.py
 
 
 
-RNAsim.py
+RNAsim
 ==================
 
 .. automodule:: RNAsim
    :members:
-
-
-
-
 
 

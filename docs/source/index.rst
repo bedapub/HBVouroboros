@@ -51,7 +51,10 @@ Contents
 
 .. toctree::
 
-   usage
+   Tutorial
+   Usage
+   
+   
 
 
 

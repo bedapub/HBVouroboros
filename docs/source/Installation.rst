@@ -1,6 +1,5 @@
-============
 Installation
-============
+------------
 
 Install HBVouroboros with git::
 

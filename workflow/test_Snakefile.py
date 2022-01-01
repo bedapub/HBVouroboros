@@ -105,7 +105,7 @@ def test_snakemake_output_files():
     assert os.path.exists('results/coverage/inpt/inpt_genome_gene_coverage.gct') == 1
     assert os.path.exists('results/coverage/simSample1/infref_genome_gene_coverage.gct') == 1
     assert os.path.exists('results/coverage/simSample1/infref_genome_CDS_coverage.gct') == 1
-    assert os.path.exists('results/coverage/simSample2/infref_genome_depth_mean.tsv') == 1
+    assert os.path.exists('results/coverage/infref/infref_genome_depth_mean.tsv') == 1
     assert os.path.exists('results/coverage/simSample2/infref_genome_CDS_coverage.gct') == 1
     assert os.path.exists('results/coverage/infref/infref_genome_gene_coverage.gct') == 1
     assert os.path.exists('results/coverage/infref/infref_genome_depth_mqc.png') == 1
@@ -130,6 +130,6 @@ def test_snakemake_variant_calling_results():
     #Check whether the correct variations have been detected for  the smaples
 
     simSample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_simSample1_cleaned_allelicprimitives.vcf')
-    simSample2_var = common.test_cleanvcf('results/variant-calling/inptinpt_simSample2_cleaned_allelicprimitives.vcf')
+    simSample2_var = common.test_cleanvcf('results/variant-calling/inpt/inpt_simSample2_cleaned_allelicprimitives.vcf')
     assert simSample1_var == ['100', '1000']
     assert simSample2_var == ['200', '2000']

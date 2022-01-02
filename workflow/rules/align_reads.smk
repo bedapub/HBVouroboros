@@ -573,7 +573,7 @@ rule gene_coverage_perSamp:
      	input:
           	"results/coverage/{sample}/genome_feature_coverage.tsv"
      	output:
-          	"results/coverage/{sample}/infref_genome_gene_coverage.gct"
+          	"results/coverage/{sample}/genome_gene_coverage.gct"
      	run:
         	collect_gene_coverage(input, output[0], feat_type='gene')
 
@@ -582,7 +582,7 @@ rule CDS_coverage_perSamp:
      	input:
         	"results/coverage/{sample}/genome_feature_coverage.tsv"
      	output:
-          	"results/coverage/{sample}/infref_genome_CDS_coverage.gct"
+          	"results/coverage/{sample}/genome_CDS_coverage.gct"
      	run:
           	collect_gene_coverage(input, output[0], feat_type='CDS')
 

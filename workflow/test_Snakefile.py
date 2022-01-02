@@ -9,11 +9,11 @@ from subprocess import Popen, PIPE, STDOUT
 sys.path.insert(0, 'workflow/rules/')
 import common
 
-#include: "rules/common.py"
+#This test is set to pass with the default setting of the config/config.yaml file
 
 def test_snakemake_output_files():
     #Run the pipeline
-    p= Popen('snakemake --cores 20 --use-conda --latency-wait 900', shell=True, stdout= PIPE, stderr= STDOUT)
+    p= Popen('snakemake --cores 10 --use-conda --latency-wait 900', shell=True, stdout= PIPE, stderr= STDOUT)
     pout= p.stdout.read()
     print(pout.decode('utf-8'))
      
@@ -103,13 +103,28 @@ def test_snakemake_output_files():
     assert os.path.exists('results/coverage/inpt/inpt_genome_count.tsv') == 1
     assert os.path.exists('results/coverage/inpt/inpt_genome_depth.tsv') == 1
     assert os.path.exists('results/coverage/inpt/inpt_genome_gene_coverage.gct') == 1
-    assert os.path.exists('results/coverage/simSample1/infref_genome_gene_coverage.gct') == 1
-    assert os.path.exists('results/coverage/simSample1/infref_genome_CDS_coverage.gct') == 1
-    assert os.path.exists('results/coverage/infref/infref_genome_depth_mean.tsv') == 1
-    assert os.path.exists('results/coverage/simSample2/infref_genome_CDS_coverage.gct') == 1
-    assert os.path.exists('results/coverage/infref/infref_genome_gene_coverage.gct') == 1
+
+    assert os.path.exists('results/coverage/simSample1/genome_gene_coverage.gct') == 1
+    assert os.path.exists('results/coverage/simSample1/genome_CDS_coverage.gct') == 1
+    assert os.path.exists('results/coverage/simSample2/genome_gene_coverage.gct') == 1
+    assert os.path.exists('results/coverage/simSample2/genome_CDS_coverage.gct') == 1
+    assert os.path.exists('results/coverage/simSample1/genome_count.tsv') == 1
+    assert os.path.exists('results/coverage/simSample1/genome_depth.tsv') == 1
+    assert os.path.exists('results/coverage/simSample2/genome_count.tsv') == 1
+    assert os.path.exists('results/coverage/simSample2/genome_depth.tsv') == 1
+
     assert os.path.exists('results/coverage/infref/infref_genome_depth_mqc.png') == 1
-    
+    assert os.path.exists('results/coverage/infref/infref_genome_depth_mean.tsv') == 1
+    assert os.path.exists('results/coverage/inpt/inpt_genome_depth_mqc.png') == 1
+    assert os.path.exists('results/coverage/inpt/inpt_genome_depth_mean.tsv') == 1
+
+    #AA Variant calling files
+    assert os.path.exists('results/variant-calling-AA/infref/infref_simSample1.sorted.sam') == 1    
+    assert os.path.exists('results/variant-calling-AA/infref/infref_simSample1.sam2AAFreq.done') == 1
+    assert os.path.exists('results/variant-calling-AA/infref/infref_simSample2.sorted.sam') == 1    
+    assert os.path.exists('results/variant-calling-AA/infref/infref_simSample2.sam2AAFreq.done') == 1
+    assert os.path.exists('results/variant-calling-AA/perSamp/simSample1/simSample1.sorted.sam') == 1
+    assert os.path.exists("results/variant-calling-AA/perSamp/simSample1/simSample1.sam2AAFreq.done") == 1
 
     #Variant calling files
     assert os.path.exists('results/variant-calling/infref/infref_simSample1.vcf') == 1
@@ -118,10 +133,8 @@ def test_snakemake_output_files():
     assert os.path.exists('results/variant-calling/infref/infref_simSample2_cleaned_allelicprimitives.vcf') == 1
     assert os.path.exists('results/variant-calling/inpt/inpt_simSample1.vcf') == 1
     assert os.path.exists('results/variant-calling/inpt/inpt_simSample2.vcf') == 1
+    assert os.path.exists('results/variant-calling/inpt/inpt_simSample1_cleaned_allelicprimitives.vcf') == 1
     assert os.path.exists('results/variant-calling/inpt/inpt_simSample2_cleaned_allelicprimitives.vcf') == 1
-    assert os.path.exists('results/variant-calling/inpt/inpt_simSample2_cleaned_allelicprimitives.vcf') == 1
-    assert os.path.exists('results/variant-calling/inpt/infref_simSample2_cleaned_allelicprimitives.vcf') == 1
-    assert os.path.exists('results/variant-calling/inpt/iinfref_simSample2_cleaned_allelicprimitives.vcf') == 1
     assert os.path.exists('results/variant-calling/perSamp/simSample1/simSample1.vcf') == 1
     assert os.path.exists('results/variant-calling/perSamp/simSample1/simSample1_cleaned_allelicprimitives.vcf') == 1
     assert os.path.exists('results/variant-calling/perSamp/simSample2/simSample2.vcf') == 1

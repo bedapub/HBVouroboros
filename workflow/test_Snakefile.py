@@ -120,11 +120,8 @@ def test_snakemake_output_files():
 
     #AA Variant calling files
     assert os.path.exists('results/variant-calling-AA/infref/infref_simSample1.sorted.sam') == 1    
-    assert os.path.exists('results/variant-calling-AA/infref/infref_simSample1.sam2AAFreq.done') == 1
     assert os.path.exists('results/variant-calling-AA/infref/infref_simSample2.sorted.sam') == 1    
-    assert os.path.exists('results/variant-calling-AA/infref/infref_simSample2.sam2AAFreq.done') == 1
     assert os.path.exists('results/variant-calling-AA/perSamp/simSample1/simSample1.sorted.sam') == 1
-    assert os.path.exists("results/variant-calling-AA/perSamp/simSample1/simSample1.sam2AAFreq.done") == 1
 
     #Variant calling files
     assert os.path.exists('results/variant-calling/infref/infref_simSample1.vcf') == 1

@@ -115,10 +115,6 @@ html_static_path = ['_static']
 autodoc_mock_imports = ["Bio", "BCBio", "pandas"]
 
 
-
-
-
-
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.

@@ -1,21 +1,14 @@
 HBVouroboros
 ============
-*HBVouroboros* automates sequencing-based HBV genotyping and expression quantification.
 
-.. toctree::
-   :maxdepth: 4
+HBVouroboros uses RNA-sequencing reads to infer HBV genotype, quantify HBV transcript expression, and perform genome as well as amino acid variant calling. 
 
-   HBVouroboros
 
 Features
 --------
 
 - Automate majority of tasks for sequencing-based HBV genotyping and expression quantification
-
-.. toctree::
-
-   Installation
-
+- offers three ron-modes, genome inference at the dataset and sample level, as well as dataset-level analysis against an input genotype.
 
 Contribute
 ----------
@@ -39,6 +32,20 @@ The project is licensed under the `GPL-3 license`_.
 
 .. _GPL-3 license: https://www.gnu.org/licenses/gpl-3.0.en.html
 
+
+Contents
+========
+
+.. toctree::
+   :titlesonly: 
+   :maxdepth: 0
+
+   Installation
+   Tutorial
+   RNAsim
+   Usage
+
+
 Indices and tables
 ==================
 
@@ -46,13 +53,8 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-Contents
---------
 
-.. toctree::
 
-   Tutorial
-   Usage
    
    
 

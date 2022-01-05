@@ -19,7 +19,7 @@ doPerSamp: True
 
 ## RNA simulation paramterts
 doSim: False
-sample_annotation_sm: RNAsim2/simSamples/sampleAnnotation
+sample_annotation_sm: RNAsim2/simSmaples/sampleAnnotation
 genomeId: gnl|hbvnuc|GQ924620_FT00000_C-C
 sampNum: "165000"
 pairedEndDist: "250"

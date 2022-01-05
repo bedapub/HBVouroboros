@@ -463,26 +463,33 @@ def vcfClean(vcfFile, outfile):
 
 	vcfile = open(vcfFile, "r")
 	vcfLines = vcfile.readlines()
-
-	gnLengths = dict()
+	#first get genome length
+	gnLength = []
 	for line in vcfLines:
+		#This is the line containing genome length information
 		if "##contig=<ID" in line:
-			x = line.split(',')
-			for term in x:
-				if ("length" in term)==True:
-					gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
+			x = line.split('=')
+			term=x[len(x)-1]
+			print(term)
+			print(x[len(x)-2])
+			#assuming length inforamtion is the last entry in the line
+			if ("length" in x[len(x)-2])==True:
+				gnLength = int(term.split('>')[0])
 
 	varPos =list()	
+	
 	with open(outfile, 'w') as filehandle:
 		for i in range(len(vcfLines)):
 			aline = vcfLines[i]
-			if (aline[0:4] == 'gnl|'):
+			#possibly fragile
+			if (aline[0] != '#'):
 				aline = aline.replace('|DupConc', '')
 				if (aline.split("\t")[3] != 'N'):
-					if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1]) ):
+					if (gnLength/2 >= int(aline.split()[1]) ):
 						filehandle.write(aline)
 					else:
-						updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
+						#If corrected entry already exists, skip, otherwise write a new entry
+						updatedPos = int(aline.split()[1]) - gnLength/2
 						aline = aline.replace(aline.split()[1],str(updatedPos))
 						if str(aline.split()[1]) not in varPos:
 							filehandle.write(aline)
@@ -507,24 +514,28 @@ def test_cleanvcf(vcfFile):
 
 	vcfile = open(vcfFile, "r")
 	vcfLines = vcfile.readlines()
-
-	gnLengths = dict()
+	#first get genome length
+	gnLength = []
 	for line in vcfLines:
+		#This is the line containing genome length information
 		if "##contig=<ID" in line:
-			x = line.split(',')
-			for term in x:
-				if ("length" in term)==True:
-					gnLengths[line[24:32].split("_")[0]] = term.split('=')[1].split('>')[0]
+			x = line.split('=')
+			term=x[len(x)-1]
+			print(term)
+			print(x[len(x)-2])
+			#assuming length inforamtion is the last entry in the line
+			if ("length" in x[len(x)-2])==True:
+				gnLength = int(term.split('>')[0])
 
 	varPos =list()	
 	for i in range(len(vcfLines)):
 		aline = vcfLines[i]
-		if (aline[0:4] == 'gnl|'):
+		if (aline[0] != '#'):
 			
-			if (int(gnLengths[aline.split("|")[2].split("_")[0]])/2 >= int(aline.split()[1])):
+			if (gnLength/2 >= int(aline.split()[1])):
 				varPos.append(str(aline.split()[1]))
 			else:
-				updatedPos = int(aline.split()[1]) - int(gnLengths[aline.split("|")[2].split("_")[0]])/2
+				updatedPos = int(aline.split()[1]) - gnLength/2
 				if str(aline.split()[1]) not in varPos:
 					varPos.append(str(aline.split()[1]))
 

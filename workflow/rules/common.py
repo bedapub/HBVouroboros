@@ -470,8 +470,6 @@ def vcfClean(vcfFile, outfile):
 		if "##contig=<ID" in line:
 			x = line.split('=')
 			term=x[len(x)-1]
-			print(term)
-			print(x[len(x)-2])
 			#assuming length inforamtion is the last entry in the line
 			if ("length" in x[len(x)-2])==True:
 				gnLength = int(term.split('>')[0])
@@ -521,8 +519,6 @@ def test_cleanvcf(vcfFile):
 		if "##contig=<ID" in line:
 			x = line.split('=')
 			term=x[len(x)-1]
-			print(term)
-			print(x[len(x)-2])
 			#assuming length inforamtion is the last entry in the line
 			if ("length" in x[len(x)-2])==True:
 				gnLength = int(term.split('>')[0])

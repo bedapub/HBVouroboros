@@ -4,7 +4,7 @@ include: "rules/common.py"
 include: "rules/build_refgenomes.smk"
 include: "rules/align_reads.smk"
 include: "rules/freebayes_vc.smk"
-#include: "rules/fastqc_multiqc.smk"
+include: "rules/fastqc_multiqc.smk"
 include: "rules/AA_vc.smk"
 
 # organization of configuration
@@ -21,10 +21,10 @@ rule_all_input_list.extend(["results/stats/samples.mapping.flagstat",
                 "results/coverage/infref/infref_genome_depth.tsv",
                 "results/coverage/infref/infref_genome_gene_coverage.gct",
 	        "results/coverage/infref/infref_genome_CDS_coverage.gct",
-		#"results/coverage/infref/infref_genome_depth_mean.tsv",	    
-                #"results/coverage/infref/infref_genome_depth_mqc.png",
+		"results/coverage/infref/infref_genome_depth_mean.tsv",	    
+                "results/coverage/infref/infref_genome_depth_mqc.png",
                 expand("results/variant-calling/infref/infref_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
-                #"results/multiqc/infref/infref_multiqc_report.html",
+                "results/multiqc/infref/infref_multiqc_report.html",
                 expand("results/variant-calling-AA/infref/infref_{sample}.sorted.sam", sample = samples),
                 expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples),
 
@@ -38,9 +38,9 @@ if config['doInputRef'] == True:
         "results/coverage/inpt/inpt_genome_depth.tsv",
         "results/coverage/inpt/inpt_genome_gene_coverage.gct",
 	"results/coverage/inpt/inpt_genome_CDS_coverage.gct",
-        #"results/coverage/inpt/inpt_genome_depth_mean.tsv",	
-        #"results/multiqc/inpt/inpt_multiqc_report.html",
-        #"results/coverage/inpt/inpt_genome_depth_mqc.png",
+        "results/coverage/inpt/inpt_genome_depth_mean.tsv",	
+        "results/multiqc/inpt/inpt_multiqc_report.html",
+        "results/coverage/inpt/inpt_genome_depth_mqc.png",
         expand("results/variant-calling/inpt/inpt_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
         expand("results/variant-calling-AA/inpt/inpt_{sample}.sorted.sam", sample = samples),
         expand("results/variant-calling-AA/inpt/inpt_{sample}.sam2AAFreq.done", sample = samples)])

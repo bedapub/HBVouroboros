@@ -15,6 +15,7 @@ from gzip import open as gzopen
 def create_readPairs(pairedEndDist, readLen, leftEnd, record_dup, leftSequences, rightSequences, fullFragment,i):
 
     """Geneartes paired end reads, saves left and right read and the full fragment
+
     Args:
         pairedEndDist (int)
         readLen (int)
@@ -136,7 +137,7 @@ def main(args):
 
 
 
-    #Find the path to the cloned directory ont he local machine
+    #Find the path to the cloned directory on the local machine
     thePath = str(pathlib.Path(__file__).parent.absolute())
     srcDir = thePath.replace('/bin', '')
 

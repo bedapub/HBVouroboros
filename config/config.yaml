@@ -1,6 +1,6 @@
 ## use either way to indicate input files: either sample_annotation, or biokit_outdir
 ## sample_annotation should be a tab-delimited file containing at least four columns (#ID, GROUP, FASTQ1, FASTQ2)
-sample_annotation: .test/sampleAnnotation
+sample_annotation: RNAsim2/simSamples/sampleAnnotation
 biokit_outdir: None
 
 ## 3. options for read trimming with Trimmomatic
@@ -9,4 +9,22 @@ illumina_clip_file: 'resources/trim_reads/primers.fasta'
 illumina_clip_opts: ':2:30:10:2:keepBothReads'
 # trimmomatic steps (excluding ILLUMINACLIP)
 trimmomatic_steps: 'LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:35 CROP:140'
+
+## Input ref strain
+doInputRef: True
+inputRef: 'gnl|hbvnuc|AB064313_FT00000_C-G'
+
+## run the analysis per-sample
+doPerSamp: True
+
+## RNA simulation paramterts
+doSim: False
+sample_annotation_sm: RNAsim2/simSmaples/sampleAnnotation
+genomeId: gnl|hbvnuc|GQ924620_FT00000_C-C
+sampNum: "165000"
+pairedEndDist: "250"
+readLen: "150"
+mt: -mt
+mp: -mp 
+mtPos: "249"
 

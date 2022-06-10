@@ -187,7 +187,7 @@ def main(args):
         mutpercent = args.percent
 
     #Find the input genome based on id
-    oneSequence = SeqIO.parse(os.path.join(srcDir +'/refGenomes/HBV_refgenomes.fasta'), 'fasta')
+    oneSequence = SeqIO.parse(os.path.join(srcDir +'/resources/ref/HBV_refgenomes.fasta'), 'fasta')
     record_copy = None
     for record in oneSequence:
         if record.id == args.genotypeId:

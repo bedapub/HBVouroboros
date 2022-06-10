@@ -1,5 +1,5 @@
 import os
-configfile: "config/config.yaml"
+config: "config/config.yaml"
 include: "rules/common.py"
 include: "rules/build_refgenomes.smk"
 include: "rules/align_reads.smk"
@@ -9,7 +9,7 @@ include: "rules/AA_vc.smk"
 
 # organization of configuration
 
-sample_annotation = set_samp_anno(True)
+sample_annotation = config['sample_annotation']
 
 rule_all_input_list = list()
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)

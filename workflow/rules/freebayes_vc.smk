@@ -1,9 +1,6 @@
 import snakemake
-
-if config['doSim'] == True:
-	sample_annotation = config['sample_annotation_sm']
-else:
-	sample_annotation = config['sample_annotation']
+config: "config/config_qc.yaml"
+sample_annotation = config['sample_annotation']
 
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 

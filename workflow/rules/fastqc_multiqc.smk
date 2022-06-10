@@ -6,7 +6,7 @@ import os
 import pandas as pd
 import snakemake
 
-## configfile: "config/config_qc.yaml"
+config: "config/config_qc.yaml"
 
 # trimmed files
 sample_annotation = config['sample_annotation']

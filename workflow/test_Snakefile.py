@@ -141,11 +141,11 @@ def test_snakemake_output_files():
 
 
 
-#def test_snakemake_variant_calling_results():
+def test_snakemake_variant_calling_results():
 
     #Check whether the correct variations have been detected for  the smaples
 
-    #Sample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_Sample1_cleaned_allelicprimitives.vcf')
-    #Sample2_var = common.test_cleanvcf('results/variant-calling/inpt/inpt_Sample2_cleaned_allelicprimitives.vcf')
-    #assert simSample1_var == ['100', '1000']
-    #assert simSample2_var == ['200', '2000']
+    Sample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_Sample1_cleaned_allelicprimitives.vcf')
+    Sample2_var = common.test_cleanvcf('results/variant-calling/inpt/inpt_Sample2_cleaned_allelicprimitives.vcf')
+    assert Sample1_var == ['582', '925','934','1002','1347','1371','1719','1896','1996','2008', '2401','2533', '2534','2540','2708']
+    #assert simSample2_var == ['582', '925', '928', '934', ]

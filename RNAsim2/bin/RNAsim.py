@@ -136,8 +136,7 @@ def main(args):
 
 
 
-
-    #Find the path to the cloned directory on the local machine
+    #Find the path to the cloned RNAsim directory on the local machine
     thePath = str(pathlib.Path(__file__).parent.absolute())
     srcDir = thePath.replace('/bin', '')
 
@@ -226,21 +225,11 @@ def main(args):
     record_dup = dup_and_conc(record_copy)
     orgRecord_dup = dup_and_conc(orgRecord)
 
-    testSeqObj = SeqRecord(
-        Seq("tttcacagctttccaacaagccctacaagatcccagagt"),
-        id="gnl|hbvnuc|GQ924620_FT00000_C-C",
-        name="HokC",
-        description="gnl|hbvnuc|GQ924620_FT00000_C-C Feature FT:source AB076679_FT00000_P-A of [Viruses] Hepatitis B Virus genotype A (isolate HBV-Mala35). test fragment. [Hepadnaviridae] (length=39 residues).")
-    #arrays to be populated by reads
+
     leftSequences = []
     rightSequences = []
     fullFragment = []
     counter = 0
-    # create_readPairs(10, 4, 1, testSeqObj, leftSequences, rightSequences, fullFragment, 1)
-    # print(leftSequences[0].seq)
-    # print(rightSequences[0].seq)
-    # print(fullFragment[0].seq)
-    # sys.exit()
 
     for i in range(0,noReads):
         if args.percent:
@@ -266,73 +255,21 @@ def main(args):
                 create_readPairs(pairedEndDist, readLen, posArray[i]-1, record_copy, leftSequences, rightSequences, fullFragment, i)
 
 
-    # else
-    # for i in range(0,noReads):
-    #
-    #     if posArray is None:
-    #         leftEnd = random.randint(0,len(record_dup.seq)/2)
-    #         create_readPairs(pairedEndDist, readLen, leftEnd, record_dup, leftSequences, rightSequences, fullFragment, i)
-    #     else:
-    #         create_readPairs(pairedEndDist, readLen, posArray[i]-1, record_dup, leftSequences, rightSequences, fullFragment, i)
         #Fake read quality
         leftSequences[i].letter_annotations["phred_quality"] = [50] * len(leftSequences[i].seq)
         rightSequences[i].letter_annotations["phred_quality"] = [50] * len(rightSequences[i].seq)
         fullFragment[i].letter_annotations["phred_quality"] = [50] * len(fullFragment[i].seq)
 
-    with bgzf.BgzfWriter(os.path.join(srcDir +'/output/simSample-1_1.fastq.gz'), "wb") as outgz:
+    with bgzf.BgzfWriter(os.path.join('./RNAsim2/output/simSample-1_1.fastq.gz'), "wb") as outgz:
         SeqIO.write(sequences=leftSequences, handle=outgz, format="fastq")
-    with bgzf.BgzfWriter(os.path.join(srcDir +'/output/simSample-1_2.fastq.gz'), "wb") as outgz:
+    with bgzf.BgzfWriter(os.path.join('./RNAsim2/output/simSample-1_2.fastq.gz'), "wb") as outgz:
         SeqIO.write(sequences=rightSequences, handle=outgz, format="fastq")
 
-    sampAnnotation = open (os.path.join(srcDir +'/output/sampleAnnotation'), "w+")
+    sampAnnotation = open (os.path.join('./RNAsim2/output/sampleAnnotation'), "w+")
     #sampAnnotation.truncate(0)
     sampAnnotation.write("#ID	GROUP	FASTQ1	FASTQ2\n")
     sampAnnotation.write("simSample	control	%s	%s" %(os.path.abspath(os.path.join(srcDir +'/output/simSample-1_1.fastq.gz')), os.path.abspath(os.path.join(srcDir +'/output/simSample-1_2.fastq.gz'))))
     sampAnnotation.close()
-    # hbvDir = srcDir.replace('/RNAsim2', 'results')
-    # simSamplePath = os.path.join(srcDir +'/output/inferred_strain_dup.fasta')
-    # HBV_bin_dir = os.path.join(hbvDir +'/bin/HBVouroboros_map_samples.py')
-    # HBV_refgenome_dir =  os.path.join(hbvDir +'/resources/ref')
-    # HBV_sample_annotation =  os.path.join(srcDir +'/output/sampleAnnotation')
-    # HBV_out_dir =  os.path.join(hbvDir +'/simResults')
-    #
-    # # Run HBVouroboros with sim data
-    # stream = os.system("python %s %s %s   --outdir=%s -l" %(HBV_bin_dir, HBV_refgenome_dir, HBV_sample_annotation, HBV_out_dir))
-    #
-    # #Run varscan
-    # inferred_strain = str(os.path.join(HBV_out_dir +'/inferred_reference_strain/inferred_strain_dup.fasta'))
-    # bamFile = str(os.path.join(HBV_out_dir +'/bam/simSample.sorted.bam'))
-    # mpileupFile = os.path.join(HBV_out_dir +'/bam/myData.mpileup')
-    # stream = os.system("samtools mpileup -f %s %s >%s" % (inferred_strain,str(os.path.join(HBV_out_dir +"/infref_bam/simSample.sorted.bam")) , mpileupFile))
-
-    #stream = os.system('varscan mpileup2snp %s >vrscn.txt -filter=%s ' %(mpileupFile, '0'))
-
-    #filevrs = open('vrscn.txt', 'r')
-    #thelines = filevrs.readlines()
-    # if len(thelines) ==1:
-    #     splitline = thelines[0].split()
-    # else:
-    #     splitline = thelines[1].split()
-    # print("Detected genotype:  " +args.genotypeId+"|DupConc")
-    # print("\n")
-    # counter = 0
-    # #for line in open('vrscn.txt'):
-    # print("specified mutations:")
-    # if args.mutpos:
-    #     for pos in mutPos:
-    #         print("  "+str(pos))
-    # print("detected mutations mutations:")
-    # for aline in thelines:
-    #     aline = aline.rstrip('\n')
-    #     aline = aline.split()
-    #     if (aline[0] == args.genotypeId+"|DupConc"):
-    #         if (int(aline[1]) <= 3215):
-    #             detected=str(int(aline[1]))
-    #             print("  "+detected)
-    #theline = line.strip.split(" ")
-        #print(theline)
-
-                #print (bb.rstrip('\n'))
 
 
     return(True)

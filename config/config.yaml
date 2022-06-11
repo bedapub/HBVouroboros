@@ -11,8 +11,8 @@ illumina_clip_opts: ':2:30:10:2:keepBothReads'
 trimmomatic_steps: 'LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:35 CROP:140'
 
 ## Run modes
-doInputRef: False
+doInputRef: True
 inputRef: 'gnl|hbvnuc|AB064313_FT00000_C-G'
-doPerSamp: False
+doPerSamp: True
 
 

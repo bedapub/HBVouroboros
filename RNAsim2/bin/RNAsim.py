@@ -259,9 +259,9 @@ def main(args):
         rightSequences[i].letter_annotations["phred_quality"] = [50] * len(rightSequences[i].seq)
         fullFragment[i].letter_annotations["phred_quality"] = [50] * len(fullFragment[i].seq)
 
-    with bgzf.BgzfWriter(os.path.join(srcDir + '/output/simSample-1_1.fastq.gz'), "wb") as outgz:
+    with bgzf.BgzfWriter("./output/simSample-1_1.fastq.gz", "wb") as outgz:
         SeqIO.write(sequences=leftSequences, handle=outgz, format="fastq")
-    with bgzf.BgzfWriter(os.path.join(srcDir + '/output/simSample-1_2.fastq.gz'), "wb") as outgz:
+    with bgzf.BgzfWriter(os.path.join("./output/simSample-1_2.fastq.gz", "wb") as outgz:
         SeqIO.write(sequences=rightSequences, handle=outgz, format="fastq")
 
     sampAnnotation = open (os.path.join('./RNAsim2/output/sampleAnnotation'), "w+")

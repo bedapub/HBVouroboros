@@ -12,8 +12,9 @@ import common
 #This test is set to pass with the default setting of the config/config.yaml file
 
 def test_snakemake_output_files():
+
     #Run the pipeline
-    p= Popen('snakemake --cores 10 --use-conda --latency-wait 900', shell=True, stdout= PIPE, stderr= STDOUT)
+    p= Popen("snakemake --cores 10 --use-conda --latency-wait 900", shell=True, stdout= PIPE, stderr= STDOUT)
     pout= p.stdout.read()
     print(pout.decode('utf-8'))
      
@@ -93,7 +94,6 @@ def test_snakemake_output_files():
     assert os.path.exists('results/stats/samples.mapping.flagstat') == 1	
     assert os.path.exists('results/stats/Sample1.sorted.bam.flagstat') == 1	
     assert os.path.exists('results/stats/Sample2.sorted.bam.flagstat') == 1	
-
 
     #CDS coverage, gene coverage, depth and count files
     assert os.path.exists('results/coverage/infref/infref_genome_CDS_coverage.gct') == 1

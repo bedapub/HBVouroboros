@@ -287,7 +287,7 @@ def main(args):
     sampAnnotation = open (os.path.join(srcDir +'/output/sampleAnnotation'), "w+")
     #sampAnnotation.truncate(0)
     sampAnnotation.write("#ID	GROUP	FASTQ1	FASTQ2\n")
-    sampAnnotation.write("simSample	control	%s	%s" %(os.path.abspath(os.path.join(srcDir.replace('/RNAsim2','') +'/output/simSample-1_1.fastq.gz')), os.path.abspath(os.path.join(srcDir.replace('/RNAsim2','') +'/output/simSample-1_2.fastq.gz'))))
+    sampAnnotation.write("simSample	control	%s	%s" %(os.path.abspath(os.path.join(srcDir +'/output/simSample-1_1.fastq.gz')), os.path.abspath(os.path.join(srcDir +'/output/simSample-1_2.fastq.gz'))))
     sampAnnotation.close()
     # hbvDir = srcDir.replace('/RNAsim2', 'results')
     # simSamplePath = os.path.join(srcDir +'/output/inferred_strain_dup.fasta')

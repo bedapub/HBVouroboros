@@ -48,10 +48,6 @@ rule covplot:
         done=temp("results/coverage/{inpt}/{inpt}_genome_depth.done"),
         mean="results/coverage/{inpt}/{inpt}_genome_depth_mean.tsv", 
         pngf="results/coverage/{inpt}/{inpt}_genome_depth_mqc.png"
-    conda:
-        "../envs/covplot.yaml"
-    envmodules:
-        "R"
     shell:
         "Rscript workflow/Rplots.R {input} {output.mean} {output.pngf}; touch {output.done}"
 

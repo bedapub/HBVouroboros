@@ -60,6 +60,49 @@ Run the pipeline by typing the following in a terminal at the project's root dir
 
 This will execute the pipeline localy. Please look at `snakemake documentation <https://snakemake.readthedocs.io/en/stable/executing/cli.html>`_ for further information on how to run a snakemake pipeline.
 
+Run a test dataset from the HBVouroboros publication using docker
+################################################################
+
+You can build a docker image using the provided dockerfile at the root directory.
+
+.. code-block:: console
+
+   $ docker build -t HBVouroboros .
+
+Or you can pull the image hosted at dockerhub:
+
+.. code-block:: console
+
+   $ docker pull -t HBVouroboros hanno49/hbvouroboros
+
+Start a container from the image.
+
+.. code-block:: console
+
+   $ docker -it --entrypoint bin bash HBVouroboros
+
+In the container terminal, activate the conda environment, navigate to the HBVouroboros root directory and run a provided script to download the input files into a directory.
+
+.. code-block:: console
+	
+   $ conda activate HBVouroboros
+   $ cd HBVouroboros
+   $ wget -i -o
+
+Change the sampleAnnotation path in config/config.yaml to point to the downloaded file.
+
+.. code-block:: console
+
+	sample_annotation: app/hepatocyte_test_data/sampleAnnotation
+
+Run HBVouroboros with the downloaded dataset.
+
+.. code-block:: console
+
+   $ snakemake --cores <num_cores> 
+
+
+
 Running snakemake with ``--forceall`` option
 ############################################
 

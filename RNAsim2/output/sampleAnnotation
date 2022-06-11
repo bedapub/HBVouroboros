@@ -1,0 +1,2 @@
+#ID	GROUP	FASTQ1	FASTQ2
+simSample	control	/scratch/site/u/adibim/new_branch/HBVouroboros/RNAsim2/output/simSample-1_1.fastq.gz	/scratch/site/u/adibim/new_branch/HBVouroboros/RNAsim2/output/simSample-1_2.fastq.gz

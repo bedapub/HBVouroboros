@@ -185,8 +185,10 @@ def main(args):
             print("The specified percentage must be a number between 0 and 1")
         mutpercent = args.percent
 
-    #Find the input genome based on id
-    oneSequence = SeqIO.parse(os.path.join(srcDir.replace('/RNAsim2','') + '/resources/ref/HBV_refgenomes.fasta'), 'fasta')
+    #Find the input genome based on id  
+    rootDir = srcDir
+    
+    oneSequence = SeqIO.parse(os.path.join(rootDir.replace('/RNAsim2','') + '/resources/ref/HBV_refgenomes.fasta'), 'fasta')
     record_copy = None
     for record in oneSequence:
         if record.id == args.genotypeId:
@@ -260,9 +262,9 @@ def main(args):
         rightSequences[i].letter_annotations["phred_quality"] = [50] * len(rightSequences[i].seq)
         fullFragment[i].letter_annotations["phred_quality"] = [50] * len(fullFragment[i].seq)
 
-    with bgzf.BgzfWriter(os.path.join('./RNAsim2/output/simSample-1_1.fastq.gz'), "wb") as outgz:
+    with bgzf.BgzfWriter(os.path.join(srcDir + '/output/simSample-1_1.fastq.gz'), "wb") as outgz:
         SeqIO.write(sequences=leftSequences, handle=outgz, format="fastq")
-    with bgzf.BgzfWriter(os.path.join('./RNAsim2/output/simSample-1_2.fastq.gz'), "wb") as outgz:
+    with bgzf.BgzfWriter(os.path.join(srcDir + '/output/simSample-1_2.fastq.gz'), "wb") as outgz:
         SeqIO.write(sequences=rightSequences, handle=outgz, format="fastq")
 
     sampAnnotation = open (os.path.join('./RNAsim2/output/sampleAnnotation'), "w+")

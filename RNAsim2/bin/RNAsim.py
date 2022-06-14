@@ -15,7 +15,6 @@ from gzip import open as gzopen
 def create_readPairs(pairedEndDist, readLen, leftEnd, record_dup, leftSequences, rightSequences, fullFragment,i):
 
     """Geneartes paired end reads, saves left and right read and the full fragment
-
     Args:
         pairedEndDist (int)
         readLen (int)
@@ -68,7 +67,6 @@ def create_readPairs(pairedEndDist, readLen, leftEnd, record_dup, leftSequences,
 
 def point_mutate(record_copy,theMutationPos,outF, makeSummary):
     """Change the base in record_copy.seq at theMutationPos to another random base
-
     Args:
         record_copy (Bio.SeqRecord): A SeqRecord object
         theMutationPos: int
@@ -95,7 +93,6 @@ def point_mutate(record_copy,theMutationPos,outF, makeSummary):
 def dup_and_conc(record):
     """Duplicate the sequence and concatenate the original and duplicated
     sequence, and append a text label to the id and the description
-
     Args:
         record (Bio.SeqRecord): A SeqRecord object
     Returns:
@@ -262,9 +259,9 @@ def main(args):
         rightSequences[i].letter_annotations["phred_quality"] = [50] * len(rightSequences[i].seq)
         fullFragment[i].letter_annotations["phred_quality"] = [50] * len(fullFragment[i].seq)
 
-    with bgzf.BgzfWriter(os.path.join(srcDir + '/output/simSample-1_1.fastq.gz'), "wb") as outgz:
+    with bgzf.BgzfWriter("./output/simSample-1_1.fastq.gz", "wb") as outgz:
         SeqIO.write(sequences=leftSequences, handle=outgz, format="fastq")
-    with bgzf.BgzfWriter(os.path.join(srcDir + '/output/simSample-1_2.fastq.gz'), "wb") as outgz:
+    with bgzf.BgzfWriter(os.path.join("./output/simSample-1_2.fastq.gz", "wb") as outgz:
         SeqIO.write(sequences=rightSequences, handle=outgz, format="fastq")
 
     sampAnnotation = open (os.path.join('./RNAsim2/output/sampleAnnotation'), "w+")
@@ -279,4 +276,3 @@ def main(args):
 
 if __name__ == '__main__':
     main(sys.argv[1:])
-    #sys.exit(main(args))

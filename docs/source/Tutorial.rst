@@ -75,15 +75,15 @@ Start a container from the image.
 
    $ docker -it --entrypoint /bin/bash hbvouroboros
 
-In the container terminal, make a directory for the test data, navigate to it and run a provided script to download a dataset.
+In the container terminal, make a directory for the test data, navigate to it and run a provided script to download the dataset.
 
 .. code-block:: console
 	
    $ mkdir HBVouroboros/hepatocyte_test_data
    $ cd HBVouroboros/hepatocyte_test_data
-   $ wget --no-check-certificate -i "/app/HBVouroboros/.test/hepatocyte_test_data.txt"  -
+   $ wget --no-check-certificate -i "/app/HBVouroboros/.test/hepatocyte_test_data.txt"
 
-Before we can run the pipeline we have to modify some parameters in ``config/config.taml``. Set ``doInputRef`` and ``doPerSamp``to ``False``. Change ``sampleAnnotatopn`` to ``app/HBVouroboros/.test/sampleAnnotation_hepatocyte_test_data.txt``. 
+Before we can run the pipeline we have to modify some parameters in ``config/config.taml``. Set ``doInputRef`` and ``doPerSamp``to ``False``. Change ``sampleAnnotatopn`` to ``app/HBVouroboros/.test/hepatocyte_test_data_sampleAnnotation.txt``. 
 
 
 Activate the HBVouroboros environment and run the pipeline.

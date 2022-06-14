@@ -67,38 +67,30 @@ You can build a docker image using the provided dockerfile at the root directory
 
 .. code-block:: console
 
-   $ docker build -t HBVouroboros .
-
-Or you can pull the image hosted at dockerhub:
-
-.. code-block:: console
-
-   $ docker pull -t HBVouroboros hanno49/hbvouroboros
+   $ docker build -t hbvouroboros .
 
 Start a container from the image.
 
 .. code-block:: console
 
-   $ docker -it --entrypoint bin bash HBVouroboros
+   $ docker -it --entrypoint /bin/bash hbvouroboros
 
-In the container terminal, activate the conda environment, navigate to the HBVouroboros root directory and run a provided script to download the input files into a directory.
+In the container terminal, make a directory for the test data, navigate to it and run a provided script to download a dataset.
 
 .. code-block:: console
 	
+   $ mkdir HBVouroboros/hepatocyte_test_data
+   $ cd HBVouroboros/hepatocyte_test_data
+   $ wget --no-check-certificate -i "/app/HBVouroboros/.test/hepatocyte_test_data.txt"  -
+
+Before we can run the pipeline we have to modify some parameters in ``config/config.taml``. Set ``doInputRef`` and ``doPerSamp``to ``False``. Change ``sampleAnnotatopn`` to ``app/HBVouroboros/.test/sampleAnnotation_hepatocyte_test_data.txt``. 
+
+
+Activate the HBVouroboros environment and run the pipeline.
+
+.. code-block:: console
+
    $ conda activate HBVouroboros
-   $ cd HBVouroboros
-   $ wget -i -o
-
-Change the sampleAnnotation path in config/config.yaml to point to the downloaded file.
-
-.. code-block:: console
-
-	sample_annotation: app/hepatocyte_test_data/sampleAnnotation
-
-Run HBVouroboros with the downloaded dataset.
-
-.. code-block:: console
-
    $ snakemake --cores <num_cores> 
 
 

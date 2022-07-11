@@ -366,7 +366,7 @@ rule CDS_coverage_inpt:
 #################### 
 
 
-################# This section is only executes when "doPerSamp" in config file is set to True
+################# This section is only executed when "doPerSamp" in config file is set to True
 
 
 

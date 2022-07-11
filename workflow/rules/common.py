@@ -440,9 +440,7 @@ def split_FASTA(infile, outdir=None, prefix=''):
         SeqIO.write(seq, outfile, 'fasta')
         count += 1
 
-
-## TODO: Milad (1) refactor the code, and (2) document the functions
-def vcfClean(vcfFile, outfile):
+def vcfClean(vcfFile, fastaFile, outfile):
 
 	""" This function corrects the positions where
 	variation has been called past the original 
@@ -461,21 +459,20 @@ def vcfClean(vcfFile, outfile):
 	    
 	"""
 
-	vcfile = open(vcfFile, "r")
-	vcfLines = vcfile.readlines()
+	fastafile = open(fastaFile, "r")
+	fastaLines = fastafile.readlines()
 	#first get genome length
 	gnLength = []
-	for line in vcfLines:
+	for line in fastaLines:
 		#This is the line containing genome length information
-		if "##contig=<ID" in line:
-			x = line.split('=')
+		if ">" in line:
+			x = line.split('final length:')
 			term=x[len(x)-1]
-			#assuming length inforamtion is the last entry in the line
-			if ("length" in x[len(x)-2])==True:
-				gnLength = int(term.split('>')[0])
-
+			gnLength = int(term.replace(')',''))
+    
 	varPos =list()	
-	
+	vcfile = open(vcfFile, "r")
+	vcfLines = vcfile.readlines()	
 	with open(outfile, 'w') as filehandle:
 		for i in range(len(vcfLines)):
 			aline = vcfLines[i]
@@ -495,6 +492,7 @@ def vcfClean(vcfFile, outfile):
 			else: 
 				(filehandle.write(aline))
 	return(True)
+
 
 def test_cleanvcf(vcfFile):
 
@@ -559,5 +557,3 @@ def set_samp_anno(perform_sim):
 		return(config['sample_annotation_sm'])
 	else:
 		return(config['sample_annotation'])
-
-

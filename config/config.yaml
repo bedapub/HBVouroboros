@@ -1,6 +1,6 @@
 ## use either way to indicate input files: either sample_annotation, or biokit_outdir
 ## sample_annotation should be a tab-delimited file containing at least four columns (#ID, GROUP, FASTQ1, FASTQ2)
-sample_annotation: RNAsim2/output/sampleAnnotation
+sample_annotation: .test/sampleAnnotation
 biokit_outdir: None
 
 ## 3. options for read trimming with Trimmomatic

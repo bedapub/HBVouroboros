@@ -20,12 +20,12 @@ doPerSamp = config['doPerSamp']
 def test_snakemake_output_files():
 
     #Run the pipeline
-    #p= Popen("snakemake --cores 10 --use-conda --latency-wait 900", shell=True, stdout= PIPE, stderr= STDOUT)
-    #pout= p.stdout.read()
-    #print(pout.decode('utf-8'))
+    p= Popen("snakemake --cores 10 --use-conda --latency-wait 900", shell=True, stdout= PIPE, stderr= STDOUT)
+    pout= p.stdout.read()
+    print(pout.decode('utf-8'))
      
     #Optionally, get stdout and stderr
-    #stdout, stderr= p.communicate()
+    stdout, stderr= p.communicate()
 
     #Check exits code and other expected output            
     #assert 0 == p.returncode
@@ -168,6 +168,6 @@ def test_snakemake_variant_calling_results():
 
     Sample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_Sample1_cleaned_allelicprimitives.vcf', os. getcwd() + '/results/infref/infref_strain_dup.fasta')
     if doInputRef == True:     
-        Sample2_var = common.test_cleanvcf('results/variant-calling/inpt/inpt_Sample2_cleaned_allelicprimitives.vcf', os. getcwd()  + '/results/inpt/inpt_strain_dup.fasta')
+        Sample2_var = common.test_cleanvcf('results/variant-calling/inpt/inpt_Sample2_cleaned_allelicprimitives.vcf', os. getcwd()  + '/results/inpt/infref_strain_dup.fasta')
     assert Sample1_var == ['925', '934', '1371', '1896']
     #assert simSample2_var == ['582', '925', '928', '934', ]

@@ -520,6 +520,8 @@ def test_cleanvcf(vcfFile, fastaFile):
 			gnLength = int(term.replace(')',''))
 
 	varPos =list()	
+	vcfile = open(vcfFile, "r")
+	vcfLines = vcfile.readlines()	
 	for i in range(len(vcfLines)):
 		aline = vcfLines[i]
 		if (aline[0] != '#'):

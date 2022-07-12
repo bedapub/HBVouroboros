@@ -494,7 +494,7 @@ def vcfClean(vcfFile, fastaFile, outfile):
 	return(True)
 
 
-def test_cleanvcf(vcfFile):
+def test_cleanvcf(vcfFile, fastaFile):
 
 	""" This function is used by pytest only. It takes a
 	final vcf output of the variant calling pipeline 
@@ -508,18 +508,16 @@ def test_cleanvcf(vcfFile):
 	    
 	"""
 
-	vcfile = open(vcfFile, "r")
-	vcfLines = vcfile.readlines()
+	fastafile = open(fastaFile, "r")
+	fastaLines = fastafile.readlines()
 	#first get genome length
 	gnLength = []
-	for line in vcfLines:
+	for line in fastaLines:
 		#This is the line containing genome length information
-		if "##contig=<ID" in line:
-			x = line.split('=')
+		if ">" in line:
+			x = line.split('final length:')
 			term=x[len(x)-1]
-			#assuming length inforamtion is the last entry in the line
-			if ("length" in x[len(x)-2])==True:
-				gnLength = int(term.split('>')[0])
+			gnLength = int(term.replace(')',''))
 
 	varPos =list()	
 	for i in range(len(vcfLines)):

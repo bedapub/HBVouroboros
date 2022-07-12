@@ -168,8 +168,8 @@ def test_snakemake_variant_calling_results():
 
     #Check whether the correct variations have been detected for  the smaples
 
-    Sample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_Sample1_cleaned_allelicprimitives.vcf')
-    
-    Sample2_var = common.test_cleanvcf('results/variant-calling/inpt/inpt_Sample2_cleaned_allelicprimitives.vcf')
+    Sample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_Sample1_cleaned_allelicprimitives.vcf','results/infref/infref_strain_dup.fasta')
+    if doInputRef == True:     
+        Sample2_var = common.test_cleanvcf('results/variant-calling/inpt/inpt_Sample2_cleaned_allelicprimitives.vcf', 'results/inpt/inpt_strain_dup.fasta')
     assert Sample1_var == ['582', '925','934','1002','1347','1371','1719','1896','1996','2008', '2401','2533', '2534','2540','2708']
     #assert simSample2_var == ['582', '925', '928', '934', ]

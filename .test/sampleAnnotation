@@ -1,5 +1,4 @@
 #ID	GROUP	FASTQ1	FASTQ2	Time
 Sample1	Control	.test/data/testfile-1_1.fq.gz	.test/data/testfile-1_2.fq.gz	6h
 Sample2	Control	.test/data/testfile-2_1.fq.gz	.test/data/testfile-2_2.fq.gz	6h
-Sample3	Treatment	.test/data/testfile-3_1.fq.gz	.test/data/testfile-3_2.fq.gz	6h
-Sample4	Treatment	.test/data/testfile-4_1.fq.gz	.test/data/testfile-4_2.fq.gz	6h
+

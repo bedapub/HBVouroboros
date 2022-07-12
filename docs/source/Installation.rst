@@ -14,12 +14,12 @@ Download the source code
 Setup conda environment
 #######################
 
-.. code-block:: console
+.. code-block:: python
 
-   # setup conda environment
+   ## setup conda environment
    cd envs; conda env create; cd -
-   # in case it has been installed, use the command below to update
-   # conda env update
+   ## in case it has been installed, use the command below to update
+   ## conda env update
    conda activate HBVouroboros
 
 
@@ -30,7 +30,5 @@ Test your installation by invoking pytest, in a terminal in the root directory o
 
 .. code-block:: console
 
-   $ pytest
-
-This will run the pipeline with provided simulated RNA reads and test that the required output files are produced and mutations are correctly called.
+   $ snakemake -j 99 --use-envmodules ## use --use-conda if no R module is present
 

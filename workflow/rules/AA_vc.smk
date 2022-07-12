@@ -1,6 +1,6 @@
 import snakemake
 # include: "common.smk"
-# configfile: "config/config.yaml"
+config: "config/config.yaml"
 
 sample_annotation = config['sample_annotation']
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)

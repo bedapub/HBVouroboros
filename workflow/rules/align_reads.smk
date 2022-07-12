@@ -1,5 +1,6 @@
 import snakemake
-sample_annotation = set_samp_anno(False)
+config: "config/config_qc.yaml"
+sample_annotation = config['sample_annotation']
 
 bowtie2_index = 'resources/ref/HBV_refgenomes_dup_BOWTIE2'
 blast_db = 'resources/ref/HBV_allgenomes.fasta'
@@ -365,7 +366,7 @@ rule CDS_coverage_inpt:
 #################### 
 
 
-################# This section is only executes when "doPerSamp" in config file is set to True
+################# This section is only executed when "doPerSamp" in config file is set to True
 
 
 

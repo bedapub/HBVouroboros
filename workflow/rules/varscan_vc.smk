@@ -1,9 +1,6 @@
 import snakemake
-
-if config['doSim'] == True:
-	sample_annotation = config['sample_annotation_sm']
-else:
-	sample_annotation = config['sample_annotation']
+config: "config/config_qc.yaml"
+sample_annotation = config['sample_annotation']
 
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
@@ -52,43 +49,55 @@ rule correct_bam_perSamp:
        "workflow/rules/correct_bam.sh -f {input.refDup} -s {input.sortBam} -o {output}"    
 
 
-rule freebayes_var:
+
+
+rule varscan:
     input:
        refDup ="results/{inpt}/{inpt}_strain_dup.fasta",
        sortBam ="results/{inpt}_bam/{inpt}_{sample}.corrected.sorted.bam"
     output:
-       "results/variant-calling/{inpt}/{inpt}_{sample}.vcf"
+       pileupFile=temp("results/variant-calling/{inpt}/{inpt}_{sample}_mpileup.tsv"),
+       vcfFile="results/variant-calling/{inpt}/{inpt}_{sample}_varscan.vcf"
     shell:
-       "freebayes -p 1 -K -m 20 -q 30 --haplotype-length 0 -f  {input.refDup}  {input.sortBam} | vcffilter -f 'QUAL > 20' > {output}"
+       """
+        samtools mpileup -f {input.refDup}  {input.sortBam} >  {output.pileupFile}
+       varscan mpileup2snp {output.pileupFile} --min-var-freq 0.01 --output-vcf >  {output.vcfFile}
+       """
 
 
-rule freebayes_var_perSamp:
+rule varscan_perSamp:
     input:
        refDup ="results/perSamp/{sample}/infref_strain_dup.fasta",
        sortBam ="results/perSamp/{sample}/bam/{sample}.corrected.sorted.bam"
     output:
-       "results/variant-calling/perSamp/{sample}/{sample}.vcf"
+       pileupFile=temp("results/variant-calling/perSamp/{sample}/{sample}_mpileup.tsv"),
+       vcfFile="results/variant-calling/perSamp/{sample}/{sample}_varscan.vcf"
     shell:
-       "freebayes -p 1 -K -m 20 -q 30  --haplotype-length 0 -f {input.refDup}  {input.sortBam} | vcffilter -f 'QUAL > 20' > {output}"
+       """
+       samtools mpileup -f {input.refDup}  {input.sortBam} >  {output.pileupFile}
+       varscan mpileup2snp {output.pileupFile} --min-var-freq 0.01 --output-vcf >  {output.vcfFile}
+       """
 
 
 
 rule clean_vcfFile:
     input:
-       "results/variant-calling/{inpt}/{inpt}_{sample}.vcf"
+       vcf="results/variant-calling/{inpt}/{inpt}_{sample}_varscan.vcf",
+       fasta="results/infref/infref_strain_dup.fasta"
     output:
        "results/variant-calling/{inpt}/{inpt}_{sample}_cleaned.vcf"
     run:
-       vcfClean(str(input),str(output))
+       vcfClean(str(input.vcf), str(input.fasta), str(output))
 
 
 rule clean_vcfFile_perSamp:
     input:
-       "results/variant-calling/perSamp/{sample}/{sample}.vcf"
+       vcf="results/variant-calling/perSamp/{sample}/{sample}_varscan.vcf",
+       fasta="results/perSamp/{sample}/infref_strain_dup.fasta"
     output:
        "results/variant-calling/perSamp/{sample}/{sample}_cleaned.vcf"
     run:
-       vcfClean(str(input),str(output))
+       vcfClean(str(input),str(input.fasta),str(output))
 
 
 rule make_vcfallelicprimitives:

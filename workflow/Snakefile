@@ -1,15 +1,15 @@
 import os
-configfile: "config/config.yaml"
+config: "config/config.yaml"
 include: "rules/common.py"
 include: "rules/build_refgenomes.smk"
 include: "rules/align_reads.smk"
-include: "rules/freebayes_vc.smk"
+include: "rules/varscan_vc.smk"
 include: "rules/fastqc_multiqc.smk"
 include: "rules/AA_vc.smk"
 
 # organization of configuration
 
-sample_annotation = set_samp_anno(True)
+sample_annotation = config['sample_annotation']
 
 rule_all_input_list = list()
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
@@ -20,15 +20,13 @@ rule_all_input_list.extend(["results/stats/samples.mapping.flagstat",
                 "results/coverage/infref/infref_genome_count.tsv",
                 "results/coverage/infref/infref_genome_depth.tsv",
                 "results/coverage/infref/infref_genome_gene_coverage.gct",
-	        "results/coverage/infref/infref_genome_CDS_coverage.gct",
-		"results/coverage/infref/infref_genome_depth_mean.tsv",	    
+	            "results/coverage/infref/infref_genome_CDS_coverage.gct",
+		        "results/coverage/infref/infref_genome_depth_mean.tsv",	    
                 "results/coverage/infref/infref_genome_depth_mqc.png",
                 expand("results/variant-calling/infref/infref_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
                 "results/multiqc/infref/infref_multiqc_report.html",
                 expand("results/variant-calling-AA/infref/infref_{sample}.sorted.sam", sample = samples),
-                expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples),
-
-])
+                expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples)])
 
 if config['doInputRef'] == True:
 	rule_all_input_list.extend(["results/coverage/inpt/inpt_genome_count.tsv",
@@ -37,7 +35,7 @@ if config['doInputRef'] == True:
         "results/coverage/inpt/inpt_genome_count.tsv",
         "results/coverage/inpt/inpt_genome_depth.tsv",
         "results/coverage/inpt/inpt_genome_gene_coverage.gct",
-	"results/coverage/inpt/inpt_genome_CDS_coverage.gct",
+	    "results/coverage/inpt/inpt_genome_CDS_coverage.gct",
         "results/coverage/inpt/inpt_genome_depth_mean.tsv",	
         "results/multiqc/inpt/inpt_multiqc_report.html",
         "results/coverage/inpt/inpt_genome_depth_mqc.png",

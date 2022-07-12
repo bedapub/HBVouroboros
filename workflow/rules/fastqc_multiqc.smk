@@ -6,7 +6,7 @@ import os
 import pandas as pd
 import snakemake
 
-## configfile: "config/config_qc.yaml"
+config: "config/config_qc.yaml"
 
 # trimmed files
 sample_annotation = config['sample_annotation']
@@ -48,10 +48,6 @@ rule covplot:
         done=temp("results/coverage/{inpt}/{inpt}_genome_depth.done"),
         mean="results/coverage/{inpt}/{inpt}_genome_depth_mean.tsv", 
         pngf="results/coverage/{inpt}/{inpt}_genome_depth_mqc.png"
-    conda:
-        "../envs/covplot.yaml"
-    envmodules:
-        "R"
     shell:
         "Rscript workflow/Rplots.R {input} {output.mean} {output.pngf}; touch {output.done}"
 
@@ -64,6 +60,7 @@ rule multiqc_inf:
         "results/multiqc/infref/infref_multiqc_report.html"
     shell:
         "multiqc --force {fastqc_dir} {bam_dir_infref} results/coverage/infref  --filename 'infref_multiqc_report.html' -o results/multiqc/infref"
+
 
 rule multiqc_inpt:
     input:

@@ -249,7 +249,7 @@ def SNP_Plots(vc_path, perSamp):
               
         subfig.data[0]['columnwidth'] = [10,2,2,2,2];
         subfig.update_layout(width=600)
-        subfig.update_layout(title_text=matching[j].split('_cleaned')[0].replace('infref_',''), title_x=0.5)
+        subfig.update_layout(title_text=matching[j].split('_cleaned')[0].replace('infref_','').replace('inpt_','').split('/')[0], title_x=0.5)
         subfig.layout.width=800
         #subfig.show()
         if len(df) > 0:

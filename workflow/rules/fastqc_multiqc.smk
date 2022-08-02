@@ -84,7 +84,8 @@ rule multiqc_inf:
     output:
         "results/multiqc/infref/infref_multiqc_report.html"
     shell:
-        "multiqc -f {fastqc_dir} {bam_dir_infref} results/coverage/infref  --filename 'infref_multiqc_report.html' -o results/multiqc/infref"
+        "multiqc --force {fastqc_dir} {bam_dir_infref} results/coverage/infref  --filename 'infref_multiqc_report.html' -o results/multiqc/infref"
+
 
 
 rule multiqc_inf_persamp:
@@ -105,4 +106,4 @@ rule multiqc_inpt:
     output:
         "results/multiqc/inpt/inpt_multiqc_report.html"
     shell:
-        "multiqc -f {fastqc_dir} {bam_dir_inpt} results/coverage/inpt  --filename 'inpt_multiqc_report.html' -o results/multiqc/inpt"
+        "multiqc --force {fastqc_dir} {bam_dir_inpt} results/coverage/inpt  --filename 'inpt_multiqc_report.html' -o results/multiqc/inpt"

@@ -6,6 +6,8 @@ include: "rules/align_reads.smk"
 include: "rules/varscan_vc.smk"
 include: "rules/fastqc_multiqc.smk"
 include: "rules/AA_vc.smk"
+include: "rules/summary_report.smk"
+
 
 # organization of configuration
 
@@ -26,7 +28,8 @@ rule_all_input_list.extend(["results/stats/samples.mapping.flagstat",
                 expand("results/variant-calling/infref/infref_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
                 "results/multiqc/infref/infref_multiqc_report.html",
                 expand("results/variant-calling-AA/infref/infref_{sample}.sorted.sam", sample = samples),
-                expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples)])
+                expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples),
+				"results/summary/infref_summary_report.html"])
 
 if config['doInputRef'] == True:
 	rule_all_input_list.extend(["results/coverage/inpt/inpt_genome_count.tsv",
@@ -41,17 +44,20 @@ if config['doInputRef'] == True:
         "results/coverage/inpt/inpt_genome_depth_mqc.png",
         expand("results/variant-calling/inpt/inpt_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
         expand("results/variant-calling-AA/inpt/inpt_{sample}.sorted.sam", sample = samples),
-        expand("results/variant-calling-AA/inpt/inpt_{sample}.sam2AAFreq.done", sample = samples)])
+        expand("results/variant-calling-AA/inpt/inpt_{sample}.sam2AAFreq.done", sample = samples),
+        "results/summary/inpt_summary_report.html"])
 
 
 if config['doPerSamp'] == True:
 	rule_all_input_list.extend([expand("results/variant-calling/perSamp/{sample}/{sample}_cleaned_allelicprimitives.vcf", sample=samples), 
-        expand("results/coverage/{sample}/genome_depth.tsv", sample=samples), 
-        expand("results/coverage/{sample}/genome_count.tsv", sample=samples), 
-        expand("results/coverage/{sample}/genome_gene_coverage.gct", sample=samples), 
-        expand("results/coverage/{sample}/genome_CDS_coverage.gct", sample=samples),
+        expand("results/coverage/perSamp/{sample}_genome_depth.tsv", sample=samples), 
+        expand("results/coverage/perSamp/{sample}_genome_count.tsv", sample=samples), 
+        expand("results/coverage/perSamp/{sample}_genome_gene_coverage.gct", sample=samples), 
+        expand("results/coverage/perSamp/{sample}_genome_CDS_coverage.gct", sample=samples),
         expand("results/variant-calling-AA/perSamp/{sample}/{sample}.sorted.sam", sample=samples),
-        expand("results/variant-calling-AA/perSamp/{sample}/{sample}.sam2AAFreq.done", sample=samples)])
+        expand("results/variant-calling-AA/perSamp/{sample}/{sample}.sam2AAFreq.done", sample=samples),
+		"results/summary/perSamp_summary_report.html",
+        "results/multiqc/perSamp/perSamp_multiqc_report.html"])
 
 rule all:
 	input:

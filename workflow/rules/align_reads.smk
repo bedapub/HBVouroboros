@@ -469,7 +469,7 @@ rule infref_bowtie2_map_perSamp:
         	f1 = lambda wildcards: fq1dict[wildcards.sample],
         	f2 = lambda wildcards: fq2dict[wildcards.sample]
    	output:
-        	temp("results/perSamp/{sample}/bam/{sample}.bam")
+        	temp("results/perSamp_bam/{sample}.bam")
 	log:
 		"logs/{sample}/bowtie2.log"
 	threads:
@@ -483,11 +483,11 @@ rule infref_bowtie2_map_perSamp:
 
 rule filter_and_sort_ref_bam_perSamp:
     	input:
-        	"results/perSamp/{sample}/bam/{sample}.bam"
+        	"results/perSamp_bam/{sample}.bam"
     	output:
-        	"results/perSamp/{sample}/bam/{sample}.sorted.bam"
+        	"results/perSamp_bam/{sample}.sorted.bam"
     	log:
-        	"logs/{sample}/infref_filter_and_sort_bam.log"
+        	"logs/{sample}/persamp_filter_and_sort_bam.log"
     	threads:
         	2
    	shell:
@@ -496,9 +496,9 @@ rule filter_and_sort_ref_bam_perSamp:
 
 rule index_ref_bam_perSamp:
     	input:
-       		"results/perSamp/{sample}/bam/{sample}.sorted.bam"
+       		"results/perSamp_bam/{sample}.sorted.bam"
     	output:
-       		"results/perSamp/{sample}/bam/{sample}.sorted.bam.bai"
+       		"results/perSamp_bam/{sample}.sorted.bam.bai"
     	threads: 2
     	shell:
         	"samtools index {input}"
@@ -506,10 +506,10 @@ rule index_ref_bam_perSamp:
 
 rule ref_stat_perSamp:
     	input:
-        	bam = "results/perSamp/{sample}/bam/{sample}.sorted.bam",
-       		 bai = "results/perSamp/{sample}/bam/{sample}.sorted.bam.bai"
+        	bam = "results/perSamp_bam/{sample}.sorted.bam",
+       		 bai = "results/perSamp_bam/{sample}.sorted.bam.bai"
     	output:
-        	"results/perSamp/{sample}/bam/{sample}.sorted.bam.stat"
+        	"results/perSamp_bam/{sample}.sorted.bam.stat"
     	threads:
         	2
     	shell:
@@ -518,32 +518,32 @@ rule ref_stat_perSamp:
 
 rule genome_count_perSamp:
     	input:
-        	"results/perSamp/{sample}/bam/{sample}.sorted.bam.stat"
+        	"results/perSamp_bam/{sample}.sorted.bam.stat"
     	output:
-        	"results/coverage/{sample}/genome_count.tsv"
+        	"results/coverage/perSamp/{sample}_genome_count.tsv"
     	shell:
          	"echo -e 'ID\tcoverage' > {output}; "
          	"grep -H '^SN' {input} | \
           	grep '1st fragments' | \
           	sed 's/.sorted.bam.stat:SN\s1st fragments:\s/\t/g' | \
-          	sed 's/results\/infref_bam\///g' >> {output}"
+          	sed 's/results\/perSamp_bam\///g' >> {output}"
 
 
 rule dupconc_depth_perSamp:
     	input:
-        	bam = "results/perSamp/{sample}/bam/{sample}.sorted.bam",
-        	bai = "results/perSamp/{sample}/bam/{sample}.sorted.bam.bai"
+        	bam = "results/perSamp_bam/{sample}.sorted.bam",
+        	bai = "results/perSamp_bam/{sample}.sorted.bam.bai"
     	output:
-       		temp("results/coverage/{sample}/genome_dupconc_depth.tsv")
+       		temp("results/coverage/perSamp/{sample}_genome_dupconc_depth.tsv")
     	shell:
         	"samtools depth -a -H -d 0 {input.bam} -o {output}"
 
 
 rule depth_perSamp:
     	input:
-       		"results/coverage/{sample}/genome_dupconc_depth.tsv"
+       		"results/coverage/perSamp/{sample}_genome_dupconc_depth.tsv"
     	output:
-      		"results/coverage/{sample}/genome_depth.tsv"
+      		"results/coverage/perSamp/{sample}_genome_depth.tsv"
     	run:
        		dedup_file(input[0], output[0])
        		dedup_file(input[0], output[0])
@@ -561,29 +561,29 @@ rule dup_gff_perSamp:
 
 rule individual_coverage_perSamp:
     	input:
-      		bam = "results/perSamp/{sample}/bam/{sample}.sorted.bam",
-     		bai = "results/perSamp/{sample}/bam/{sample}.sorted.bam.bai",
+      		bam = "results/perSamp_bam/{sample}.sorted.bam",
+     		bai = "results/perSamp_bam/{sample}.sorted.bam.bai",
      		gff = "results/perSamp/{sample}/infref_strain_dup.gff"
     	output:
-      		"results/coverage/{sample}/genome_feature_coverage.tsv"
+      		"results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
    	shell:
         	"coverageBed -counts -a {input.gff} -b {input.bam} > {output}"
 
 
 rule gene_coverage_perSamp:
      	input:
-          	"results/coverage/{sample}/genome_feature_coverage.tsv"
+          	"results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
      	output:
-          	"results/coverage/{sample}/genome_gene_coverage.gct"
+          	"results/coverage/perSamp/{sample}_genome_gene_coverage.gct"
      	run:
         	collect_gene_coverage(input, output[0], feat_type='gene')
 
 
 rule CDS_coverage_perSamp:
      	input:
-        	"results/coverage/{sample}/genome_feature_coverage.tsv"
+        	"results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
      	output:
-          	"results/coverage/{sample}/genome_CDS_coverage.gct"
+          	"results/coverage/perSamp/{sample}_genome_CDS_coverage.gct"
      	run:
           	collect_gene_coverage(input, output[0], feat_type='CDS')
 

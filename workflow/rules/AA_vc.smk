@@ -22,7 +22,7 @@ rule bam2sam_vc:
 
 rule bam2sam_vc_perSamp:
     input:
-        "results/perSamp/{sample}/bam/{sample}.sorted.bam"
+        "results/perSamp_bam/{sample}.sorted.bam"
     output:
         "results/variant-calling-AA/perSamp/{sample}/{sample}.sorted.sam"
     shell:

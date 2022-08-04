@@ -53,14 +53,14 @@ def test_snakemake_output_files():
         assert os.path.exists('results/inpt_bam/inpt_Sample2.corrected.sorted.bam') == 1
         assert os.path.exists('results/inpt_bam/inpt_Sample2.sorted.bam.bai') == 1
     if doPerSamp == True:
-        assert os.path.exists('results/perSamp/Sample1/bam/Sample1.sorted.bam.stat') == 1
-        assert os.path.exists('results/perSamp/Sample1/bam/Sample1.sorted.bam') == 1
-        assert os.path.exists('results/perSamp/Sample1/bam/Sample1.corrected.sorted.bam') == 1
-        assert os.path.exists('results/perSamp/Sample1/bam/Sample1.sorted.bam.bai') == 1
-        assert os.path.exists('results/perSamp/Sample2/bam/Sample2.sorted.bam.stat') == 1
-        assert os.path.exists('results/perSamp/Sample2/bam/Sample2.sorted.bam') == 1
-        assert os.path.exists('results/perSamp/Sample2/bam/Sample2.corrected.sorted.bam') == 1
-        assert os.path.exists('results/perSamp/Sample2/bam/Sample2.sorted.bam.bai') == 1
+        assert os.path.exists('results/perSamp_bam/Sample1.sorted.bam.stat') == 1
+        assert os.path.exists('results/perSamp_bam/Sample1.sorted.bam') == 1
+        assert os.path.exists('results/perSamp_bam/Sample1.corrected.sorted.bam') == 1
+        assert os.path.exists('results/perSamp_bam/Sample1.sorted.bam.bai') == 1
+        assert os.path.exists('results/perSamp_bam/Sample2.sorted.bam.stat') == 1
+        assert os.path.exists('results/perSamp_bam/Sample2.sorted.bam') == 1
+        assert os.path.exists('results/perSamp_bam/Sample2.corrected.sorted.bam') == 1
+        assert os.path.exists('results/perSamp_bam/Sample2.sorted.bam.bai') == 1
 
     #Strain fasta, gff, gb and bowtie index files
     assert os.path.exists('results/infref/infref_strain.gb') == 1
@@ -120,14 +120,14 @@ def test_snakemake_output_files():
         assert os.path.exists('results/coverage/inpt/inpt_genome_depth.tsv') == 1
         assert os.path.exists('results/coverage/inpt/inpt_genome_gene_coverage.gct') == 1
     if doPerSamp == True:    
-        assert os.path.exists('results/coverage/Sample1/genome_gene_coverage.gct') == 1
-        assert os.path.exists('results/coverage/Sample1/genome_CDS_coverage.gct') == 1
-        assert os.path.exists('results/coverage/Sample2/genome_gene_coverage.gct') == 1
-        assert os.path.exists('results/coverage/Sample2/genome_CDS_coverage.gct') == 1       
-        assert os.path.exists('results/coverage/Sample1/genome_count.tsv') == 1
-        assert os.path.exists('results/coverage/Sample1/genome_depth.tsv') == 1
-        assert os.path.exists('results/coverage/Sample2/genome_count.tsv') == 1
-        assert os.path.exists('results/coverage/Sample2/genome_depth.tsv') == 1    
+        assert os.path.exists('results/coverage/perSamp/Sample1_genome_gene_coverage.gct') == 1
+        assert os.path.exists('results/coverage/perSamp/Sample1_genome_CDS_coverage.gct') == 1
+        assert os.path.exists('results/coverage/perSamp/Sample2_genome_gene_coverage.gct') == 1
+        assert os.path.exists('results/coverage/perSamp/Sample2_genome_CDS_coverage.gct') == 1       
+        assert os.path.exists('results/coverage/perSamp/Sample1_genome_count.tsv') == 1
+        assert os.path.exists('results/coverage/perSamp/Sample1_genome_depth.tsv') == 1
+        assert os.path.exists('results/coverage/perSamp/Sample2_genome_count.tsv') == 1
+        assert os.path.exists('results/coverage/perSamp/Sample2_genome_depth.tsv') == 1    
     assert os.path.exists('results/coverage/infref/infref_genome_depth_mqc.png') == 1
     assert os.path.exists('results/coverage/infref/infref_genome_depth_mean.tsv') == 1
     if doInputRef == True:        
@@ -160,14 +160,22 @@ def test_snakemake_output_files():
         assert os.path.exists('results/variant-calling/perSamp/Sample2/Sample2_varscan.vcf') == 1
         assert os.path.exists('results/variant-calling/perSamp/Sample2/Sample2_cleaned_allelicprimitives.vcf') == 1
 
+    #Summary report
+    assert os.path.exists('results/summary/infref_summary_report.html') == 1
+    if doInputRef == True:
+        assert os.path.exists('results/summary/inpt_summary_report.html') == 1
+    if doPerSamp == True:
+        assert os.path.exists('results/summary/perSamp_summary_report.html') == 1
 
 
 def test_snakemake_variant_calling_results():
 
-    #Check whether the correct variations have been detected for  the smaples
+    #Check whether the correct variations have been detected for the test samples
 
-    Sample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_Sample1_cleaned_allelicprimitives.vcf', os. getcwd() + '/results/infref/infref_strain_dup.fasta')
-    if doInputRef == True:     
-        Sample2_var = common.test_cleanvcf('results/variant-calling/inpt/inpt_Sample2_cleaned_allelicprimitives.vcf', os. getcwd()  + '/results/inpt/infref_strain_dup.fasta')
+    Sample1_var = common.test_cleanvcf('results/variant-calling/infref/infref_Sample1_cleaned_allelicprimitives.vcf', 'results/infref/infref_strain_dup.fasta')
     assert Sample1_var == ['925', '934', '1371', '1896']
-    #assert simSample2_var == ['582', '925', '928', '934', ]
+    if doInputRef == True:     
+        Sample2_var = common.test_cleanvcf('results/variant-calling/inpt/inpt_Sample2_cleaned_allelicprimitives.vcf', 'results/inpt/inpt_strain_dup.fasta')
+        assert Sample2_var == ['562', '630', '636']
+    
+    

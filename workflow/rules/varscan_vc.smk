@@ -1,5 +1,5 @@
 import snakemake
-config: "config/config_qc.yaml"
+config: "config/config.yaml"
 sample_annotation = config['sample_annotation']
 
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
@@ -42,9 +42,9 @@ rule correct_bam:
 rule correct_bam_perSamp:
     input:
        refDup ="results/perSamp/{sample}/infref_strain.fasta",
-       sortBam ="results/perSamp/{sample}/bam/{sample}.sorted.bam"
+       sortBam ="results/perSamp_bam/{sample}.sorted.bam"
     output:
-       "results/perSamp/{sample}/bam/{sample}.corrected.sorted.bam"
+       "results/perSamp_bam/{sample}.corrected.sorted.bam"
     shell:
        "workflow/rules/correct_bam.sh -f {input.refDup} -s {input.sortBam} -o {output}"    
 
@@ -68,7 +68,7 @@ rule varscan:
 rule varscan_perSamp:
     input:
        refDup ="results/perSamp/{sample}/infref_strain_dup.fasta",
-       sortBam ="results/perSamp/{sample}/bam/{sample}.corrected.sorted.bam"
+       sortBam ="results/perSamp_bam/{sample}.corrected.sorted.bam"
     output:
        pileupFile=temp("results/variant-calling/perSamp/{sample}/{sample}_mpileup.tsv"),
        vcfFile="results/variant-calling/perSamp/{sample}/{sample}_varscan.vcf"
@@ -97,7 +97,7 @@ rule clean_vcfFile_perSamp:
     output:
        "results/variant-calling/perSamp/{sample}/{sample}_cleaned.vcf"
     run:
-       vcfClean(str(input),str(input.fasta),str(output))
+       vcfClean(str(input.vcf),str(input.fasta),str(output))
 
 
 rule make_vcfallelicprimitives:

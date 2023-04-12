@@ -269,7 +269,7 @@ rule depth:
 rule dup_gff:
     input:
        gff = "results/{inpt}/{inpt}_strain.gff",
-       fasta = "results/{inpt}/{inpt}_strain.fasta"
+       fasta = "results/{inpt}/{inpt}_strain_dup.fasta"
     output:
        gff = "results/{inpt}/{inpt}_strain_dup.gff"
     run:
@@ -552,7 +552,7 @@ rule depth_perSamp:
 rule dup_gff_perSamp:
     	input:
        		gff = "results/perSamp/{sample}/infref_strain.gff",
-       		fasta = "results/perSamp/{sample}/infref_strain.fasta"
+       		fasta = "results/perSamp/{sample}/infref_strain_dup.fasta"
     	output:
        		gff = "results/perSamp/{sample}/infref_strain_dup.gff"
     	run:

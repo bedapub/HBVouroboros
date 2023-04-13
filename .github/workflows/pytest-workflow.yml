@@ -1,10 +1,10 @@
-name: Python Package using Conda
+name: Test of HBVouroboros with pytest
 
 on: [push]
 
 jobs:
   pytest_pipeline:
-    name: setup_env_pytest
+    name: HBVouroboros testing
     runs-on: "ubuntu-latest"
     defaults:
       run:
@@ -22,7 +22,7 @@ jobs:
           conda install -c conda-forge mamba
           mamba env create -f envs/environment.yml
 
-      - name: run pytest
+      - name: activate environment and run pytest
         run: |
           mamba init
           # reload .bashrc config for current bash terminal

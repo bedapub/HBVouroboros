@@ -14,12 +14,6 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v2
 
-#      - name: create environment using micromamba
-#        uses: mamba-org/provision-with-micromamba@main
-#        with:
-#          environment-file: ./envs/environment.yml
-#          environment-name: HBVouroboros
-
       - name: initialize conda environment
         uses: conda-incubator/setup-miniconda@v2
 
@@ -30,8 +24,8 @@ jobs:
           # reload .bashrc config for current bash terminal
           source ~/.bashrc
           mamba env create -f envs/environment.yml
-          mamba activate HBVouroboros
 
       - name: run pytest
         run: |
+          mamba activate HBVouroboros
           pytest -s

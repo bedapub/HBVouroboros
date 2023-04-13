@@ -9,20 +9,27 @@ jobs:
     defaults:
       run:
         shell: bash -l {0}
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: mamba-org/provision-with-micromamba@main
-        with:
-          environment-file: ./envs/environment.yml
-          environment-name: HBVouroboros
-      - uses: BSFishy/pip-action@v1
-        with:
-          packages: |
-            zict
-            werkzeug   
-            bio
-            pytest
-            pandas
-            bcbio-gff
-      - run: |
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+#      - name: create environment using micromamba
+#        uses: mamba-org/provision-with-micromamba@main
+#        with:
+#          environment-file: ./envs/environment.yml
+#          environment-name: HBVouroboros
+
+      - name: initialize conda environment
+        uses: conda-incubator/setup-miniconda@v2
+
+      - name: create conda environment
+        run: |
+          conda install -c conda-forge mamba
+          mamba init
+          mamba env create -f envs/environment.yml
+          mamba activate HBVouroboros
+
+      - name: run pytest
+        run: |
           pytest -s

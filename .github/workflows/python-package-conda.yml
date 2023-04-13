@@ -20,12 +20,12 @@ jobs:
       - name: create conda environment
         run: |
           conda install -c conda-forge mamba
-          mamba init
-          # reload .bashrc config for current bash terminal
-          source ~/.bashrc
           mamba env create -f envs/environment.yml
 
       - name: run pytest
         run: |
-          conda activate HBVouroboros
+          mamba init
+          # reload .bashrc config for current bash terminal
+          source ~/.bashrc
+          mamba activate HBVouroboros
           pytest -s

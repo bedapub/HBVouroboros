@@ -11,11 +11,10 @@ jobs:
         shell: bash -l {0}
     steps:
       - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: mamba-org/provision-with-micromamba@main
         with:
-          auto-update-conda: false
-          activate-environment: explicit-env
           environment-file: ./envs/environment.yml
+          environment-name: HBVouroboros
       - uses: BSFishy/pip-action@v1
         with:
           packages: |

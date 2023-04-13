@@ -27,5 +27,5 @@ jobs:
 
       - name: run pytest
         run: |
-          mamba activate HBVouroboros
+          conda activate HBVouroboros
           pytest -s

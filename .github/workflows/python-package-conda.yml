@@ -27,6 +27,8 @@ jobs:
         run: |
           conda install -c conda-forge mamba
           mamba init
+          # reload .bashrc config for current bash terminal
+          source ~/.bashrc
           mamba env create -f envs/environment.yml
           mamba activate HBVouroboros
 

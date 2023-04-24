@@ -1,0 +1,31 @@
+name: Test of HBVouroboros with pytest
+
+on: [push]
+
+jobs:
+  pytest_pipeline:
+    name: HBVouroboros testing
+    runs-on: "ubuntu-latest"
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: initialize conda environment
+        uses: conda-incubator/setup-miniconda@v2
+
+      - name: create conda environment
+        run: |
+          conda install -c conda-forge mamba
+          mamba env create -f envs/environment.yml
+
+      - name: activate environment and run pytest
+        run: |
+          mamba init
+          # reload .bashrc config for current bash terminal
+          source ~/.bashrc
+          mamba activate HBVouroboros
+          pytest -s

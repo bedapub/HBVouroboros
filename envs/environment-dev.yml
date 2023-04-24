@@ -12,3 +12,5 @@ channels:
 dependencies:
   - sphinx
   - pdoc3
+  - pip:
+    - bcbio-gff

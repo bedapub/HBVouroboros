@@ -1,4 +1,5 @@
 import snakemake
+
 # include: "common.smk"
 config: "config/config.yaml"
 
@@ -10,6 +11,7 @@ samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 #        expand("results/variant-calling-AA/{sample}.sorted.sam", sample = samples),
 #        expand("results/variant-calling-AA/{sample}.sam2AAFreq.done", sample = samples),
 #        "results/infref/inferred_strain_dup.fasta"
+
 
 rule bam2sam_vc:
     input:

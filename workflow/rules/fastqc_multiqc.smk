@@ -19,11 +19,13 @@ bam_dir_infref = "results/infref_bam/"
 bam_dir_inpt = "results/inpt_bam/"
 bam_dir_perSamp = "results/perSamp_bam/"
 
+
 rule qc:
     input:
         expand("results/fastqc/{sample}.fastqc.done", sample = samples),
         "results/coverage/{inpt}/{inpt}_genome_depth.done",
         "results/multiqc/multiqc_report.html"
+
 
 rule fastqc:
     input:
@@ -34,6 +36,7 @@ rule fastqc:
     shell:
         "fastqc -o results/fastqc/ {input.f1} {input.f2}; touch {output}"
 
+
 rule qualimap:
     input:
         "results/{inpt}_bam/{inpt}_{sample}.sorted.bam"
@@ -41,6 +44,7 @@ rule qualimap:
         temp("results/{inpt}_bam/bamqc/{sample}.bamqc.done")
     shell:
         "qualimap bamqc -bam {input} -c -nw 400 -hm 3 ; touch {output}"
+
 
 rule qualimap_persamp:
     input:
@@ -73,9 +77,6 @@ rule covplot_persamp:
         "Rscript workflow/Rplots.R {input} {output.mean} {output.pngf}; touch {output.done}"
 
 
-
-
-
 rule multiqc_inf:
     input:
         fastqcDone=expand("results/fastqc/{sample}.fastqc.done",sample = samples),
@@ -87,7 +88,6 @@ rule multiqc_inf:
         "multiqc --force {fastqc_dir} {bam_dir_infref} results/coverage/infref  --filename 'infref_multiqc_report.html' -o results/multiqc/infref"
 
 
-
 rule multiqc_inf_persamp:
     input:
         fastqc=expand("results/fastqc/{sample}.fastqc.done",sample = samples),
@@ -96,7 +96,6 @@ rule multiqc_inf_persamp:
         "results/multiqc/perSamp/perSamp_multiqc_report.html"
     shell:
         "multiqc -f {fastqc_dir} {bam_dir_perSamp} results/coverage/perSamp  --filename 'perSamp_multiqc_report.html' -o results/multiqc/perSamp"
-
 
 
 rule multiqc_inpt:

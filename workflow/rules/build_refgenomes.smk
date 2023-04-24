@@ -6,6 +6,7 @@ localrules: download_refgenomes
 HTTP = HTTPRemoteProvider()
 blastdb_filenames = ["resources/ref/HBV_allgenomes.fasta."+s for s in ("nhr", "nsq", "nin")]
 
+
 rule download_refgenomes:
     input:
          HTTP.remote('https://hbvdb.lyon.inserm.fr/data/references/hbvdbr.fas',
@@ -16,6 +17,7 @@ rule download_refgenomes:
         'logs/ref/download_refgenomes.log'
     run:
         shell("mv {input} {output}")
+
 
 rule download_allgenomes:
     input:
@@ -29,6 +31,7 @@ rule download_allgenomes:
     run:
         shell("mv {input} {output}")
 
+
 rule makeblastdb:
     input:
         "resources/ref/HBV_allgenomes.fasta"
@@ -39,6 +42,7 @@ rule makeblastdb:
     shell:
         "makeblastdb -in {input} -title \"HBVdb genomes\" -dbtype nucl 2> {log}"
 
+
 rule dup_and_conc:
     input:
         fasta="resources/ref/HBV_refgenomes.fasta"
@@ -48,6 +52,7 @@ rule dup_and_conc:
         'logs/ref/HBV_refgenomes_dup.log'
     run:
         dup_and_conc_FASTA(input.fasta, output.fasta)
+
 
 rule bowtie2_index:
     input:

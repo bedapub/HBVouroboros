@@ -1,4 +1,5 @@
 import snakemake
+
 config: "config/config_qc.yaml"
 sample_annotation = config['sample_annotation']
 
@@ -22,6 +23,7 @@ infref_strain_gff = "results/infref/infref_strain.gff"
 inpt_strain_gff = "results/inpt/inpt_strain.gff"
 infref_strain_dup_gff = "results/infref/infref_strain_dup.gff"
 infref_bowtie2_index = "results/infref/infref_bowtie2_index"
+
 
 rule bowtie2_map:
     input:
@@ -75,8 +77,10 @@ rule flagstat:
 
 
 rule aggregate_flagstat:
-    input: expand("results/stats/{sample}.sorted.bam.flagstat", sample=samples)
-    output: "results/stats/samples.mapping.flagstat"
+    input: 
+        expand("results/stats/{sample}.sorted.bam.flagstat", sample=samples)
+    output: 
+        "results/stats/samples.mapping.flagstat"
     shell:
     	"cat {input} > {output}"
 
@@ -115,34 +119,43 @@ rule run_trinity:
     threads: 1
     shell:
         "Trinity --seqType fq \
-            --left {input.f1} --right {input.f2} \
-            --CPU {threads} --max_memory 10G --output results/trinity"
+        --left {input.f1} --right {input.f2} \
+        --CPU {threads} --max_memory 10G --output results/trinity"
 
 
 rule sort_trinity_fasta:
-    input: trinity_fasta
-    output: trinity_sorted_fasta
+    input: 
+        trinity_fasta
+    output: 
+        trinity_sorted_fasta
     run:
         sort_FASTA_by_length(input[0], output[0])
 
 
 rule run_blast:
-    input: tsfasta=trinity_sorted_fasta, blastdb={blast_db}
-    output: blast_out
+    input: 
+        tsfasta=trinity_sorted_fasta, blastdb={blast_db}
+    output: 
+        blast_out
     shell:
         "makeblastdb -in {blast_db} -dbtype nucl; blastn -db {blast_db} -query {input.tsfasta} -outfmt 6 > {output}"
 
 
 rule get_ref_strain_seq_infref:
-    input: blast_out
-    output: "results/infref/infref_strain.fasta"
+    input: 
+        blast_out
+    output: 
+        "results/infref/infref_strain.fasta"
     run:
         acc=get_infref_acc(blast_out)
         write_seq_by_acc(blast_db, acc, infref_strain_FASTA)
 
+
 rule get_ref_strain_gb_infref:
-    input: blast_out
-    output: "results/infref/infref_strain.gb"
+    input: 
+        blast_out
+    output: 
+        "results/infref/infref_strain.gb"
     run:
         gb_acc = get_infref_gb_acc(blast_out)
         download_gb(gb_acc, output[0])
@@ -158,18 +171,25 @@ rule ref_strain_gb2gff_inf:
 
 
 rule ref_dup_infref:
-    input: "results/infref/infref_strain.fasta"
-    output: "results/infref/infref_strain_dup.fasta"
+    input: 
+        "results/infref/infref_strain.fasta"
+    output: 
+        "results/infref/infref_strain_dup.fasta"
     run:
         dup_and_conc_FASTA(input[0], output[0])
 	
 
 rule bowtie2_index_ref_dup:
-    input: "results/{inpt}/{inpt}_strain_dup.fasta",
-    output: "results/{inpt}/{inpt}_bowtie2_index"
-    threads: 1
-    message:  "Generating bowtie2 index of duplicated infref (and inpt if present) reference genome"
-    log:  "logs/{inpt}_bowtie2_index_genome.log"
+    input: 
+        "results/{inpt}/{inpt}_strain_dup.fasta",
+    output: 
+        "results/{inpt}/{inpt}_bowtie2_index"
+    threads: 
+        1
+    message:
+        "Generating bowtie2 index of duplicated infref (and inpt if present) reference genome"
+    log:
+        "logs/{inpt}_bowtie2_index_genome.log"
     shell:
         "touch {output}; bowtie2-build --threads {threads} {input} {output}"
 
@@ -187,9 +207,9 @@ rule bowtie2_index_ref_map:
         2
     shell:
         "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -k 1\
-            -x {input.genome} \
-            -1 {input.f1} -2 {input.f2} 2>{log} | \
-            samtools view -Sb - > {output}"
+        -x {input.genome} \
+        -1 {input.f1} -2 {input.f2} 2>{log} | \
+        samtools view -Sb - > {output}"
 
 
 rule filter_and_sort_ref_bam:
@@ -210,7 +230,8 @@ rule index_ref_bam:
         "results/{inpt}_bam/{inpt}_{sample}.sorted.bam"
     output:
         "results/{inpt}_bam/{inpt}_{sample}.sorted.bam.bai"
-    threads: 2
+    threads: 
+        2
     shell:
         "samtools index {input}"
 
@@ -229,27 +250,21 @@ rule ref_stat:
 
 rule genome_count:
     input:
-        expand("results/{{inpt}}_bam/{{inpt}}_{sample}.sorted.bam.stat",
-               sample=samples)
+        expand("results/{{inpt}}_bam/{{inpt}}_{sample}.sorted.bam.stat", sample=samples)
     output:
         "results/coverage/{inpt}/{inpt}_genome_count.tsv"
     shell:
-         "echo -e 'ID\tcoverage' > {output}; "
-         "grep -H '^SN' {input} | \
-          grep '1st fragments' | \
-          sed 's/.sorted.bam.stat:SN\s1st fragments:\s/\t/g' | \
-          sed 's/results\/wildcards.inpt_bam\///g' >> {output}"
-
-
-
+        "echo -e 'ID\tcoverage' > {output}; "
+        "grep -H '^SN' {input} | \
+        grep '1st fragments' | \
+        sed 's/.sorted.bam.stat:SN\s1st fragments:\s/\t/g' | \
+        sed 's/results\/wildcards.inpt_bam\///g' >> {output}"
 
 
 rule dupconc_depth:
     input:
-        bam = expand("results/{{inpt}}_bam/{{inpt}}_{sample}.sorted.bam",
-                     sample=samples),
-        bai = expand("results/{{inpt}}_bam/{{inpt}}_{sample}.sorted.bam.bai",
-                     sample=samples)
+        bam = expand("results/{{inpt}}_bam/{{inpt}}_{sample}.sorted.bam", sample=samples),
+        bai = expand("results/{{inpt}}_bam/{{inpt}}_{sample}.sorted.bam.bai", sample=samples)
     output:
         temp("results/coverage/{inpt}/{inpt}_genome_dupconc_depth.tsv")
     shell:
@@ -286,31 +301,27 @@ rule individual_coverage:
     shell:
         "coverageBed -counts -a {input.gff} -b {input.bam} > {output}"
 
-## question: can we combine the two?
+
+## TODO: question: can we combine the two?
 rule gene_coverage_infref:
-     input:
-        expand(
-          "results/coverage/infref/infref_genome_{sample}_feature_coverage.tsv",
-          sample=samples)
-     output:
-          "results/coverage/infref/infref_genome_gene_coverage.gct"
-     run:
+    input:
+        expand("results/coverage/infref/infref_genome_{sample}_feature_coverage.tsv", sample=samples)
+    output:
+        "results/coverage/infref/infref_genome_gene_coverage.gct"
+    run:
         collect_gene_coverage(input, output[0], feat_type='gene')
 
 
 rule CDS_coverage_infref:
-     input:
-          expand("results/coverage/infref/infref_genome_{sample}_feature_coverage.tsv", sample=samples)
-     output:
-          "results/coverage/infref/infref_genome_CDS_coverage.gct"
-     run:
-          collect_gene_coverage(input, output[0], feat_type='CDS')
+    input:
+        expand("results/coverage/infref/infref_genome_{sample}_feature_coverage.tsv", sample=samples)
+    output:
+        "results/coverage/infref/infref_genome_CDS_coverage.gct"
+    run:
+        collect_gene_coverage(input, output[0], feat_type='CDS')
 
 
-
-
-#################### This section is only executes when "doInputRef" in config file is set to True
-
+#################### This section is only executed when "doInputRef" in config file is set to True
 
 
 acc_inpt = config['inputRef']
@@ -318,50 +329,54 @@ gb_acc_inpt = acc_inpt.split("|")[2].split("_")[0]
 
 rule get_ref_strain_seq_inpt:
     input:  
-    output: "results/inpt/inpt_strain.fasta"
+    output: 
+        "results/inpt/inpt_strain.fasta"
     run:
         write_seq_by_acc(blast_db, acc_inpt, inpt_strain_FASTA)
 
 
 rule ref_dup_inpt:
-    	input: "results/inpt/inpt_strain.fasta"
-    	output: "results/inpt/inpt_strain_dup.fasta"
-    	run:
-        	dup_and_conc_FASTA(input[0], output[0])
+    input: 
+        "results/inpt/inpt_strain.fasta"
+    output: 
+        "results/inpt/inpt_strain_dup.fasta"
+    run:
+        dup_and_conc_FASTA(input[0], output[0])
 
 
 rule get_ref_strain_gb_inpt:
-    	input:  
-    	output: "results/inpt/inpt_strain.gb"
-    	run:
-        	download_gb(gb_acc_inpt, output[0])
+    input:  
+    output: "results/inpt/inpt_strain.gb"
+    run:
+        download_gb(gb_acc_inpt, output[0])
 
 
 rule ref_strain_gb2gff_inpt:
-    	input:  
-       		"results/inpt/inpt_strain.gb"
-    	output:
-       		"results/inpt/inpt_strain.gff"
-    	run:
-       		gb2gff(input[0], output[0])
+    input:  
+        "results/inpt/inpt_strain.gb"
+    output:
+        "results/inpt/inpt_strain.gff"
+    run:
+        gb2gff(input[0], output[0])
 
 
 rule gene_coverage_inpt:
-     	input:
-          	expand("results/coverage/inpt/inpt_genome_{sample}_feature_coverage.tsv", sample=samples)
-     	output:
-          	"results/coverage/inpt/inpt_genome_gene_coverage.gct"
-     	run:
-        	collect_gene_coverage(input, output[0], feat_type='gene')
+    input:
+        expand("results/coverage/inpt/inpt_genome_{sample}_feature_coverage.tsv", sample=samples)
+    output:
+        "results/coverage/inpt/inpt_genome_gene_coverage.gct"
+    run:
+        collect_gene_coverage(input, output[0], feat_type='gene')
 
 
 rule CDS_coverage_inpt:
-     	input:
-        	expand("results/coverage/inpt/inpt_genome_{sample}_feature_coverage.tsv",sample=samples)
-     	output:
-          	"results/coverage/inpt/inpt_genome_CDS_coverage.gct"
-     	run:
-          	collect_gene_coverage(input, output[0], feat_type='CDS')
+    input:
+        expand("results/coverage/inpt/inpt_genome_{sample}_feature_coverage.tsv", sample=samples)
+    output:
+        "results/coverage/inpt/inpt_genome_CDS_coverage.gct"
+    run:
+        collect_gene_coverage(input, output[0], feat_type='CDS')
+
 
 #################### 
 
@@ -369,224 +384,240 @@ rule CDS_coverage_inpt:
 ################# This section is only executed when "doPerSamp" in config file is set to True
 
 
-
 rule aggregate_bam_perSamp:
-    	input:
-        	"results/bam/{sample}.sorted.bam"
-            
-    	output:
-        	temp("results/bam/aggregated_mapped_reads_{sample}.bam")
-    	threads:
-        	2
-    	shell:
-        	"samtools cat --threads {threads} {input} | \
-            	samtools sort -n > {output}"
+    input:
+        "results/bam/{sample}.sorted.bam"
+    output:
+        temp("results/bam/aggregated_mapped_reads_{sample}.bam")
+    threads:
+        2
+    shell:
+        "samtools cat --threads {threads} {input} | \
+        samtools sort -n > {output}"
 
 
 rule perSamp_fq:
-    	input:
-        	"results/bam/aggregated_mapped_reads_{sample}.bam"
-    	output:
-        	f1 = temp("results/{sample}_mapped_reads_1.fq.gz"),
-        	f2 = temp("results/{sample}_mapped_reads_2.fq.gz")
-    	threads: 2
-    	shell:
-        	"samtools fastq --threads {threads} -N \
-            	-1 {output.f1} -2 {output.f2} {input}"
+    input:
+        "results/bam/aggregated_mapped_reads_{sample}.bam"
+    output:
+        f1 = temp("results/{sample}_mapped_reads_1.fq.gz"),
+        f2 = temp("results/{sample}_mapped_reads_2.fq.gz")
+    threads: 
+        2
+    shell:
+        "samtools fastq --threads {threads} -N \
+        -1 {output.f1} -2 {output.f2} {input}"
 
 
 rule run_trinity_perSamp:
-    	input:
-        	f1 = "results/{sample}_mapped_reads_1.fq.gz",
-        	f2 = "results/{sample}_mapped_reads_2.fq.gz",
-    	output:
-        	"results/perSamp_trinity/{sample}/trinity/Trinity.fasta"
-    	threads: 1
-    	shell:
-        	"Trinity --seqType fq \
-            	--left {input.f1} --right {input.f2} \
-            	--CPU {threads} --max_memory 10G --output results/perSamp_trinity/{wildcards.sample}/trinity/"
+    input:
+        f1 = "results/{sample}_mapped_reads_1.fq.gz",
+        f2 = "results/{sample}_mapped_reads_2.fq.gz",
+    output:
+        "results/perSamp_trinity/{sample}/trinity/Trinity.fasta"
+    threads: 
+        1
+    shell:
+        "Trinity --seqType fq \
+        --left {input.f1} --right {input.f2} \
+        --CPU {threads} --max_memory 10G --output results/perSamp_trinity/{wildcards.sample}/trinity/"
 
 
 rule run_blast_perSamp:
-    	input: "results/perSamp_trinity/{sample}/trinity/Trinity.sorted.fasta"
-    	output: "results/perSamp_blast/{sample}_blast.out"
-    	shell:
-        	"blastn -db {blast_db} -query {input} -outfmt 6 > {output}"
+    input: 
+        "results/perSamp_trinity/{sample}/trinity/Trinity.sorted.fasta"
+    output: 
+        "results/perSamp_blast/{sample}_blast.out"
+    shell:
+        "blastn -db {blast_db} -query {input} -outfmt 6 > {output}"
 
 
 rule sort_trinity_fasta_perSmap:
-    	input: "results/perSamp_trinity/{sample}/trinity/Trinity.fasta"
-    	output:"results/perSamp_trinity/{sample}/trinity/Trinity.sorted.fasta"
-    	run:
-        	sort_FASTA_by_length(input[0], output[0])
+    input: 
+        "results/perSamp_trinity/{sample}/trinity/Trinity.fasta"
+    output:
+        "results/perSamp_trinity/{sample}/trinity/Trinity.sorted.fasta"
+    run:
+        sort_FASTA_by_length(input[0], output[0])
 
 
 rule get_ref_strain_seq_perSamp:
-    	input: "results/perSamp_blast/{sample}_blast.out"
-    	output: "results/perSamp/{sample}/infref_strain.fasta"
-    	run:
-        	acc=get_infref_acc(input[0])
-        	write_seq_by_acc(blast_db, acc, output[0])
+    input: 
+        "results/perSamp_blast/{sample}_blast.out"
+    output:
+        "results/perSamp/{sample}/infref_strain.fasta"
+    run:
+        acc=get_infref_acc(input[0])
+        write_seq_by_acc(blast_db, acc, output[0])
 
 
 rule get_ref_strain_gb_perSamp:
-    	input: "results/perSamp_blast/{sample}_blast.out"
-    	output: "results/perSamp/{sample}/infref_strain.gb"
-    	run:
-        	gb_acc = get_infref_gb_acc(input[0])
-        	download_gb(gb_acc, output[0])
+    input: 
+        "results/perSamp_blast/{sample}_blast.out"
+    output:
+        "results/perSamp/{sample}/infref_strain.gb"
+    run:
+        gb_acc = get_infref_gb_acc(input[0])
+        download_gb(gb_acc, output[0])
 
 
 rule ref_strain_gb2gff_perSamp:
-    	input:
-       		"results/perSamp/{sample}/infref_strain.gb"
-    	output:
-       		"results/perSamp/{sample}/infref_strain.gff"
-    	run:
-       		gb2gff(input[0], output[0])
+    input:
+        "results/perSamp/{sample}/infref_strain.gb"
+    output:
+        "results/perSamp/{sample}/infref_strain.gff"
+    run:
+        gb2gff(input[0], output[0])
 
 
 rule infref_dup_perSamp:
-    	input:  "results/perSamp/{sample}/infref_strain.fasta"
-    	output: "results/perSamp/{sample}/infref_strain_dup.fasta"
-    	run:
-        	dup_and_conc_FASTA(input[0], output[0])
+    input:
+        "results/perSamp/{sample}/infref_strain.fasta"
+    output:
+        "results/perSamp/{sample}/infref_strain_dup.fasta"
+    run:
+        dup_and_conc_FASTA(input[0], output[0])
 
 
 rule bowtie2_index_ref_dup_perSmap:
-    	input: "results/perSamp/{sample}/infref_strain_dup.fasta"
-    	output: "results/perSamp/{sample}/infref_bowtie2_index"
-    	threads: 1
-	message: "Generating bowtie2 index of duplicated the infref reference genome"
-    	log:  "logs/{sample}/bowtie2_index_genome.log"
-    	shell: "touch {output}; bowtie2-build --threads {threads} {input} {output}"
+    input:
+        "results/perSamp/{sample}/infref_strain_dup.fasta"
+    output:
+        "results/perSamp/{sample}/infref_bowtie2_index"
+    threads: 
+        1
+    message: 
+        "Generating bowtie2 index of duplicated the infref reference genome"
+    log:
+        "logs/{sample}/bowtie2_index_genome.log"
+    shell:
+        "touch {output}; bowtie2-build --threads {threads} {input} {output}"
 
 
 rule infref_bowtie2_map_perSamp:
-    	input:
-        	genome = "results/perSamp/{sample}/infref_bowtie2_index",
-        	f1 = lambda wildcards: fq1dict[wildcards.sample],
-        	f2 = lambda wildcards: fq2dict[wildcards.sample]
+    input:
+       	genome = "results/perSamp/{sample}/infref_bowtie2_index",
+       	f1 = lambda wildcards: fq1dict[wildcards.sample],
+       	f2 = lambda wildcards: fq2dict[wildcards.sample]
    	output:
-        	temp("results/perSamp_bam/{sample}.bam")
+       	temp("results/perSamp_bam/{sample}.bam")
 	log:
 		"logs/{sample}/bowtie2.log"
 	threads:
-        	2
+       	2
 	shell:
-        	"bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -k 1\
-            	-x {input.genome} \
-            	-1 {input.f1} -2 {input.f2} 2>{log} | \
-            	samtools view -Sb - > {output}"
+       	"bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -k 1\
+      	-x {input.genome} \
+       	-1 {input.f1} -2 {input.f2} 2>{log} | \
+       	samtools view -Sb - > {output}"
 
 
 rule filter_and_sort_ref_bam_perSamp:
-    	input:
-        	"results/perSamp_bam/{sample}.bam"
-    	output:
-        	"results/perSamp_bam/{sample}.sorted.bam"
-    	log:
-        	"logs/{sample}/persamp_filter_and_sort_bam.log"
-    	threads:
-        	2
+    input:
+       	"results/perSamp_bam/{sample}.bam"
+    output:
+       	"results/perSamp_bam/{sample}.sorted.bam"
+    log:
+       	"logs/{sample}/persamp_filter_and_sort_bam.log"
+    threads:
+       	2
    	shell:
-        	"samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
+       	"samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
 
 
 rule index_ref_bam_perSamp:
-    	input:
-       		"results/perSamp_bam/{sample}.sorted.bam"
-    	output:
-       		"results/perSamp_bam/{sample}.sorted.bam.bai"
-    	threads: 2
-    	shell:
-        	"samtools index {input}"
+    input:
+        "results/perSamp_bam/{sample}.sorted.bam"
+    output:
+        "results/perSamp_bam/{sample}.sorted.bam.bai"
+    threads: 
+        2
+    shell:
+        "samtools index {input}"
 
 
 rule ref_stat_perSamp:
-    	input:
-        	bam = "results/perSamp_bam/{sample}.sorted.bam",
-       		 bai = "results/perSamp_bam/{sample}.sorted.bam.bai"
-    	output:
-        	"results/perSamp_bam/{sample}.sorted.bam.stat"
-    	threads:
-        	2
-    	shell:
-        	"samtools stat -@ {threads} {input.bam} > {output} "
+    input:
+        bam = "results/perSamp_bam/{sample}.sorted.bam",
+        bai = "results/perSamp_bam/{sample}.sorted.bam.bai"
+    output:
+        "results/perSamp_bam/{sample}.sorted.bam.stat"
+    threads:
+        2
+    shell:
+        "samtools stat -@ {threads} {input.bam} > {output} "
 
 
 rule genome_count_perSamp:
-    	input:
-        	"results/perSamp_bam/{sample}.sorted.bam.stat"
-    	output:
-        	"results/coverage/perSamp/{sample}_genome_count.tsv"
-    	shell:
-         	"echo -e 'ID\tcoverage' > {output}; "
-         	"grep -H '^SN' {input} | \
-          	grep '1st fragments' | \
-          	sed 's/.sorted.bam.stat:SN\s1st fragments:\s/\t/g' | \
-          	sed 's/results\/perSamp_bam\///g' >> {output}"
+    input:
+        "results/perSamp_bam/{sample}.sorted.bam.stat"
+    output:
+        "results/coverage/perSamp/{sample}_genome_count.tsv"
+    shell:
+        "echo -e 'ID\tcoverage' > {output}; "
+        "grep -H '^SN' {input} | \
+        grep '1st fragments' | \
+        sed 's/.sorted.bam.stat:SN\s1st fragments:\s/\t/g' | \
+        sed 's/results\/perSamp_bam\///g' >> {output}"
 
 
 rule dupconc_depth_perSamp:
-    	input:
-        	bam = "results/perSamp_bam/{sample}.sorted.bam",
-        	bai = "results/perSamp_bam/{sample}.sorted.bam.bai"
-    	output:
-       		temp("results/coverage/perSamp/{sample}_genome_dupconc_depth.tsv")
-    	shell:
-        	"samtools depth -a -H -d 0 {input.bam} -o {output}"
+    input:
+        bam = "results/perSamp_bam/{sample}.sorted.bam",
+        bai = "results/perSamp_bam/{sample}.sorted.bam.bai"
+    output:
+        temp("results/coverage/perSamp/{sample}_genome_dupconc_depth.tsv")
+    shell:
+        "samtools depth -a -H -d 0 {input.bam} -o {output}"
 
 
 rule depth_perSamp:
-    	input:
-       		"results/coverage/perSamp/{sample}_genome_dupconc_depth.tsv"
-    	output:
-      		"results/coverage/perSamp/{sample}_genome_depth.tsv"
-    	run:
-       		dedup_file(input[0], output[0])
-       		dedup_file(input[0], output[0])
+    input:
+        "results/coverage/perSamp/{sample}_genome_dupconc_depth.tsv"
+    output:
+        "results/coverage/perSamp/{sample}_genome_depth.tsv"
+    run:
+        dedup_file(input[0], output[0])
+        dedup_file(input[0], output[0])
 
 
 rule dup_gff_perSamp:
-    	input:
-       		gff = "results/perSamp/{sample}/infref_strain.gff",
-       		fasta = "results/perSamp/{sample}/infref_strain_dup.fasta"
-    	output:
-       		gff = "results/perSamp/{sample}/infref_strain_dup.gff"
-    	run:
-       		dup_gff(input.fasta, input.gff, output.gff)
+    input:
+        gff = "results/perSamp/{sample}/infref_strain.gff",
+        fasta = "results/perSamp/{sample}/infref_strain_dup.fasta"
+    output:
+        gff = "results/perSamp/{sample}/infref_strain_dup.gff"
+    run:
+        dup_gff(input.fasta, input.gff, output.gff)
 
 
 rule individual_coverage_perSamp:
-    	input:
-      		bam = "results/perSamp_bam/{sample}.sorted.bam",
-     		bai = "results/perSamp_bam/{sample}.sorted.bam.bai",
-     		gff = "results/perSamp/{sample}/infref_strain_dup.gff"
-    	output:
-      		"results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
+    input:
+        bam = "results/perSamp_bam/{sample}.sorted.bam",
+        bai = "results/perSamp_bam/{sample}.sorted.bam.bai",
+        gff = "results/perSamp/{sample}/infref_strain_dup.gff"
+    output:
+        "results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
    	shell:
-        	"coverageBed -counts -a {input.gff} -b {input.bam} > {output}"
+        "coverageBed -counts -a {input.gff} -b {input.bam} > {output}"
 
 
 rule gene_coverage_perSamp:
-     	input:
-          	"results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
-     	output:
-          	"results/coverage/perSamp/{sample}_genome_gene_coverage.gct"
-     	run:
-        	collect_gene_coverage(input, output[0], feat_type='gene')
+    input:
+        "results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
+    output:
+        "results/coverage/perSamp/{sample}_genome_gene_coverage.gct"
+    run:
+        collect_gene_coverage(input, output[0], feat_type='gene')
 
 
 rule CDS_coverage_perSamp:
-     	input:
-        	"results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
-     	output:
-          	"results/coverage/perSamp/{sample}_genome_CDS_coverage.gct"
-     	run:
-          	collect_gene_coverage(input, output[0], feat_type='CDS')
+    input:
+        "results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
+    output:
+        "results/coverage/perSamp/{sample}_genome_CDS_coverage.gct"
+    run:
+        collect_gene_coverage(input, output[0], feat_type='CDS')
+
 
 #################
-
-

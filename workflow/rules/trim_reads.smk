@@ -27,12 +27,14 @@ trimmed_dir = abspath("trimmed")
 unpaired_dir = abspath("unpaired")
 log_dir = abspath("logs")
 
+
 rule trim:
     input:
         output_sample_annotation_fn,
         expand(join(trimmed_dir, "{sample}_R1.fastq.gz"), sample=samples),
         expand(join(trimmed_dir, "{sample}_R2.fastq.gz"), sample=samples),
         expand(join(log_dir, "{sample}_trimmomatic.log.gz"), sample=samples)
+
 
 rule trimmomatic:
     input:
@@ -55,6 +57,7 @@ rule trimmomatic:
         "{output.tf1} {output.uf1} {output.tf2} {output.uf2} "
         "ILLUMINACLIP:{illumina_clip_file}{illumina_clip_opts} {trimmomatic_steps}"
 
+
 rule gzip_log:
     input:
         join(log_dir, "{sample}_trimmomatic.log")
@@ -62,6 +65,7 @@ rule gzip_log:
         join(log_dir, "{sample}_trimmomatic.log.gz")
     shell:
         "gzip {input}"
+
 
 rule output_sample_annotation:
     output:

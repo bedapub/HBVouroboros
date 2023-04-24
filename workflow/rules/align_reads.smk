@@ -127,10 +127,10 @@ rule sort_trinity_fasta:
 
 
 rule run_blast:
-    input: trinity_sorted_fasta
+    input: tsfasta=trinity_sorted_fasta, blastdb={blast_db}
     output: blast_out
     shell:
-        "blastn -db {blast_db} -query {input} -outfmt 6 > {output}"
+        "makeblastdb -in {blast_db} -dbtype nucl; blastn -db {blast_db} -query {input.tsfasta} -outfmt 6 > {output}"
 
 
 rule get_ref_strain_seq_infref:

@@ -8,7 +8,7 @@ dependencies:
   - snakemake >=5.3
   - bowtie2 =2.3.5
   - samtools =1.10
-  - bedtools =2.29
+  - bedtools >=2.29
   - pandas
   - trinity
   - blast

@@ -19,8 +19,8 @@ dependencies:
   - varscan
   - vcflib >=1.0.0
   - plotly
+  - scipy
   - matplotlib
   - ipython
-  - scipy
-  - vcflib
   - pytest
+  - snakemake

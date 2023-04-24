@@ -39,3 +39,4 @@ docs/_build
 test-outputs
 resources/ref
 results
+*.pyc

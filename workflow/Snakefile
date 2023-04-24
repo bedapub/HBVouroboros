@@ -12,14 +12,9 @@ include: "rules/AA_vc.smk"
 include: "rules/summary_report.smk"
 
 # organization of configuration
-
 sample_annotation = config['sample_annotation']
 
-rule_all_input_list = list()
-samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
-
-
-rule_all_input_list.extend(["results/stats/samples.mapping.flagstat",
+rule_all_input_list = ["results/stats/samples.mapping.flagstat",
     "results/infref/infref_strain_dup.fasta",
     "results/coverage/infref/infref_genome_count.tsv",
     "results/coverage/infref/infref_genome_depth.tsv",
@@ -31,8 +26,9 @@ rule_all_input_list.extend(["results/stats/samples.mapping.flagstat",
     "results/multiqc/infref/infref_multiqc_report.html",
     expand("results/variant-calling-AA/infref/infref_{sample}.sorted.sam", sample = samples),
     expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples),
-    "results/summary/infref_summary_report.html"])
+    "results/summary/infref_summary_report.html"]
 
+samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 if config['doInputRef'] == True:
 	rule_all_input_list.extend(["results/coverage/inpt/inpt_genome_count.tsv",
@@ -49,7 +45,6 @@ if config['doInputRef'] == True:
     expand("results/variant-calling-AA/inpt/inpt_{sample}.sorted.sam", sample = samples),
     expand("results/variant-calling-AA/inpt/inpt_{sample}.sam2AAFreq.done", sample = samples),
     "results/summary/inpt_summary_report.html"])
-
 
 if config['doPerSamp'] == True:
 	rule_all_input_list.extend([expand("results/variant-calling/perSamp/{sample}/{sample}_cleaned_allelicprimitives.vcf", sample=samples), 

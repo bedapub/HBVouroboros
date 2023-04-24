@@ -7,18 +7,24 @@ from Bio import SeqIO
 from Bio import Entrez
 from BCBio import GFF
 
-# load config and sample sheets
-
-configfile: "config/config.yaml"
-
 
 def biokit_sample_annotation_filename(biokit_outdir):
-    return(join(biokit_outdir, 'samples.txt'))
+    """
+    Parse the path for the biokit sample annotation file
+
+    Args:
+        biokit_outdir (str): Path to the out directory of biokit
+    Returns:
+        Returns the path of the sample annotation file as string 
+    """
+    sample_annotation_path = join(biokit_outdir, 'samples.txt')
+    
+    return sample_annotation_path
 
 def parse_sample_annotation(sample_annotation_file):
     """ 
     Parse biokit sample annotation file into sample names and FASTQ dicts
-	
+    
     Args:
         sample_annotation_file (str): A Biokit sample annotation file
     Returns:
@@ -35,10 +41,11 @@ def parse_sample_annotation(sample_annotation_file):
     fq1dict = dict(zip(samples, fq1s))
     fq2dict = dict(zip(samples, fq2s))
 
-    return(samples, fq1dict, fq2dict)
+    return (samples, fq1dict, fq2dict)
 
 
 def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
+    #TODO: Description of return value does not match with actual value NONE
     """ 
     Get sample annotation from a biokit output directory
 	
@@ -50,18 +57,23 @@ def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
     """
 
     biokit_outdir = realpath(expanduser(biokit_outdir))
+    
     if not isdir(biokit_outdir):
         raise Exception(
             'Directory {} does not exist'.format(biokit_outdir))
+    
     infile = biokit_sample_annotation_filename(biokit_outdir)
+    
     if not exists(infile):
         raise Exception(
            'sample annotaiton file ({}) not found'.format(infile))
 
     fout = open(outfile, 'w')
+    
     with open(infile, 'r') as fin:
         header = fin.readline()
         fout.write(header)
+        
         for line in fin:
             lsplit = line.rstrip().split('\t')
             fastq_format = join(
@@ -73,10 +85,13 @@ def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
                    'gz']))
             f1 = fastq_format.format(1)
             f2 = fastq_format.format(2)
+            
             if not isfile(f1):
                 raise Exception('File {} does not exist'.format(f1))
+            
             if not isfile(f2):
                 raise Exception('File {} does not exist'.format(f2))
+            
             lsplit[2] = f1
             lsplit[3] = f2
             newline = '\t'.join(lsplit)
@@ -87,6 +102,7 @@ def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
 
 
 def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
+    #TODO: Description of return value does not match with actual value NONE
     """
     Collect gene coverage files into a GCT outfile
     
@@ -103,12 +119,9 @@ def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
     nsample = len(coverage_files)
     outf = open(outfile, 'w')
 
-    # coverage file name pattern (the logic is fragile - to be factored)
+    # TODO: coverage file name pattern (the logic is fragile - to be factored)
     # infref_genome_{sample}_gene_coverage.tsv
-    sample_names = [basename(f).
-                    replace('infref_genome_', '').
-                    replace('_feature_coverage.tsv', '')
-                    for f in coverage_files]
+    sample_names = [basename(f).replace('infref_genome_', '').replace('_feature_coverage.tsv', '') for f in coverage_files]
 
     cov0 = coverage_files[0]
     genes = []
@@ -116,19 +129,27 @@ def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
 
     with open(cov0, 'r') as f:
         for line in f:
+
+            #TODO: change so that only #id is skipped
             if line[0] == '#':
                 next
+            
             fl = line.rstrip().split('\t')
+            
             if fl[2] == feat_type:
                 chrom = fl[0]
+                
                 if feat_type == 'gene':
                     gene = fl[8].replace("gene=", "")
+                
                 elif feat_type == 'CDS':
                     # this assumes that the ID is in the second
                     # which is not always the case - to be fixed
                     gene = fl[8].split(';')[1].split('=')[1]
+                
                 else:
                     raise Exception('not supported feat_type: CDS/gene only')
+                
                 genes.append(gene)
                 descs.append(chrom)
 
@@ -136,18 +157,20 @@ def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
 
     outf.write('#1.2\n')
     outf.write('{}\t{}\n'.format(ngene, nsample))
-    outf.write('Name\tDescription\t{}\n'.format(
-                '\t'.join(sample_names)))
+    outf.write('Name\tDescription\t{}\n'.format('\t'.join(sample_names)))
 
     counts = [[0]*ngene]*nsample
 
     for ind, cov in enumerate(coverage_files):
         cov_counts = []
+        
         with open(cov, 'r') as f:
             for line in f:
+                
                 if line[0] == '#':
                     next
                 fl = line.rstrip().split('\t')
+                
                 if fl[2] == feat_type:
                     cov_counts.append(fl[9])
 
@@ -155,9 +178,7 @@ def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
 
     for i in range(ngene):
         gene_counts = [vec[i] for vec in counts]
-        curr_line = genes[i] + '\t' + \
-            descs[i] + '\t' + \
-            '\t'.join(gene_counts) + '\n'
+        curr_line = genes[i] + '\t' + descs[i] + '\t' + '\t'.join(gene_counts) + '\n'
         outf.write(curr_line)
 
     outf.close()
@@ -181,19 +202,18 @@ def dedup(depth):
 
     if duplen % 2 != 0:
         raise Exception("the input file has odd-number positions")
+    
     olen = int(duplen/2)
-
     out = depth.iloc[:olen, :].copy()
+    
     for i in range(olen, duplen):
         out.iloc[i-olen, 2:] = out.iloc[i-olen, 2:] + depth.iloc[i, 2:]
 
-    # bam file name pattern (the logic is fragile - to be factored)
+    # TODO: bam file name pattern (the logic is fragile - to be factored)
     # infref_bam/Sample4.sorted.bam
-    out.rename(mapper=lambda colname:
-               basename(colname).replace('.sorted.bam', ''),
-               axis='columns', inplace=True)
+    out.rename(mapper=lambda colname : basename(colname).replace('.sorted.bam', ''), axis='columns', inplace=True)
 
-    return(out)
+    return out
 
 
 def dedup_file(infile, outfile):
@@ -206,10 +226,12 @@ def dedup_file(infile, outfile):
     Returns:
         value of pandas.DataFrame.to_csv
     """
+
     depth = read_table(infile)
     dedup_res = dedup(depth)
     res = dedup_res.to_csv(outfile, sep='\t', index=False)
-    return(res)
+    
+    return res
 
 
 def get_infref_acc(blast_tab_file):
@@ -223,7 +245,9 @@ def get_infref_acc(blast_tab_file):
     """
 
     with open(blast_tab_file, 'r') as f:
-        return(f.read().split('\t')[1])
+        accession_number = f.read().split('\t')[1]
+        
+        return accession_number
 
 
 def get_infref_gb_acc(blast_tab_file):
@@ -238,7 +262,8 @@ def get_infref_gb_acc(blast_tab_file):
 
     acc = get_infref_acc(blast_tab_file)
     res = acc.split("|")[2].split("_")[0]
-    return(res)
+    
+    return res
 
 
 def download_gb(acc, outfile):
@@ -252,15 +277,15 @@ def download_gb(acc, outfile):
         int: number of records written as an integer.
     """
 
-    res = -1
+    written_records_count = -1
     Entrez.email = "jitao_david.zhang@roche.com"
-    with Entrez.efetch(
-      db="nuccore", rettype="gb", retmode="text", id=acc
-    ) as handle:
+    
+    with Entrez.efetch(db="nuccore", rettype="gb", retmode="text", id=acc) as handle:
         seq_record = SeqIO.read(handle, "gb")
 
-    res = SeqIO.write(seq_record, outfile, 'gb')
-    return(res)
+    written_records_count = SeqIO.write(seq_record, outfile, 'gb')
+
+    return written_records_count
 
 
 def write_seq_by_acc(infile, acc, outfile):
@@ -277,12 +302,13 @@ def write_seq_by_acc(infile, acc, outfile):
 
     found = False
     seqs = SeqIO.parse(infile, 'fasta')
+    
     for seq in seqs:
         if seq.id == acc:
             found = True
             SeqIO.write(seq, outfile, 'fasta')
 
-    return(found)
+    return found
 
 
 def gb2gff(infile, outfile):
@@ -298,9 +324,10 @@ def gb2gff(infile, outfile):
 
     gb_handle = open(infile, 'r')
     gff_handle = open(outfile, 'w')
-    res = GFF.write(SeqIO.parse(gb_handle, "gb"), gff_handle)
+    written_records_count = GFF.write(SeqIO.parse(gb_handle, "gb"), gff_handle)
     gff_handle.close()
-    return(res)
+
+    return written_records_count
 
 
 def sort_FASTA_by_length(infile, outfile):
@@ -321,7 +348,7 @@ def sort_FASTA_by_length(infile, outfile):
 
 def first_accession(fastafile):
     """
-    Get accession of the first record in FASTA file
+    Get accession number of the first record in FASTA file
     
     Args:
         fastafile (str): FASTA file
@@ -329,13 +356,10 @@ def first_accession(fastafile):
         str : accession number of the first record
     """
 
-    res = ''
     seqs = SeqIO.parse(fastafile, 'fasta')
-    for seq in seqs:
-        res = seq.id
-        break
+    accession_number = seqs[0].id
 
-    return(res)
+    return accession_number
 
 
 def dup_gff(dup_fasta, ingff, outgff):
@@ -352,23 +376,25 @@ def dup_gff(dup_fasta, ingff, outgff):
 
     acc = first_accession(dup_fasta)
     out_handle = open(outgff, 'w')
+
     with open(ingff, 'r') as f:
         for line in f:
+
             if line[0] == '#':
                 out_handle.write(line)
+
             else:
                 fl = line.split('\t')
                 fl[0] = acc
                 out_handle.write('\t'.join(fl))
+            
             out_handle.write('\n')
-
     out_handle.close()
-    return(None)
 
 
 def get_simplified_id(desc):
     """ 
-   Make a new id for reference genome that contains genotype and accession
+    Create a new id for reference genome that contains genotype and accession
    
     Args:
        desc (str): The input description
@@ -380,12 +406,13 @@ def get_simplified_id(desc):
     acc = strain.split("_")[0]
     gt = strain.split("-")[1]
     id = "{}|{}".format(gt, acc)
-    return(id)
+    
+    return id
 
 
 def dup_and_conc(record):
     """Duplicate the sequence and concatenate the original and duplicated
-   sequence, and append a text label to the id and the description
+    sequence, and append a text label to the id and the description
    
     Args:
         record (Bio.SeqRecord): A SeqRecord object
@@ -396,11 +423,11 @@ def dup_and_conc(record):
     record.seq = record.seq*2
     old_desc = record.description
     new_desc = old_desc.replace("length=", "original length=")
-    new_desc += ' Duplicated and concatenated \
-            (final length:{})'.format(len(record.seq))
+    new_desc += ' Duplicated and concatenated (final length:{})'.format(len(record.seq))
     record.description = new_desc
     record.id += '|DupConc'
-    return(record)
+    
+    return record
 
 
 def dup_and_conc_FASTA(infile, outfile):
@@ -413,12 +440,15 @@ def dup_and_conc_FASTA(infile, outfile):
     Returns:
         int: number of sequences
     """
+    
     sequences = SeqIO.parse(infile, 'fasta')
     outseqs = (dup_and_conc(record) for record in sequences)
-    res = SeqIO.write(outseqs, outfile, 'fasta')
-    return(res)
+    sequence_count = SeqIO.write(outseqs, outfile, 'fasta')
+    
+    return sequence_count
 
 
+#TODO: Check to remove because it is use nowhere
 def split_FASTA(infile, outdir=None, prefix=''):
     """	Split sequences in a FASTA file into separate files
     output file name is given by the ids (with pipes replaced by underscore)
@@ -431,17 +461,21 @@ def split_FASTA(infile, outdir=None, prefix=''):
        int: number of sequences
     """
     count = 0
+
     if outdir is None:
         outdir = dirname(infile)
+
     sequences = SeqIO.parse(infile, 'fasta')
+    
     for seq in sequences:
-        outfile = join(outdir,
-                       prefix + seq.id.replace('|', '_') + '.fasta')
+        outfile = join(outdir, prefix + seq.id.replace('|', '_') + '.fasta')
         SeqIO.write(seq, outfile, 'fasta')
         count += 1
+    
+    return count
+
 
 def vcfClean(vcfFile, fastaFile, outfile):
-
 	""" This function corrects the positions where
 	variation has been called past the original 
 	length of the genome (within the duplicated genome).
@@ -455,47 +489,54 @@ def vcfClean(vcfFile, fastaFile, outfile):
 	Args:
 		vcfFile(str, byte or os.PathLike): A vcf output of the variant clling piepline.
 	Returns:
-		bool: If function ran succefully. 
-	    
+		bool: If function ran succefully.  
 	"""
 
 	fastafile = open(fastaFile, "r")
 	fastaLines = fastafile.readlines()
-	#first get genome length
+	
+    #first get genome length
 	gnLength = []
 	for line in fastaLines:
-		#This is the line containing genome length information
+		
+        #This is the line containing genome length information
 		if ">" in line:
 			x = line.split('final length:')
 			term=x[len(x)-1]
 			gnLength = int(term.replace(')',''))
-    
+
 	varPos =list()	
 	vcfile = open(vcfFile, "r")
-	vcfLines = vcfile.readlines()	
+	vcfLines = vcfile.readlines()
+
 	with open(outfile, 'w') as filehandle:
 		for i in range(len(vcfLines)):
 			aline = vcfLines[i]
+
 			#possibly fragile
 			if (aline[0] != '#'):
 				aline = aline.replace('|DupConc', '')
+                                
 				if (aline.split("\t")[3] != 'N'):
+                                        
 					if (gnLength/2 >= int(aline.split()[1]) ):
 						filehandle.write(aline)
+                                                
 					else:
 						#If corrected entry already exists, skip, otherwise write a new entry
 						updatedPos = int(aline.split()[1]) - gnLength/2
 						aline = aline.replace(aline.split()[1],str(updatedPos))
+                                                
 						if str(aline.split()[1]) not in varPos:
 							filehandle.write(aline)
 							varPos.append(str(aline.split()[1]))
 			else: 
 				(filehandle.write(aline))
-	return(True)
+                                
+	return True
 
 
 def test_cleanvcf(vcfFile, fastaFile):
-
 	""" This function is used by pytest only. It takes a
 	final vcf output of the variant calling pipeline 
 	and returns all the positions where variation has 
@@ -510,39 +551,46 @@ def test_cleanvcf(vcfFile, fastaFile):
 
 	fastafile = open(fastaFile, "r")
 	fastaLines = fastafile.readlines()
-	#first get genome length
+	
+    #first get genome length
 	gnLength = []
 	for line in fastaLines:
+                
 		#This is the line containing genome length information
 		if ">" in line:
 			x = line.split('final length:')
 			term=x[len(x)-1]
 			gnLength = int(term.replace(')',''))
 
-	varPos =list()	
+	varPos = list()	
 	vcfile = open(vcfFile, "r")
 	vcfLines = vcfile.readlines()	
+        
 	for i in range(len(vcfLines)):
 		aline = vcfLines[i]
+                
 		if (aline[0] != '#'):
 			
 			if (gnLength/2 >= int(aline.split()[1])):
 				varPos.append(str(aline.split()[1]))
+                                
 			else:
 				updatedPos = int(aline.split()[1]) - gnLength/2
+                                
 				if str(aline.split()[1]) not in varPos:
 					varPos.append(str(aline.split()[1]))
 
-	return(varPos)
+	return varPos
 
 def set_samp_anno(perform_sim):
-
 	"""Sets the appropriate smaples annotation file
 	based on whether the pipeline is to be run with 
 	simulated data, as specified by the 'do_sim' config 
 	parameter"""
-
+    
+    #TODO: Take a look at the functionality
 	if config['doSim'] == True:
+                
 		if perform_sim == True:
 			sample_annotation = config['sample_annotation_sm']
 			genomeId = config['genomeId']
@@ -554,6 +602,7 @@ def set_samp_anno(perform_sim):
 			mtPos = config['mtPos']
 
 			stream = os.system ('python RNAsim2/bin/RNAsim.py ' + ' '+" '"+genomeId+"' "+ "' "+sampNum+"' "+" '"+ pairedEndDist+"' "+" '"+ readLen+"' "+" '"+ mt+"' "+" '"+ mp+"' "+" '"+ mtPos+"' ")
-		return(config['sample_annotation_sm'])
+                        
+		return config['sample_annotation_sm']
 	else:
-		return(config['sample_annotation'])
+		return config['sample_annotation']

@@ -17,6 +17,7 @@ dependencies:
   - multiqc
   - qualimap
   - varscan
+  - vcflib >=1.0.0
   - plotly
   - matplotlib
   - ipython

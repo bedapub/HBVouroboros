@@ -6,6 +6,7 @@ localrules: download_refgenomes
 HTTP = HTTPRemoteProvider()
 blastdb_filenames = ["resources/ref/HBV_allgenomes.fasta."+s for s in ("nhr", "nsq", "nin")]
 
+"""
 rule download_refgenomes:
     input:
          HTTP.remote('https://hbvdb.lyon.inserm.fr/data/references/hbvdbr.fas',
@@ -28,6 +29,7 @@ rule download_allgenomes:
         'logs/ref/download_allgenomes.log'
     run:
         shell("mv {input} {output}")
+"""
 
 rule makeblastdb:
     input:

@@ -76,13 +76,7 @@ def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
         
         for line in fin:
             lsplit = line.rstrip().split('\t')
-            fastq_format = join(
-              biokit_outdir,
-              'unmapped',
-              '.'.join([
-                   lsplit[0],
-                   'unmapped_mate{}',
-                   'gz']))
+            fastq_format = join(biokit_outdir, 'unmapped', '.'.join([lsplit[0], 'unmapped_mate{}', 'gz']))
             f1 = fastq_format.format(1)
             f2 = fastq_format.format(2)
             

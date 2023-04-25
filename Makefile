@@ -18,4 +18,4 @@ test:
 README.pdf: README.md gv
 	pandoc --number-sections --shift-heading-level-by=-1 -V geometry:"top=3cm, bottom=3cm, left=2cm, right=2cm" README.md -o README.pdf
 
-.PHONY: gv clean test runtest pytest
+.PHONY: gv clean test

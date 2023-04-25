@@ -20,8 +20,11 @@ git clone https://github.com/bedapub/HBVouroboros.git
 ```bash
 ## setup conda environment
 cd envs; conda env create; cd -
-## in case it has been installed, use the command below to update
+
+## in case it has been installed already, use the command below to update
 ## conda env update
+
+## activate environment
 conda activate HBVouroboros
 ```
 
@@ -56,4 +59,21 @@ Above we use the default conda solver. If you suffer from slow speed of conda,
 consider using [mamba](https://github.com/mamba-org/mamba), which is a drop-in
 replacement of conda.
 
-If you met more issues, please raise them using the Issues function of GitHub.
+#### Create local conda environment for mamba
+
+If you have problems installing mamba into your base environment, you might want to create a separate conda
+environment designated for the installation of mamba. Any time you would want to use mamba, you would first activate
+this special environment before executing your mamba commands.
+
+```bash
+## create an empty conda environment called mamba
+conda create --name mamba --no-default-packages
+
+## activate the environment mamba
+conda activate mamba
+
+## install mamba
+conda install -c conda-forge mamba
+```
+
+If you meet more issues, please raise them using the Issues function of GitHub.

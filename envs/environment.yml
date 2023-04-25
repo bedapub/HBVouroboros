@@ -3,12 +3,12 @@ channels:
   - bioconda
   - conda-forge
 dependencies:
-  - python =3.7
+  - python >=3.7
   - biopython
   - snakemake >=5.3
   - bowtie2 =2.3.5
   - samtools =1.10
-  - bedtools =2.29
+  - bedtools >=2.29
   - pandas
   - trinity
   - blast
@@ -17,9 +17,9 @@ dependencies:
   - multiqc
   - qualimap
   - varscan
+  - vcflib >=1.0.0
   - plotly
+  - scipy
   - matplotlib
   - ipython
-  - scipy
-  - vcflib
   - pytest

@@ -1,6 +1,4 @@
-rm(list = ls())
 library(data.table)
-
 args <- commandArgs(trailingOnly=TRUE)
 
 dd = as.data.frame(fread(args[1]))

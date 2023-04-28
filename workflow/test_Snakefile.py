@@ -6,9 +6,8 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from subprocess import Popen, PIPE, STDOUT
 import yaml
-import common
-
-sys.path.insert(0, 'workflow/rules/')
+# import local python file ./workflow/rules/common.py which contains functions needed for the analysis, written by us
+import workflow.rules.common as common
 
 with open('config/config.yaml', 'r') as stream:
 	config = yaml.full_load(stream)
@@ -24,10 +23,6 @@ def test_snakemake_output_files():
     pout= p.stdout.read()
     print(pout.decode('utf-8'))
      
-    #Optionally, get stdout and stderr
-    #TODO: Check if this is really necessary
-    stdout, stderr= p.communicate()
-
     #Check exits code and other expected output            
     #assert 0 == p.returncode
 

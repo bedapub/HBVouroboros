@@ -352,7 +352,11 @@ def first_accession(fastafile):
     """
 
     seqs = SeqIO.parse(fastafile, 'fasta')
-    accession_number = seqs[0].id
+    
+    # iterate over seqs for only one time because the object FastaIterator is not subscriptable
+    for seq in seqs:
+        accession_number = seq.id
+        break
 
     return accession_number
 

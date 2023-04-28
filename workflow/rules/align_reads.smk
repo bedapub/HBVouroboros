@@ -1,13 +1,7 @@
 import snakemake
 
-config: "config/config_qc.yaml"
-sample_annotation = config['sample_annotation']
-
 bowtie2_index = 'resources/ref/HBV_refgenomes_dup_BOWTIE2'
 blast_db = 'resources/ref/HBV_allgenomes.fasta'
-
-# parse sample annotation
-samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 ## trinity_outdir="trinity_out_dir"
 trinity_fasta = "results/trinity/Trinity.fasta"
@@ -176,6 +170,7 @@ rule ref_dup_infref:
     output: 
         "results/infref/infref_strain_dup.fasta"
     run:
+        print("Hallo Welt")
         dup_and_conc_FASTA(input[0], output[0])
 
 

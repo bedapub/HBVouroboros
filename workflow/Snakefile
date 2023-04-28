@@ -1,18 +1,19 @@
 import os
 
-config: "config/config.yaml"
+# load config values from config/config.yaml
+configfile: "config/config.yaml"
 
-# include the rules from the other files	
+# include functions like parse_sample_annotation() from common.py
+# this has to be done so early because the functions are required to parse values etc. 
 include: "rules/common.py"
-include: "rules/build_refgenomes.smk"
-include: "rules/align_reads.smk"
-include: "rules/varscan_vc.smk"
-include: "rules/fastqc_multiqc.smk"
-include: "rules/AA_vc.smk"
-include: "rules/summary_report.smk"
 
-# organization of configuration
+# paste config values from config-file into variables, they can be used in the other rule files
 sample_annotation = config['sample_annotation']
+biokit_outdir = config["biokit_outdir"]
+samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
+illumina_clip_file = config['illumina_clip_file']
+illumina_clip_opts = config['illumina_clip_opts']
+trimmomatic_steps = config['trimmomatic_steps']
 
 rule_all_input_list = ["results/stats/samples.mapping.flagstat",
     "results/infref/infref_strain_dup.fasta",
@@ -27,8 +28,6 @@ rule_all_input_list = ["results/stats/samples.mapping.flagstat",
     expand("results/variant-calling-AA/infref/infref_{sample}.sorted.sam", sample = samples),
     expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples),
     "results/summary/infref_summary_report.html"]
-
-samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 if config['doInputRef'] == True:
 	rule_all_input_list.extend(["results/coverage/inpt/inpt_genome_count.tsv",
@@ -57,6 +56,13 @@ if config['doPerSamp'] == True:
     "results/summary/perSamp_summary_report.html",
     "results/multiqc/perSamp/perSamp_multiqc_report.html"])
 
+#include the rules from the other files
+include: "rules/build_refgenomes.smk"
+include: "rules/align_reads.smk"
+include: "rules/varscan_vc.smk"
+include: "rules/fastqc_multiqc.smk"
+include: "rules/AA_vc.smk"
+include: "rules/summary_report.smk"
 
 rule all:
 	input:

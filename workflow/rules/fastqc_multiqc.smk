@@ -6,13 +6,6 @@ import os
 import pandas as pd
 import snakemake
 
-config: "config/config.yaml"
-
-# trimmed files
-sample_annotation = config['sample_annotation']
-
-# parse sample annotation
-samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 fastqc_dir = "results/fastqc/"
 bam_dir_infref = "results/infref_bam/"

@@ -6,14 +6,9 @@ import csv
 from os.path import join, basename, abspath
 import snakemake
 
-configfile: snakemake.workflow.srcdir("config/config.yaml")
-
-sample_annotation = config['sample_annotation']
-illumina_clip_file = config['illumina_clip_file']
-illumina_clip_opts = config['illumina_clip_opts']
-trimmomatic_steps = config['trimmomatic_steps']
 
 # parse sample annotation
+# TODO: check if this is varying from values from config file, otherwise can be deleted
 annotation = pd.read_table(sample_annotation)
 samples = annotation.iloc[:, 0]
 fq1s = annotation.iloc[:, 2]

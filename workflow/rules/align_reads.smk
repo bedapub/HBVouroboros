@@ -82,7 +82,7 @@ rule aggregate_flagstat:
     output: 
         "results/stats/samples.mapping.flagstat"
     shell:
-    	"cat {input} > {output}"
+        "cat {input} > {output}"
 
 
 rule aggregate_bam:
@@ -177,7 +177,7 @@ rule ref_dup_infref:
         "results/infref/infref_strain_dup.fasta"
     run:
         dup_and_conc_FASTA(input[0], output[0])
-	
+
 
 rule bowtie2_index_ref_dup:
     input: 
@@ -196,7 +196,7 @@ rule bowtie2_index_ref_dup:
 
 rule bowtie2_index_ref_map:
     input:
-        genome = 'results/{inpt}/{inpt}_bowtie2_index',	
+        genome = 'results/{inpt}/{inpt}_bowtie2_index',
         f1 = lambda wildcards: fq1dict[wildcards.sample],
         f2 = lambda wildcards: fq2dict[wildcards.sample]
     output:
@@ -302,23 +302,15 @@ rule individual_coverage:
         "coverageBed -counts -a {input.gff} -b {input.bam} > {output}"
 
 
-## TODO: question: can we combine the two?
-rule gene_coverage_infref:
+rule gene_and_CDS_coverage_infref:
     input:
         expand("results/coverage/infref/infref_genome_{sample}_feature_coverage.tsv", sample=samples)
     output:
-        "results/coverage/infref/infref_genome_gene_coverage.gct"
-    run:
-        collect_gene_coverage(input, output[0], feat_type='gene')
-
-
-rule CDS_coverage_infref:
-    input:
-        expand("results/coverage/infref/infref_genome_{sample}_feature_coverage.tsv", sample=samples)
-    output:
+        "results/coverage/infref/infref_genome_gene_coverage.gct",
         "results/coverage/infref/infref_genome_CDS_coverage.gct"
     run:
-        collect_gene_coverage(input, output[0], feat_type='CDS')
+        collect_gene_coverage(input, output[0], feat_type='gene')
+        collect_gene_coverage(input, output[1], feat_type='CDS')
 
 
 #################### This section is only executed when "doInputRef" in config file is set to True
@@ -328,7 +320,8 @@ acc_inpt = config['inputRef']
 gb_acc_inpt = acc_inpt.split("|")[2].split("_")[0]
 
 rule get_ref_strain_seq_inpt:
-    input:  
+    input: 
+        blast_db
     output: 
         "results/inpt/inpt_strain.fasta"
     run:
@@ -346,6 +339,7 @@ rule ref_dup_inpt:
 
 rule get_ref_strain_gb_inpt:
     input:  
+        gb_acc_inpt
     output: "results/inpt/inpt_strain.gb"
     run:
         download_gb(gb_acc_inpt, output[0])
@@ -360,22 +354,15 @@ rule ref_strain_gb2gff_inpt:
         gb2gff(input[0], output[0])
 
 
-rule gene_coverage_inpt:
+rule gene_and_CDS_coverage_inpt:
     input:
         expand("results/coverage/inpt/inpt_genome_{sample}_feature_coverage.tsv", sample=samples)
     output:
-        "results/coverage/inpt/inpt_genome_gene_coverage.gct"
-    run:
-        collect_gene_coverage(input, output[0], feat_type='gene')
-
-
-rule CDS_coverage_inpt:
-    input:
-        expand("results/coverage/inpt/inpt_genome_{sample}_feature_coverage.tsv", sample=samples)
-    output:
+        "results/coverage/inpt/inpt_genome_gene_coverage.gct",
         "results/coverage/inpt/inpt_genome_CDS_coverage.gct"
     run:
-        collect_gene_coverage(input, output[0], feat_type='CDS')
+        collect_gene_coverage(input, output[0], feat_type='gene')
+        collect_gene_coverage(input, output[1], feat_type='CDS')
 
 
 #################### 
@@ -496,33 +483,34 @@ rule bowtie2_index_ref_dup_perSmap:
 
 rule infref_bowtie2_map_perSamp:
     input:
-       	genome = "results/perSamp/{sample}/infref_bowtie2_index",
-       	f1 = lambda wildcards: fq1dict[wildcards.sample],
-       	f2 = lambda wildcards: fq2dict[wildcards.sample]
-   	output:
-       	temp("results/perSamp_bam/{sample}.bam")
-	log:
-		"logs/{sample}/bowtie2.log"
-	threads:
-       	2
-	shell:
-       	"bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -k 1\
-      	-x {input.genome} \
-       	-1 {input.f1} -2 {input.f2} 2>{log} | \
-       	samtools view -Sb - > {output}"
+        genome = "results/perSamp/{sample}/infref_bowtie2_index",
+        #TODO: check the use of lambda here
+        f1 = lambda wildcards: fq1dict[wildcards.sample],
+        f2 = lambda wildcards: fq2dict[wildcards.sample]
+    output:
+        temp("results/perSamp_bam/{sample}.bam")
+    threads:
+        2
+    log:
+        "logs/{sample}/bowtie2.log"
+    shell:
+        "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -k 1\
+        -x {input.genome} \
+        -1 {input.f1} -2 {input.f2} 2>{log} | \
+        samtools view -Sb - > {output}"
 
 
 rule filter_and_sort_ref_bam_perSamp:
     input:
-       	"results/perSamp_bam/{sample}.bam"
+        "results/perSamp_bam/{sample}.bam"
     output:
-       	"results/perSamp_bam/{sample}.sorted.bam"
+        "results/perSamp_bam/{sample}.sorted.bam"
     log:
-       	"logs/{sample}/persamp_filter_and_sort_bam.log"
+        "logs/{sample}/persamp_filter_and_sort_bam.log"
     threads:
-       	2
-   	shell:
-       	"samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
+        2
+    shell:
+        "samtools view -F4 -h {input} | samtools sort -O bam -@ {threads} - > {output}"
 
 
 rule index_ref_bam_perSamp:
@@ -598,26 +586,19 @@ rule individual_coverage_perSamp:
         gff = "results/perSamp/{sample}/infref_strain_dup.gff"
     output:
         "results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
-   	shell:
+    shell:
         "coverageBed -counts -a {input.gff} -b {input.bam} > {output}"
 
 
-rule gene_coverage_perSamp:
+rule gene_and_CDS_coverage_perSamp:
     input:
         "results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
     output:
-        "results/coverage/perSamp/{sample}_genome_gene_coverage.gct"
-    run:
-        collect_gene_coverage(input, output[0], feat_type='gene')
-
-
-rule CDS_coverage_perSamp:
-    input:
-        "results/coverage/perSamp/{sample}_genome_feature_coverage.tsv"
-    output:
+        "results/coverage/perSamp/{sample}_genome_gene_coverage.gct",
         "results/coverage/perSamp/{sample}_genome_CDS_coverage.gct"
     run:
-        collect_gene_coverage(input, output[0], feat_type='CDS')
+        collect_gene_coverage(input, output[0], feat_type='gene')
+        collect_gene_coverage(input, output[1], feat_type='CDS')
 
 
 #################

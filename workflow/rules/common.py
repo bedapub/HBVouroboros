@@ -114,6 +114,7 @@ def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
     outf = open(outfile, 'w')
 
     # TODO: coverage file name pattern (the logic is fragile - to be factored)
+    # TODO: export logic to get sample name into own function
     # infref_genome_{sample}_gene_coverage.tsv
     sample_names = [basename(f).replace('infref_genome_', '').replace('_feature_coverage.tsv', '') for f in coverage_files]
 

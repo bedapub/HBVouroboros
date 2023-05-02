@@ -45,7 +45,6 @@ def parse_sample_annotation(sample_annotation_file):
 
 
 def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
-    #TODO: Description of return value does not match with actual value NONE
     """ 
     Get sample annotation from a biokit output directory
 	
@@ -53,7 +52,7 @@ def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
         biokit_outdir (str): An output directory of the biokit pipeline
         outfile (str): Output file name of sample annotation
     Returns:
-        number of samples
+        None
     """
 
     biokit_outdir = realpath(expanduser(biokit_outdir))
@@ -96,7 +95,6 @@ def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
 
 
 def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
-    #TODO: Description of return value does not match with actual value NONE
     """
     Collect gene coverage files into a GCT outfile
     
@@ -107,7 +105,7 @@ def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
         outfile (str): Output file name
         feat_type (str): feature type, 'gene' or 'CDS'
     Returns:
-        int: files collected
+        None
     """
 
     nsample = len(coverage_files)

@@ -26,7 +26,7 @@ rule sam2aaFreq_vc:
     output:
         temp("results/variant-calling-AA/{inpt}/{inpt}_{sample}.sam2AAFreq.done")
     shell:
-        "python3 workflow/AA_vc_code/sam2aaFreq.py {input.sam} {input.fasta} ; touch {output}"
+        "python3 workflow/rules/python/sam2aaFreq.py {input.sam} {input.fasta} ; touch {output}"
 
 rule sam2aaFreq_vc_perSamp:
     input:
@@ -35,4 +35,4 @@ rule sam2aaFreq_vc_perSamp:
     output:
         temp("results/variant-calling-AA/perSamp/{sample}/{sample}.sam2AAFreq.done")
     shell:
-        "python3 workflow/AA_vc_code/sam2aaFreq.py {input.sam} {input.fasta} ; touch {output}"
+        "python3 workflow/rules/python/sam2aaFreq.py {input.sam} {input.fasta} ; touch {output}"

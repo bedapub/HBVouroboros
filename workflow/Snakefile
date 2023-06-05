@@ -5,7 +5,7 @@ configfile: "config/config.yaml"
 
 # include functions like parse_sample_annotation() from common.py
 # this has to be done so early because the functions are required to parse values etc. 
-include: "rules/common.py"
+include: "rules/python/common.py"
 
 # paste config values from config-file into variables, they can be used in the other rule files
 sample_annotation = config['sample_annotation']
@@ -57,12 +57,12 @@ if config['doPerSamp'] == True:
     "results/multiqc/perSamp/perSamp_multiqc_report.html"])
 
 #include the rules from the other files
-include: "rules/build_refgenomes.smk"
-include: "rules/align_reads.smk"
-include: "rules/varscan_vc.smk"
-include: "rules/fastqc_multiqc.smk"
-include: "rules/AA_vc.smk"
-include: "rules/summary_report.smk"
+include: "rules/snakemake/build_refgenomes.smk"
+include: "rules/snakemake/align_reads.smk"
+include: "rules/snakemake/varscan_vc.smk"
+include: "rules/snakemake/fastqc_multiqc.smk"
+include: "rules/snakemake/AA_vc.smk"
+include: "rules/snakemake/summary_report.smk"
 
 rule all:
 	input:

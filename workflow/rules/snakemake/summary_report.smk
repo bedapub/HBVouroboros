@@ -11,7 +11,7 @@ rule make_report:
     output:
     	"results/summary/{inpt}_summary_report.html"
     shell:
-    	"python workflow/rules/summary_report.py {wildcards.inpt} {output}"
+    	"python workflow/rules/python/summary_report.py {wildcards.inpt} {output}"
 
 
 rule make_report_persamp:
@@ -24,4 +24,4 @@ rule make_report_persamp:
     output:
         "results/summary/perSamp_summary_report.html"
     shell:
-    	"python workflow/rules/summary_report.py 'persamp' {output}"
+    	"python workflow/rules/python/summary_report.py 'persamp' {output}"

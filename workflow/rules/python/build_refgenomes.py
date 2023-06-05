@@ -1,7 +1,7 @@
 import requests
 import logging
 import os
-from common import dup_and_conc_FASTA
+from workflow.rules.python.common import dup_and_conc_FASTA
 
 def download_refgenomes():
     refgenomes_response = requests.get("https://hbvdb.lyon.inserm.fr/data/references/hbvdbr.fas")

@@ -35,7 +35,7 @@ rule correct_bam:
     output:
         "results/{inpt}_bam/{inpt}_{sample}.corrected.sorted.bam"
     shell:
-        "workflow/rules/correct_bam.sh -f {input.refDup} -s {input.sortBam} -o {output}"
+        "workflow/rules/bash/correct_bam.sh -f {input.refDup} -s {input.sortBam} -o {output}"
 
 
 rule correct_bam_perSamp:
@@ -45,7 +45,7 @@ rule correct_bam_perSamp:
     output:
         "results/perSamp_bam/{sample}.corrected.sorted.bam"
     shell:
-        "workflow/rules/correct_bam.sh -f {input.refDup} -s {input.sortBam} -o {output}"    
+        "workflow/rules/bash/correct_bam.sh -f {input.refDup} -s {input.sortBam} -o {output}"    
 
 
 rule varscan:

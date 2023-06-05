@@ -9,7 +9,7 @@ indexes of HBV genomes. This step was done by the wrapper
 need a wrapper, and the users can control the details of building the genome.
 
 ```bash
-snakemake --snakefile rules/build_refgenomes.smk --cores 1 --directory
+snakemake --snakefile rules/snakemake/build_refgenomes.smk --cores 1 --directory
 ../results/testHBVgenome
 ```
 

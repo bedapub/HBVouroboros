@@ -6,8 +6,8 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from subprocess import Popen, PIPE, STDOUT
 import yaml
-# import local python file ./workflow/rules/common.py which contains functions needed for the analysis, written by us
-import workflow.rules.common as common
+# import local python file ./workflow/rules/python/common.py which contains functions needed for the analysis, written by us
+from . import common
 
 with open('config/config.yaml', 'r') as stream:
 	config = yaml.full_load(stream)

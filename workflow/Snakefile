@@ -57,7 +57,6 @@ if config['doPerSamp'] == True:
     "results/multiqc/perSamp/perSamp_multiqc_report.html"])
 
 #include the rules from the other files
-include: "rules/snakemake/build_refgenomes.smk"
 include: "rules/snakemake/align_reads.smk"
 include: "rules/snakemake/varscan_vc.smk"
 include: "rules/snakemake/fastqc_multiqc.smk"

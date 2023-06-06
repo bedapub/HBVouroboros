@@ -3,14 +3,12 @@ The HBVouroboros workflow
 
 # Downloading and building reference genomes
 
-Now we expose the Snakefile directly to users, which downloads and builds
-indexes of HBV genomes. This step was done by the wrapper
-`bin/HBVouroboros_build_refgenomes.py` before. The implementation now does not
-need a wrapper, and the users can control the details of building the genome.
+The reference genome of HBV is fetched from a public database called [HBVdb](https://hbvdb.lyon.inserm.fr/HBVdb/HBVdbIndex). 
+Previously, the genome was downloaded for every single execution of HBVouroboros via a snakemake file. 
+Now, this has been moved to a python script [rules/python/build_refgenomes.py](https://github.com/bedapub/HBVouroboros/blob/code-refactoring/workflow/rules/python/build_refgenomes.py), which only needs to be executed by the user once the data in HBVdb changed.
 
 ```bash
-snakemake --snakefile rules/snakemake/build_refgenomes.smk --cores 1 --directory
-../results/testHBVgenome
+python3 rules/python/build_refgenomes.py
 ```
 
 # Reference

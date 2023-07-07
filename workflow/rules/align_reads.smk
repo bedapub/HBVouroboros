@@ -118,12 +118,11 @@ rule check_aggregated_fastq:
         "Checking whether aggregated FASTQ files contain valid HBV reads"
     shell:
         "ncount=`zcat results/aggregated_mapped_reads_1.fq.gz | wc -l`; \
+         echo \"$ncount\" > {output}; \
          if [ \"$ncount\" -eq \"0\" ]; then \
               echo 'Error: no HBV reads detected. Please check the input.'; \
               echo 'Error: no HBV reads detected. Please check the input.' 2> {log.err} 1> {log.out}; \
               exit 1; \
-         else: \
-            echo \"$ncount\" > {output}; \
          fi"
 
 rule run_trinity:

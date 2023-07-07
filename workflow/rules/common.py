@@ -16,9 +16,9 @@ def biokit_sample_annotation_filename(biokit_outdir):
     return(join(biokit_outdir, 'samples.txt'))
 
 def parse_sample_annotation(sample_annotation_file):
-    """ 
+    """
     Parse biokit sample annotation file into sample names and FASTQ dicts
-	
+
     Args:
         sample_annotation_file (str): A Biokit sample annotation file
     Returns:
@@ -28,7 +28,7 @@ def parse_sample_annotation(sample_annotation_file):
     """
 
     annotation = read_table(sample_annotation_file)
-    samples = annotation.iloc[:, 0]
+    samples = [str(s) for s in annotation.iloc[:, 0]]
     fq1s = annotation.iloc[:, 2]
     fq2s = annotation.iloc[:, 3]
 
@@ -39,9 +39,9 @@ def parse_sample_annotation(sample_annotation_file):
 
 
 def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
-    """ 
+    """
     Get sample annotation from a biokit output directory
-	
+
     Args:
         biokit_outdir (str): An output directory of the biokit pipeline
         outfile (str): Output file name of sample annotation
@@ -89,7 +89,7 @@ def biokit_unmapped_sample_annotation(biokit_outdir, outfile):
 def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
     """
     Collect gene coverage files into a GCT outfile
-    
+
     Args:
         coverage_files (list(str)): a list of coverage files exported by
             'bedtools coverage'. They must be generated from the same
@@ -164,9 +164,9 @@ def collect_gene_coverage(coverage_files, outfile, feat_type='gene'):
 
 
 def dedup(depth):
-    """ 
+    """
     Deduplicate depth output of samtools
-	
+
     Args:
         depth (pandas.DataFrame): first two columns are chromsomes and
         depths, respectively, and the rest columns are samples.
@@ -199,7 +199,7 @@ def dedup(depth):
 def dedup_file(infile, outfile):
     """
     Perform dedup on the output file of samtools depth
-    
+
     Args:
         infile (str): depth file exported by samtools *with the header*
         outfile (str): outfile file with deduplicated depths
@@ -215,7 +215,7 @@ def dedup_file(infile, outfile):
 def get_infref_acc(blast_tab_file):
     """
     Get accession of the inferred reference strain
-    
+
     Args:
         blast_tab_file (str): Tabular output file of BLAST (outfmt=6)
     Returns:
@@ -229,7 +229,7 @@ def get_infref_acc(blast_tab_file):
 def get_infref_gb_acc(blast_tab_file):
     """
     Get GenBank accession of the inferred reference strain
-    
+
     Args:
         blast_tab_file (str): Tabular output file of BLAST (outfmt=6)
     Returns:
@@ -244,7 +244,7 @@ def get_infref_gb_acc(blast_tab_file):
 def download_gb(acc, outfile):
     """
     Download GenBank file with the given accession number
-    
+
     Args:
         acc (str): GenBank acession number, example:'KC774468'
         outfile (str): output GenBank file
@@ -266,7 +266,7 @@ def download_gb(acc, outfile):
 def write_seq_by_acc(infile, acc, outfile):
     """
     Fetch sequence by accession number and write it to FASTA file
-    
+
     Args:
         infile (str): FASTA file of genomes
         acc (str): Accession number of the inferred reference strain
@@ -288,7 +288,7 @@ def write_seq_by_acc(infile, acc, outfile):
 def gb2gff(infile, outfile):
     """
    Translate GenBank file to GFF3 file. TODO: the procedure now does not handle join correctly
-   
+
     Args:
         infile (str): input GenBank file
         outfile (str): output GFF3 file
@@ -306,7 +306,7 @@ def gb2gff(infile, outfile):
 def sort_FASTA_by_length(infile, outfile):
     """
     Sort FASTA sequence by length descendingly
-    
+
     Args:
         infile (str): FASTA file
         outfile (str): Output FASTA file
@@ -322,7 +322,7 @@ def sort_FASTA_by_length(infile, outfile):
 def first_accession(fastafile):
     """
     Get accession of the first record in FASTA file
-    
+
     Args:
         fastafile (str): FASTA file
     Returns:
@@ -341,7 +341,7 @@ def first_accession(fastafile):
 def dup_gff(dup_fasta, ingff, outgff):
     """
     Make GFF files for duplicated genome
-    
+
     Args:
         dup_fasta (str): duplicated FASTA
         ingff (str): input GFF file
@@ -367,9 +367,9 @@ def dup_gff(dup_fasta, ingff, outgff):
 
 
 def get_simplified_id(desc):
-    """ 
+    """
    Make a new id for reference genome that contains genotype and accession
-   
+
     Args:
        desc (str): The input description
     Returns:
@@ -386,7 +386,7 @@ def get_simplified_id(desc):
 def dup_and_conc(record):
     """Duplicate the sequence and concatenate the original and duplicated
    sequence, and append a text label to the id and the description
-   
+
     Args:
         record (Bio.SeqRecord): A SeqRecord object
     Returns:
@@ -406,7 +406,7 @@ def dup_and_conc(record):
 def dup_and_conc_FASTA(infile, outfile):
     """Duplicate sequences in a FASTA file, concatenate the original
     with the duplicates, and write the concatenated sequences
-    
+
     Args:
         infile (str): The input filename, pointing to a FASTA file
         outfile (str): The output filename, overwritten if the file exists.
@@ -422,7 +422,7 @@ def dup_and_conc_FASTA(infile, outfile):
 def split_FASTA(infile, outdir=None, prefix=''):
     """	Split sequences in a FASTA file into separate files
     output file name is given by the ids (with pipes replaced by underscore)
-    
+
    Args:
        infile (str): The input FASTA file name
        outdir (str): The output directory. Default: input file folder
@@ -443,20 +443,20 @@ def split_FASTA(infile, outdir=None, prefix=''):
 def vcfClean(vcfFile, fastaFile, outfile):
 
 	""" This function corrects the positions where
-	variation has been called past the original 
+	variation has been called past the original
 	length of the genome (within the duplicated genome).
 	It removes such entries from the vcf file. In case
-	a variation is called within the duplicated region 
+	a variation is called within the duplicated region
 	and not in the original position, an entry for the
 	original position is added to the file. Furtheremore
         it removes the 'Dupconc' substring from the genome name
-        as well as enteries with reference "N". 
-	    
+        as well as enteries with reference "N".
+
 	Args:
 		vcfFile(str, byte or os.PathLike): A vcf output of the variant clling piepline.
 	Returns:
-		bool: If function ran succefully. 
-	    
+		bool: If function ran succefully.
+
 	"""
 
 	fastafile = open(fastaFile, "r")
@@ -469,10 +469,10 @@ def vcfClean(vcfFile, fastaFile, outfile):
 			x = line.split('final length:')
 			term=x[len(x)-1]
 			gnLength = int(term.replace(')',''))
-    
-	varPos =list()	
+
+	varPos =list()
 	vcfile = open(vcfFile, "r")
-	vcfLines = vcfile.readlines()	
+	vcfLines = vcfile.readlines()
 	with open(outfile, 'w') as filehandle:
 		for i in range(len(vcfLines)):
 			aline = vcfLines[i]
@@ -489,7 +489,7 @@ def vcfClean(vcfFile, fastaFile, outfile):
 						if str(aline.split()[1]) not in varPos:
 							filehandle.write(aline)
 							varPos.append(str(aline.split()[1]))
-			else: 
+			else:
 				(filehandle.write(aline))
 	return(True)
 
@@ -497,15 +497,15 @@ def vcfClean(vcfFile, fastaFile, outfile):
 def test_cleanvcf(vcfFile, fastaFile):
 
 	""" This function is used by pytest only. It takes a
-	final vcf output of the variant calling pipeline 
-	and returns all the positions where variation has 
-	ben called within the file. 
-	
+	final vcf output of the variant calling pipeline
+	and returns all the positions where variation has
+	ben called within the file.
+
 	Args:
 		vcfFile(str, byte or os.PathLike): A vcf output of the variant calling piepline.
 	Returns:
-		varPos(list(int)): A list of positions where variation has been detected. 
-	    
+		varPos(list(int)): A list of positions where variation has been detected.
+
 	"""
 
 	fastafile = open(fastaFile, "r")
@@ -519,13 +519,13 @@ def test_cleanvcf(vcfFile, fastaFile):
 			term=x[len(x)-1]
 			gnLength = int(term.replace(')',''))
 
-	varPos =list()	
+	varPos =list()
 	vcfile = open(vcfFile, "r")
-	vcfLines = vcfile.readlines()	
+	vcfLines = vcfile.readlines()
 	for i in range(len(vcfLines)):
 		aline = vcfLines[i]
 		if (aline[0] != '#'):
-			
+
 			if (gnLength/2 >= int(aline.split()[1])):
 				varPos.append(str(aline.split()[1]))
 			else:
@@ -538,8 +538,8 @@ def test_cleanvcf(vcfFile, fastaFile):
 def set_samp_anno(perform_sim):
 
 	"""Sets the appropriate smaples annotation file
-	based on whether the pipeline is to be run with 
-	simulated data, as specified by the 'do_sim' config 
+	based on whether the pipeline is to be run with
+	simulated data, as specified by the 'do_sim' config
 	parameter"""
 
 	if config['doSim'] == True:

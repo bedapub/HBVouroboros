@@ -105,11 +105,32 @@ rule aggregate_fq:
         "samtools fastq --threads {threads} -N \
             -1 {output.f1} -2 {output.f2} {input}"
 
+rule check_aggregated_fastq:
+    input:
+        f1 = "results/aggregated_mapped_reads_1.fq.gz",
+        f2 = "results/aggregated_mapped_reads_2.fq.gz"
+    output:
+        "results/stats/aggregated_mapped_reads_count.txt"
+    log:
+        out = "logs/check_aggregated_fastq.log",
+        err = "logs/check_aggregated_fastq.err"
+    message:
+        "Checking whether aggregated FASTQ files contain valid HBV reads"
+    shell:
+        "ncount=`zcat results/aggregated_mapped_reads_1.fq.gz | wc -l`; \
+         if [ \"$ncount\" -eq \"0\" ]; then \
+              echo 'Error: no HBV reads detected. Please check the input.'; \
+              echo 'Error: no HBV reads detected. Please check the input.' 2> {log.err} 1> {log.out}; \
+              exit 1; \
+         else: \
+            echo \"$ncount\" > {output}; \
+         fi"
 
 rule run_trinity:
     input:
         f1 = "results/aggregated_mapped_reads_1.fq.gz",
-        f2 = "results/aggregated_mapped_reads_2.fq.gz"
+        f2 = "results/aggregated_mapped_reads_2.fq.gz",
+        aggcount = "results/stats/aggregated_mapped_reads_count.txt"
     output:
         trinity_fasta
     threads: 1

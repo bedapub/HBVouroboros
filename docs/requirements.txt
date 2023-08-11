@@ -25,7 +25,7 @@ docutils==0.16
     #   sphinxcontrib-opendataservices-jsonschema
 gitdb==4.0.7
     # via gitpython
-gitpython==3.1.30
+gitpython==3.1.32
     # via transifex-client
 idna==2.10
     # via requests

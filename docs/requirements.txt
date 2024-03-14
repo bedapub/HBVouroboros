@@ -33,7 +33,7 @@ imagesize==1.2.0
     # via sphinx
 importlib-metadata==4.6.1
     # via click
-jinja2==3.0.1
+jinja2==3.1.3
     # via
     #   myst-parser
     #   sphinx

@@ -15,6 +15,16 @@ configfile: "config/config.yaml"
 def biokit_sample_annotation_filename(biokit_outdir):
     return(join(biokit_outdir, 'samples.txt'))
 
+
+def check_sample_names(sample_names):
+    """
+    Check that sample names do not contain invalid characters
+    """
+    if(any(" " in s for s in sample_names)):
+        raise ValueError("Sample names must not contain empty spaces")
+    return True
+
+
 def parse_sample_annotation(sample_annotation_file):
     """
     Parse biokit sample annotation file into sample names and FASTQ dicts
@@ -29,6 +39,7 @@ def parse_sample_annotation(sample_annotation_file):
 
     annotation = read_table(sample_annotation_file)
     samples = [str(s) for s in annotation.iloc[:, 0]]
+    check_sample_names(samples)
     fq1s = annotation.iloc[:, 2]
     fq2s = annotation.iloc[:, 3]
 

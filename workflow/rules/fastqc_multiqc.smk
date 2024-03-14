@@ -32,7 +32,7 @@ rule fastqc:
     output:
         "results/fastqc/{sample}.fastqc.done"
     shell:
-        "fastqc -o results/fastqc/ {input.f1} {input.f2}; touch {output}"
+        "fastqc -o results/fastqc/ \"{input.f1}\" \"{input.f2}\"; touch {output}"
 
 rule qualimap:
     input:

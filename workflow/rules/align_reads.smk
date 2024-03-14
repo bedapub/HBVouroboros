@@ -37,7 +37,7 @@ rule bowtie2_map:
     shell:
         "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -k 1\
             -x {input.bowtie2_index} \
-            -1 {input.f1} -2 {input.f2} 2>{log} | \
+            -1 \"{input.f1}\" -2 \"{input.f2}\" 2>{log} | \
             samtools view -Sb - > {output}"
 
 
@@ -208,7 +208,7 @@ rule bowtie2_index_ref_map:
     shell:
         "bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -k 1\
             -x {input.genome} \
-            -1 {input.f1} -2 {input.f2} 2>{log} | \
+            -1 \"{input.f1}\" -2 \"{input.f2}\" 2>{log} | \
             samtools view -Sb - > {output}"
 
 
@@ -496,8 +496,7 @@ rule infref_bowtie2_map_perSamp:
         	2
 	shell:
         	"bowtie2 -p {threads} --no-mixed --no-discordant --sensitive -k 1\
-            	-x {input.genome} \
-            	-1 {input.f1} -2 {input.f2} 2>{log} | \
+		-x {input.genome} -1 \"{input.f1}\" -2 \"{input.f2}\" 2>{log} | \
             	samtools view -Sb - > {output}"
 
 

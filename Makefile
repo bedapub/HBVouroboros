@@ -5,13 +5,12 @@ run: workflow/Snakefile
 	snakemake -p --cores 1
 
 clean:
-	rm -rf resources/ref/*
 	rm -rf results/*
 
 gv: gv/HBVouroboros.gv
 	cd gv; $(MAKE)
 
-test:
+test: clean
 	pytest -s
 
 ## run 'ml load pandoc; ml load texlive' first on HPC

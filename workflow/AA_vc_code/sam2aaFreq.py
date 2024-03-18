@@ -2,7 +2,7 @@ import os,sys
 from seq_utils import *
 import numpy as np
 
-mutation_cutoff_perc_list = [1,2,5,15,50]
+mutation_cutoff_perc_list = [1, 2, 5, 10, 15, 50]
 
 def extractOverlapAASeq(gene_start, gene_end, read_start, read_end, read_seq): # return overlap_or_not, aa_seq, start_aa_in_gene
 	if gene_start >= read_end or read_start >= gene_end:
@@ -128,7 +128,7 @@ out_nt.write(f'NT_pos,Ref,Cons,Total')
 for tmp_nt in uniq_nt_seq:
 	out_nt.write(f',{tmp_nt}')
 for tmp_cutoff in mutation_cutoff_perc_list:
-	out_nt.write(f',{tmp_cutoff}%Mut')
+	out_nt.write(f',Mut{tmp_cutoff}')
 out_nt.write('\n')
 for tmp_nt_pos_index in range(ref_seq_len):
 	tmp_nt_pos = tmp_nt_pos_index + 1
@@ -152,7 +152,7 @@ out.write(f'Gene,AA_pos,NT_codon_pos_start,Ref,Cons,Total')
 for tmp_aa in uniq_aa_seq:
 	out.write(f',{tmp_aa}')
 for tmp_cutoff in mutation_cutoff_perc_list:
-	out.write(f',{tmp_cutoff}%Mut')
+	out.write(f',Mut{tmp_cutoff}')
 out.write('\n')
 
 for tmp_gene_index in range(gene_num):

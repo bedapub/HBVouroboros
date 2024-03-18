@@ -30,6 +30,7 @@ IGV
 HBV_refgenomes
 testdata-out
 testbiokit/HBVouroboros
+config/config.yaml
 
 .snakemake
 README.pdf
@@ -40,3 +41,4 @@ test-outputs
 resources/ref
 results
 *.pyc
+

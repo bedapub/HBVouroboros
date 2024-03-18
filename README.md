@@ -30,12 +30,18 @@ conda activate HBVouroboros
 An out-of-box example can be run by starting the `snakemake` pipeline.
 
 ```bash
-snakemake -j 99 --use-envmodules ## use --use-conda if no R module is present
+snakemake -j 99 --configfile config/config_template.yaml --use-envmodules ## use --use-conda if no R module is present
 ```
 
 ### Run the pipeline with your own data
 
-Modify the `config/config.yaml` file to specify a sample annotation file.
+Create a config file by copying the template.
+
+```bash
+cp config/config_template.yaml config/config.yaml
+```
+
+Next, modify the `config/config.yaml` file to specify a sample annotation file, and make other changes if necessary.
 
 ### Run HBVouroboros using unmapped reads from a Biokit output directory
 

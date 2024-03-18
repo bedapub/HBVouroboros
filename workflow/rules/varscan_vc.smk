@@ -1,6 +1,7 @@
 import snakemake
 config: "config/config.yaml"
 sample_annotation = config['sample_annotation']
+vc_params = config['vc_params']
 
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
@@ -60,8 +61,8 @@ rule varscan:
        vcfFile="results/variant-calling/{inpt}/{inpt}_{sample}_varscan.vcf"
     shell:
        """
-        samtools mpileup -f {input.refDup}  {input.sortBam} >  {output.pileupFile}
-       varscan mpileup2snp {output.pileupFile} --min-var-freq 0.01 --output-vcf >  {output.vcfFile}
+       samtools mpileup -f {input.refDup}  {input.sortBam} >  {output.pileupFile}
+       varscan mpileup2snp {output.pileupFile} {vc_params} --output-vcf >  {output.vcfFile}
        """
 
 
@@ -75,7 +76,7 @@ rule varscan_perSamp:
     shell:
        """
        samtools mpileup -f {input.refDup}  {input.sortBam} >  {output.pileupFile}
-       varscan mpileup2snp {output.pileupFile} --min-var-freq 0.01 --output-vcf >  {output.vcfFile}
+       varscan mpileup2snp {output.pileupFile} {vc_params} --output-vcf >  {output.vcfFile}
        """
 
 

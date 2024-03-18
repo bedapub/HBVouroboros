@@ -1,0 +1,21 @@
+## use either way to indicate input files: either sample_annotation, or biokit_outdir
+## sample_annotation should be a tab-delimited file containing at least four columns (#ID, GROUP, FASTQ1, FASTQ2)
+sample_annotation: .test/sampleAnnotation
+biokit_outdir: None
+
+## options for read trimming with Trimmomatic
+trim_reads: False
+illumina_clip_file: 'resources/trim_reads/primers.fasta'
+illumina_clip_opts: ':2:30:10:2:keepBothReads'
+# trimmomatic steps (excluding ILLUMINACLIP)
+trimmomatic_steps: 'LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:35 CROP:140'
+
+## variant calling parameters
+vc_params: '--min-var-freq 0.01 --min-coverage 100 --min-reads2 50 --p-value 0.01 --strand-filter 1'
+
+## Run modes
+doInputRef: False
+inputRef: 'gnl|hbvnuc|AB064313_FT00000_C-G'
+doPerSamp: True
+
+

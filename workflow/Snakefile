@@ -1,7 +1,7 @@
 import os
 config: "config/config.yaml"
 
-# include the rules from the other files	
+## include the rules from the other files
 include: "rules/common.py"
 include: "rules/build_refgenomes.smk"
 include: "rules/align_reads.smk"
@@ -10,14 +10,10 @@ include: "rules/fastqc_multiqc.smk"
 include: "rules/AA_vc.smk"
 include: "rules/summary_report.smk"
 
-
-# organization of configuration
-
 sample_annotation = config['sample_annotation']
 
 rule_all_input_list = list()
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
-
 
 rule_all_input_list.extend(["results/stats/samples.mapping.flagstat",
                 "results/infref/infref_strain_dup.fasta",
@@ -33,7 +29,8 @@ rule_all_input_list.extend(["results/stats/samples.mapping.flagstat",
                 expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples),
 				"results/summary/infref_summary_report.html"])
 
-if config['doInputRef'] == True:
+
+if config['doInputRef']:
 	rule_all_input_list.extend(["results/coverage/inpt/inpt_genome_count.tsv",
 	"results/coverage/inpt/inpt_genome_depth.tsv",
         "results/inpt/inpt_strain_dup.fasta",
@@ -50,7 +47,7 @@ if config['doInputRef'] == True:
         "results/summary/inpt_summary_report.html"])
 
 
-if config['doPerSamp'] == True:
+if config['doPerSamp']:
 	rule_all_input_list.extend([expand("results/variant-calling/perSamp/{sample}/{sample}_cleaned_allelicprimitives.vcf", sample=samples), 
         expand("results/coverage/perSamp/{sample}_genome_depth.tsv", sample=samples), 
         expand("results/coverage/perSamp/{sample}_genome_count.tsv", sample=samples), 

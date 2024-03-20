@@ -8,9 +8,9 @@ samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 rule bam2sam_vc:
     input:
-        "results/{inpt}_bam/{inpt}_{sample}.sorted.bam"
+        "results/{inputRef}_bam/{inputRef}_{sample}.sorted.bam"
     output:
-        temp("results/variant-calling-AA/{inpt}/{inpt}_{sample}.sorted.sam")
+        temp("results/variant-calling-AA/{inputRef}/{inputRef}_{sample}.sorted.sam")
     shell:
         "samtools view -h {input} -o {output}"
 
@@ -26,10 +26,10 @@ rule bam2sam_vc_perSamp:
 
 rule sam2aaFreq_vc:
     input:
-        sam="results/variant-calling-AA/{inpt}/{inpt}_{sample}.sorted.sam",
-        fasta= "results/{inpt}/{inpt}_strain_dup.fasta"
+        sam="results/variant-calling-AA/{inputRef}/{inputRef}_{sample}.sorted.sam",
+        fasta= "results/{inputRef}/{inputRef}_strain_dup.fasta"
     output:
-        temp("results/variant-calling-AA/{inpt}/{inpt}_{sample}.sam2AAFreq.done")
+        temp("results/variant-calling-AA/{inputRef}/{inputRef}_{sample}.sam2AAFreq.done")
     shell:
         "python3 workflow/AA_vc_code/sam2aaFreq.py {input.sam} {input.fasta} ; touch {output}"
 

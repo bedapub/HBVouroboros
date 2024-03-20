@@ -16,13 +16,13 @@ samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 fastqc_dir = "results/fastqc/"
 bam_dir_infref = "results/infref_bam/"
-bam_dir_inpt = "results/inpt_bam/"
+bam_dir_inputRef = "results/inputRef_bam/"
 bam_dir_perSamp = "results/perSamp_bam/"
 
 rule qc:
     input:
         expand("results/fastqc/{sample}.fastqc.done", sample = samples),
-        "results/coverage/{inpt}/{inpt}_genome_depth.done",
+        "results/coverage/{inputRef}/{inputRef}_genome_depth.done",
         "results/multiqc/multiqc_report.html"
 
 rule fastqc:
@@ -36,9 +36,9 @@ rule fastqc:
 
 rule qualimap:
     input:
-        "results/{inpt}_bam/{inpt}_{sample}.sorted.bam"
+        "results/{inputRef}_bam/{inputRef}_{sample}.sorted.bam"
     output:
-        temp("results/{inpt}_bam/bamqc/{sample}.bamqc.done")
+        temp("results/{inputRef}_bam/bamqc/{sample}.bamqc.done")
     shell:
         "qualimap bamqc -bam {input} -c -nw 400 -hm 3 ; touch {output}"
 
@@ -53,11 +53,11 @@ rule qualimap_persamp:
 
 rule covplot:
     input:
-        "results/coverage/{inpt}/{inpt}_genome_depth.tsv"
+        "results/coverage/{inputRef}/{inputRef}_genome_depth.tsv"
     output:
-        done=temp("results/coverage/{inpt}/{inpt}_genome_depth.done"),
-        mean="results/coverage/{inpt}/{inpt}_genome_depth_mean.tsv", 
-        pngf="results/coverage/{inpt}/{inpt}_genome_depth_mqc.png"
+        done=temp("results/coverage/{inputRef}/{inputRef}_genome_depth.done"),
+        mean="results/coverage/{inputRef}/{inputRef}_genome_depth_mean.tsv", 
+        pngf="results/coverage/{inputRef}/{inputRef}_genome_depth_mqc.png"
     shell:
         "Rscript workflow/Rplots.R {input} {output.mean} {output.pngf}; touch {output.done}"
 
@@ -99,11 +99,11 @@ rule multiqc_inf_persamp:
 
 
 
-rule multiqc_inpt:
+rule multiqc_inputRef:
     input:
         expand("results/fastqc/{sample}.fastqc.done",sample = samples),
-        expand("results/inpt_bam/inpt_{sample}.sorted.bam.bai",sample = samples),
+        expand("results/inputRef_bam/inputRef_{sample}.sorted.bam.bai",sample = samples),
     output:
-        "results/multiqc/inpt/inpt_multiqc_report.html"
+        "results/multiqc/inputRef/inputRef_multiqc_report.html"
     shell:
-        "multiqc --force {fastqc_dir} {bam_dir_inpt} results/coverage/inpt  --filename 'inpt_multiqc_report.html' -o results/multiqc/inpt"
+        "multiqc --force {fastqc_dir} {bam_dir_inputRef} results/coverage/inputRef  --filename 'inputRef_multiqc_report.html' -o results/multiqc/inputRef"

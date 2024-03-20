@@ -45,7 +45,7 @@ Here only the parameter ``sample_annotation`` is of importance, it should be set
 3. Choose Run-modes
 ###################
 
-The program can be run in three different modes: 1) **infref**: the reference genome is inferred from the aggregation of all samples, 2) **inpt**: samples are compared against an input genotype of HBV, and 3) **per_Samp**: the reference genome is inferred for each sample. By default the pipeline runs the **infref** mode. The user can choose to run the **inpt** and **per_samp** modes by setting the relevant parameters ``doInputRef``, ``doPerSamp`` and ``inputRef`` in the config file.
+The program can be run in three different modes: 1) **infref**: the reference genome is inferred from the aggregation of all samples, 2) **inputRef**: samples are compared against an input genotype of HBV, and 3) **per_Samp**: the reference genome is inferred for each sample. By default the pipeline runs the **infref** mode. The user can choose to run the **inputRef** and **per_samp** modes by setting the relevant parameters ``doInputRef``, ``doPerSamp`` and ``inputRef`` in the config file.
  
 
 

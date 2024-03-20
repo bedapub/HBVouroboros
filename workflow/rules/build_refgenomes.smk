@@ -1,35 +1,10 @@
 from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
 from os.path import join
 
-localrules: download_refgenomes
-
 HTTP = HTTPRemoteProvider()
 blastdb_filenames = ["resources/ref/HBV_allgenomes.fasta."+s for s in ("nhr", "nsq", "nin")]
 
-"""
-rule download_refgenomes:
-    input:
-         HTTP.remote('https://hbvdb.lyon.inserm.fr/data/references/hbvdbr.fas',
-                     keep_local=True)
-    output:
-        "resources/ref/HBV_refgenomes.fasta"
-    log:
-        'logs/ref/download_refgenomes.log'
-    run:
-        shell("mv {input} {output}")
-
-rule download_allgenomes:
-    input:
-        HTTP.remote(
-            'https://hbvdb.lyon.inserm.fr/data/nucleic/fasta/all_Genomes.fas',
-            keep_local=True)
-    output:
-        "resources/ref/HBV_allgenomes.fasta"
-    log:
-        'logs/ref/download_allgenomes.log'
-    run:
-        shell("mv {input} {output}")
-"""
+## previous rules `download_refgenomes` and `download_allgenomes` are now implemented in bash script download_genomes
 
 rule makeblastdb:
     input:

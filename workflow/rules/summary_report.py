@@ -24,7 +24,7 @@ from IPython.display import HTML
 
 
 ##################################################inferred genotype####################################################################
-def infGen(infref_path, perSamp, inptRef):
+def infGen(infref_path, perSamp, inputRefRef):
 
     Inferred_genome=''' '''
     
@@ -60,8 +60,8 @@ def infGen(infref_path, perSamp, inptRef):
         
         
     else:
-        if inptRef == True:
-            infrefFasta=infref_path + "/inpt_strain.fasta"
+        if inputRefRef == True:
+            infrefFasta=infref_path + "/inputRef_strain.fasta"
             Inferred_genome=Inferred_genome + "<h2>2 Input genome</h2>\n"
         else:
             infrefFasta=infref_path + "/infref_strain.fasta"
@@ -249,7 +249,7 @@ def SNP_Plots(vc_path, perSamp):
               
         subfig.data[0]['columnwidth'] = [10,2,2,2,2];
         subfig.update_layout(width=600)
-        subfig.update_layout(title_text=matching[j].split('_cleaned')[0].replace('infref_','').replace('inpt_','').split('/')[0], title_x=0.5)
+        subfig.update_layout(title_text=matching[j].split('_cleaned')[0].replace('infref_','').replace('inputRef_','').split('/')[0], title_x=0.5)
         subfig.layout.width=800
         #subfig.show()
         if len(df) > 0:
@@ -291,7 +291,7 @@ def main(args):
     parser = argparse.ArgumentParser(
         description='HBVouroboros html summary report(s) generator')
     parser.add_argument('mode',
-        help = 'persamp, inpt or infref')
+        help = 'persamp, inputRef or infref')
     parser.add_argument('outputFile',
         help = 'output file to be saved')
     args = parser.parse_args(args)
@@ -302,34 +302,34 @@ def main(args):
 
 
     #print(run_mode)
-    if (run_mode != 'infref' and run_mode != 'inpt' and run_mode != 'persamp'):
-        print("Bad input: choose one of the valid modes: infref, inpt, persamp")
+    if (run_mode != 'infref' and run_mode != 'inputRef' and run_mode != 'persamp'):
+        print("Bad input: choose one of the valid modes: infref, inputRef, persamp")
         return(False)
         sys.exit()
 
     #multiqc_path='results/multiqc/infref/infref_multiqc_report.html'
-    #multiqc_input_path='results/multiqc/inpt/inpt_multiqc_report.html'
+    #multiqc_input_path='results/multiqc/inputRef/inputRef_multiqc_report.html'
     #multiqc_persamp_path='results/multiqc/perSamp/perSamp_multiqc_report.html'
 
     multiqc_path=os.path.realpath(os.path.join(os.path.dirname("__file__"), 'results', 'multiqc', 'infref','infref_multiqc_report.html'))
-    multiqc_input_path=os.path.realpath(os.path.join(os.path.dirname("__file__"), 'results', 'multiqc', 'inpt','inpt_multiqc_report.html'))
+    multiqc_input_path=os.path.realpath(os.path.join(os.path.dirname("__file__"), 'results', 'multiqc', 'inputRef','inputRef_multiqc_report.html'))
     multiqc_persamp_path=os.path.realpath(os.path.join(os.path.dirname("__file__"), 'results', 'multiqc', 'perSamp','perSamp_multiqc_report.html'))
 
     coverage_path='results/coverage/infref/infref_genome_depth.tsv'
     coverage_persamp_path='results/coverage'
-    coverage_inpt_path='results/coverage/inpt/inpt_genome_depth.tsv'
+    coverage_inputRef_path='results/coverage/inputRef/inputRef_genome_depth.tsv'
 
     totalCount_path='results/coverage/infref/infref_genome_count.tsv'
     totalCount_persamp_path='results/coverage'
-    totalCount_inpt_path='results/coverage/inpt/inpt_genome_count.tsv'
+    totalCount_inputRef_path='results/coverage/inputRef/inputRef_genome_count.tsv'
 
     vc_path='results/variant-calling/infref'
     vc_persamp_path='results/variant-calling/perSamp'
-    vc_inpt_path='results/variant-calling/inpt'
+    vc_inputRef_path='results/variant-calling/inputRef'
 
     infref_path='results/infref'
     infref_persamp_path='results/perSamp'
-    infref_inpt_path='results/inpt'
+    infref_inputRef_path='results/inputRef'
 
     
     
@@ -391,7 +391,7 @@ def main(args):
     if (run_mode == "infref"):
     
         theReport=theReport+"<h1 style='font-size:35px;'>HBVouroboros pipeline summary report using dataset-level-inferred reference genotype</h1>\n"
-    if (run_mode == "inpt"):   
+    if (run_mode == "inputRef"):   
         theReport=theReport+"<h1 style='font-size:35px;'>HBVouroboros pipeline summary report using user-input reference genotype</h1>\n" 
     if (run_mode == "persamp"):
         theReport=theReport+"<h1 style='font-size:35px;'>HBVouroboros pipeline summary report using per-sample-inferred reference genotype</h1>\n"
@@ -410,8 +410,8 @@ def main(args):
     if (run_mode == "persamp"):
         theReport = theReport +multiQC_link(multiqc_persamp_path) + infGen(infref_persamp_path, True, False) + covTable(totalCount_persamp_path, True) + covplots(coverage_persamp_path, True) + SNP_Plots(vc_persamp_path, True)
 
-    if (run_mode == "inpt"):
-        theReport = theReport + multiQC_link(multiqc_input_path) + infGen(infref_inpt_path, False, True) + covTable(totalCount_inpt_path, False) + covplots(coverage_inpt_path, False) + SNP_Plots(vc_inpt_path, False)
+    if (run_mode == "inputRef"):
+        theReport = theReport + multiQC_link(multiqc_input_path) + infGen(infref_inputRef_path, False, True) + covTable(totalCount_inputRef_path, False) + covplots(coverage_inputRef_path, False) + SNP_Plots(vc_inputRef_path, False)
 
 
 

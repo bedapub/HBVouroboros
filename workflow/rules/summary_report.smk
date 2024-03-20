@@ -9,16 +9,16 @@ samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 rule make_report:
     input:
-        vcf=expand("results/variant-calling/{{inpt}}/{{inpt}}_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
-        coverageFiles = "results/coverage/{inpt}/{inpt}_genome_count.tsv",
-        depth="results/coverage/{inpt}/{inpt}_genome_depth.tsv",
-        multiqc= "results/multiqc/{inpt}/{inpt}_multiqc_report.html", 
-        refGenomes="results/{inpt}/{inpt}_strain.fasta"
+        vcf=expand("results/variant-calling/{{inputRef}}/{{inputRef}}_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
+        coverageFiles = "results/coverage/{inputRef}/{inputRef}_genome_count.tsv",
+        depth="results/coverage/{inputRef}/{inputRef}_genome_depth.tsv",
+        multiqc= "results/multiqc/{inputRef}/{inputRef}_multiqc_report.html", 
+        refGenomes="results/{inputRef}/{inputRef}_strain.fasta"
 
     output:
-    	"results/summary/{inpt}_summary_report.html"
+    	"results/summary/{inputRef}_summary_report.html"
     shell:
-    	"python workflow/rules/summary_report.py {wildcards.inpt} {output}"
+    	"python workflow/rules/summary_report.py {wildcards.inputRef} {output}"
 
 
 rule make_report_persamp:

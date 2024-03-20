@@ -13,11 +13,11 @@ rule aggregated_var_inf:
     shell:
     	"cat {input} > {output}"
 
-rule aggregated_var_inpt:
+rule aggregated_var_inputRef:
     input:
-        expand("results/variant-calling/inpt/inpt_{sample}_cleaned_allelicprimitives.vcf", sample=samples)
+        expand("results/variant-calling/inputRef/inputRef_{sample}_cleaned_allelicprimitives.vcf", sample=samples)
     output:
-    	"results/variant-calling/inpt/inpt_aggregated.vcf"
+    	"results/variant-calling/inputRef/inputRef_aggregated.vcf"
     shell:
     	"cat {input} > {output}"
 
@@ -33,10 +33,10 @@ rule aggregated_var_perSamp:
 
 rule correct_bam:
     input:
-       refDup ="results/{inpt}/{inpt}_strain.fasta",
-       sortBam ="results/{inpt}_bam/{inpt}_{sample}.sorted.bam"
+       refDup ="results/{inputRef}/{inputRef}_strain.fasta",
+       sortBam ="results/{inputRef}_bam/{inputRef}_{sample}.sorted.bam"
     output:
-       "results/{inpt}_bam/{inpt}_{sample}.corrected.sorted.bam"
+       "results/{inputRef}_bam/{inputRef}_{sample}.corrected.sorted.bam"
     shell:
        "workflow/rules/correct_bam.sh -f {input.refDup} -s {input.sortBam} -o {output}"
 
@@ -50,15 +50,13 @@ rule correct_bam_perSamp:
        "workflow/rules/correct_bam.sh -f {input.refDup} -s {input.sortBam} -o {output}"    
 
 
-
-
 rule varscan:
     input:
-       refDup ="results/{inpt}/{inpt}_strain_dup.fasta",
-       sortBam ="results/{inpt}_bam/{inpt}_{sample}.corrected.sorted.bam"
+       refDup ="results/{inputRef}/{inputRef}_strain_dup.fasta",
+       sortBam ="results/{inputRef}_bam/{inputRef}_{sample}.corrected.sorted.bam"
     output:
-       pileupFile=temp("results/variant-calling/{inpt}/{inpt}_{sample}_mpileup.tsv"),
-       vcfFile="results/variant-calling/{inpt}/{inpt}_{sample}_varscan.vcf"
+       pileupFile=temp("results/variant-calling/{inputRef}/{inputRef}_{sample}_mpileup.tsv"),
+       vcfFile="results/variant-calling/{inputRef}/{inputRef}_{sample}_varscan.vcf"
     shell:
        """
        samtools mpileup -f {input.refDup}  {input.sortBam} >  {output.pileupFile}
@@ -80,13 +78,12 @@ rule varscan_perSamp:
        """
 
 
-
 rule clean_vcfFile:
     input:
-       vcf="results/variant-calling/{inpt}/{inpt}_{sample}_varscan.vcf",
+       vcf="results/variant-calling/{inputRef}/{inputRef}_{sample}_varscan.vcf",
        fasta="results/infref/infref_strain_dup.fasta"
     output:
-       "results/variant-calling/{inpt}/{inpt}_{sample}_cleaned.vcf"
+       "results/variant-calling/{inputRef}/{inputRef}_{sample}_cleaned.vcf"
     run:
        vcfClean(str(input.vcf), str(input.fasta), str(output))
 
@@ -103,9 +100,9 @@ rule clean_vcfFile_perSamp:
 
 rule make_vcfallelicprimitives:
     input:
-       "results/variant-calling/{inpt}/{inpt}_{sample}_cleaned.vcf"
+       "results/variant-calling/{inputRef}/{inputRef}_{sample}_cleaned.vcf"
     output:
-       "results/variant-calling/{inpt}/{inpt}_{sample}_cleaned_allelicprimitives.vcf"
+       "results/variant-calling/{inputRef}/{inputRef}_{sample}_cleaned_allelicprimitives.vcf"
     run:
        shell("vcfallelicprimitives {input} > {output}" )
 

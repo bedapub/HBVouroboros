@@ -11,7 +11,8 @@ illumina_clip_opts: ':2:30:10:2:keepBothReads'
 trimmomatic_steps: 'LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:35 CROP:140'
 
 ## variant calling parameters
-vc_params: '--min-var-freq 0.01 --min-coverage 100 --min-reads2 50 --p-value 0.01 --strand-filter 1'
+## a more strict filter may look like: '--min-var-freq 0.01 --min-coverage 100 --min-reads2 50 --p-value 0.01 --strand-filter 1'
+vc_params: '--min-var-freq 0.01'
 
 ## Run modes
 doInputRef: False

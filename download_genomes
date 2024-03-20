@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+
+## download HBV genomes from HBVdb
+
+mkdir -p resources/ref
+wget https://hbvdb.lyon.inserm.fr/data/references/hbvdbr.fas -O resources/ref/HBV_refgenomes.fasta
+wget https://hbvdb.lyon.inserm.fr/data/nucleic/fasta/all_Genomes.fas -O resources/ref/HBV_allgenomes.fasta

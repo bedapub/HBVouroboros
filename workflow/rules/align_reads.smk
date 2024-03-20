@@ -1,5 +1,5 @@
 import snakemake
-config: "config/config_qc.yaml"
+config: "config/config.yaml"
 sample_annotation = config['sample_annotation']
 
 bowtie2_index = 'resources/ref/HBV_refgenomes_dup_BOWTIE2'

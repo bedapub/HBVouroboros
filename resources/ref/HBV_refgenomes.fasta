@@ -40,7 +40,7 @@ tcaccagttggacccagcattcagagcaaataccaacaatccagattgggacttcaatcccaaaaaggacccttggccag
 aggccaacaaggtaggagttggagcctatggacccgggttcacccctccacacggaggccttttggggtggagccctcag
 tctcagggcacactaacaactttgccagcagatccgcctcctgcctccaccaatcgtcagtcagggaggcagcctactcc
 catctctccaccactaagagacagtcatcctcaggccatgcagtggaa
->gnl|hbvnuc|AB106564_FT00000_C-E Feature FT:source AB106564_FT00000_C-E of [Viruses] Hepatitis B Virus genotype E (isolate HBV). Complete genome. [Hepadnaviridae] (length=3212 residues).
+>gnl|hbvnuc|AB106564_FT00000_C-E Feature FT:source AB106564_FT00000_C-E of [Viruses] Hepatitis B Virus genotype E (isolate HBV-GA325). Complete genome. [Hepadnaviridae] (length=3212 residues).
 ctccacaacattccaccaagctctgcaggatcccagagtaagaggcctgtattttcctgctggtggctccagttccggaa
 cagtgaaccctgttccgactactgcctcactcatctcgtcaatcttctcgaggattggggaccctgcaccgaacatggaa
 agcatcacatcaggattcctaggacccctgctcgtgttacaggcggggtttttcttgttgacaaaaatcctcacaatacc
@@ -82,7 +82,7 @@ aaatccagattgggaccacaatcccaacaaagaccactggacagacgccaacaaggtaggagtgggagcatttgggccgg
 ggttcactcccccacacggaggccttttggggtggagccctcaggctcaaggcatgccaaaaacatcgccagcagaaccg
 cctcctgcctccaccaagcggcagtcaggaaggcagcctaccccaatcactccacctttgagagacactcatcctcaggc
 catgcagcggaa
->gnl|hbvnuc|AB219428_FT00000_C-B Feature FT:source AB219428_FT00000_C-B of [Viruses] Hepatitis B Virus genotype B (isolate Patient). Complete genome. [Hepadnaviridae] (length=3215 residues).
+>gnl|hbvnuc|AB219428_FT00000_C-B Feature FT:source AB219428_FT00000_C-B of [Viruses] Hepatitis B Virus genotype B (isolate Patient #4076, PNN3). Complete genome. [Hepadnaviridae] (length=3215 residues).
 ctccaccacgttccaccaaactcttcaagatcccagagtcagggctctgtactttcctgctggtggctccagttcaggaa
 cagtgaaccctgttcagaacactgcctcttccatatcgtcaatcttatcgaagactggggaccctgtaccgaacatggag
 aacatcgcatcaggactcctaggacccctgctcgtgttacaggcggggtttttcttgttgacaaaaatcctcacaatacc
@@ -124,7 +124,7 @@ cgacaatcccgattgggacctcaacccgcacaaggacaactggccggactccaacaaggtgggagtgggagcattcgggc
 tgggattcactccaccccatgggggactgttggggtggagccctcaagctcagggtatacttacaactgtgccagcagct
 cctcctcctgcctccaccaatcggcaggtagcaaggccgcctactcccctgtctccacctctaagggatactcatcctca
 ggccatgcagtggaa
->gnl|hbvnuc|AF121240_FT00000_C-D Feature FT:source AF121240_FT00000_C-D of [Viruses] Hepatitis B Virus genotype D (isolate HBV). Complete genome. [Hepadnaviridae] (length=3182 residues).
+>gnl|hbvnuc|AF121240_FT00000_C-D Feature FT:source AF121240_FT00000_C-D of [Viruses] Hepatitis B Virus genotype D (isolate HBV/11066). Complete genome. [Hepadnaviridae] (length=3182 residues).
 ctccacaaccttccaccaaactctgcaagatcccagagtgagaggcctgtatttccctgctggtggctccagttcaggaa
 cagtaaaccctgttccgactactgtctctcacatatcgtcaatcttctcgaggattggggaccctgcgctgaacatggag
 aacatcacatcaggattcctaggacccctgctcgtgttacaggcggggtttttcttgttgacaagaatcctcacaatacc
@@ -291,7 +291,7 @@ cagcagtcccgactgggacttcaacaaaagcaaggacaattggccaatggcaaacaaggtaggagtgggaggatacggtc
 ctggtttcacacccccacacggtggcctgctggggtggagcccacaggcacagggtgtgcttacaacattgccagcagat
 ccgcctcctgcttccaccaatcggcggtccgggagaaaaccaaccccagtctctccacctctaagggacactcatcccca
 ggccatgcagtggaa
->gnl|hbvnuc|AY738145_FT00000_C-E Feature FT:source AY738145_FT00000_C-E of [Viruses] Hepatitis B Virus genotype E. Complete genome. [Hepadnaviridae] (length=3212 residues).
+>gnl|hbvnuc|AY738145_FT00000_C-E Feature FT:source AY738145_FT00000_C-E of [Viruses] Hepatitis B Virus genotype E (isolate patient B, 7/98). Complete genome. [Hepadnaviridae] (length=3212 residues).
 ttccacaacattccaccaagctctgcaggatcccagggtaagaggcctgtattttcctgctggtggctccagttccggaa
 cagtgaaccctgttccgactactgcctcactcatctcgtcaatcttctcgaggattggggaccctgcaccgaacatggac
 agcatcacatcaggattcctaggacccctgctcgtgttacaggcggggtttttcttgttgacaaaaatcctcacaatacc
@@ -626,7 +626,7 @@ caactcaaacaatccagattgggacttcaaccccgtcaaggacgactggccagcagccaaccaagtaggagtgggagcat
 tcgggccaaggctcacccctccacacggcggtattttggggtggagccctcaggctcagggcatattgaccacagtgtca
 acaattcctcctcctgcctccaccaatcggcagtcaggaaggcagcctactcccatctctccacctctaagagacagtca
 tcctcaggccatgcagtggaa
->gnl|hbvnuc|X75658_FT00000_C-F Feature FT:source X75658_FT00000_C-F of [Viruses] Hepatitis B Virus genotype F. Complete genome. [Hepadnaviridae] (length=3215 residues).
+>gnl|hbvnuc|X75658_FT00000_C-F Feature FT:source X75658_FT00000_C-F of [Viruses] Hepatitis B Virus genotype F (isolate Fou). Complete genome. [Hepadnaviridae] (length=3215 residues).
 ctcaactcacttccaccaggctctgttggatccgagggtaagggcactgtattttcctgctggtggctccagttcaggca
 cgcagaaccctgctccgactattgcctctctcacatcatcaatctcctcgaagactgggggccctgctatgaacatggac
 aacatcacatcaggactcctaggacccctgctcgtgttacaggcggtgtgtttcttgttgacaaaaatcctcacaatacc

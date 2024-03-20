@@ -9,7 +9,7 @@ import yaml
 sys.path.insert(0, 'workflow/rules/')
 import common
 
-with open('config/config.yaml', 'r') as stream:
+with open('config/test_config.yaml', 'r') as stream:
 	config = yaml.full_load(stream)
 doInputRef = config['doInputRef']
 doPerSamp = config['doPerSamp']

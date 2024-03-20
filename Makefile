@@ -5,8 +5,10 @@ run: workflow/Snakefile
 	snakemake -p --cores 1
 
 clean:
-	rm -rf resources/ref/*
 	rm -rf results/*
+
+deepclean: clean
+	rm -rf resources/ref/*
 
 gv: gv/HBVouroboros.gv
 	cd gv; $(MAKE)

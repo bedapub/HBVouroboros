@@ -29,8 +29,7 @@ rule_all_input_list = ["results/stats/samples.mapping.flagstat",
 
 
 if config['doInputRef']:
-	rule_all_input_list.extend(["results/coverage/input/inputRef_genome_count.tsv",
-	"results/coverage/inputRef/inputRef_genome_depth.tsv",
+	rule_all_input_list.extend([
         "results/inputRef/inputRef_strain_dup.fasta",
         "results/coverage/inputRef/inputRef_genome_count.tsv",
         "results/coverage/inputRef/inputRef_genome_depth.tsv",

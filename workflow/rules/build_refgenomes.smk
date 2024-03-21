@@ -1,7 +1,5 @@
-from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
 from os.path import join
 
-HTTP = HTTPRemoteProvider()
 blastdb_filenames = ["resources/ref/HBV_allgenomes.fasta."+s for s in ("nhr", "nsq", "nin")]
 
 ## previous rules `download_refgenomes` and `download_allgenomes` are now implemented in bash script download_genomes

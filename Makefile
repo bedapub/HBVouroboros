@@ -4,7 +4,7 @@ dryrun: workflow/Snakefile
 run: workflow/Snakefile
 	snakemake -p -j 99 --use-envmodules
 
-test-run: workflow/Snakemake config/test_config.yaml
+test-run: workflow/Snakefile config/test_config.yaml
 	snakemake -p --cores 1 --configfile config/test_config.yaml
 
 pytest:

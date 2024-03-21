@@ -14,7 +14,7 @@ trimmomatic_steps: 'LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:35 CROP:140
 vc_params: '--min-var-freq 0.01'
 
 ## Run modes
-doInputRef: False
+doInputRef: True
 inputRef: 'gnl|hbvnuc|AB064313_FT00000_C-G'
 doPerSamp: True
 

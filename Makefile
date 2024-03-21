@@ -1,20 +1,20 @@
 dryrun: workflow/Snakefile
-	snakemake -p --dry-run
+	snakemake -p --dry-run --use-envmodules
 
 run: workflow/Snakefile
-	snakemake -p --cores 1
+	snakemake -p -j 99 --use-envmodules
+
+test-run: workflow/Snakemake config/test_config.yaml
+	snakemake -p --cores 1 --configfile config/test_config.yaml
+
+pytest:
+	pytest -s
 
 clean:
 	rm -rf results/*
 
-clean-all-genomes: clean
-	rm -rf resources/ref/HBV_allgenomes*
-
 gv: gv/HBVouroboros.gv
 	cd gv; $(MAKE)
-
-test:
-	pytest -s
 
 ## run 'ml load pandoc; ml load texlive' first on HPC
 README.pdf: README.md gv

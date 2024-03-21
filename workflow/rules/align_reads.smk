@@ -1,25 +1,13 @@
-import snakemake
-config: "config/config.yaml"
-sample_annotation = config['sample_annotation']
-
 bowtie2_index = 'resources/ref/HBV_refgenomes_dup_BOWTIE2'
 blast_db = 'resources/ref/HBV_allgenomes.fasta'
 
-# parse sample annotation
-samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
-
-## trinity_outdir="trinity_out_dir"
 trinity_fasta = "results/trinity/Trinity.fasta"
 trinity_sorted_fasta = "results/trinity/Trinity.sorted.fasta"
 blast_out = "results/blast/blast.out"
 infref_strain_FASTA = "results/infref/infref_strain.fasta"
-inputRef_strain_FASTA = "results/inputRef/inputRef_strain.fasta"
 infref_strain_dup_FASTA = "results/infref/infref_strain_dup.fasta"
-inputRef_strain_dup_FASTA = "results/inputRef/inputRef_strain_dup.fasta"
 infref_strain_gb = "results/infref/infref_strain.gb"
-inputRef_strain_gb = "results/inputRef/inputRef_strain.gb"
 infref_strain_gff = "results/infref/infref_strain.gff"
-inputRef_strain_gff = "results/inputRef/inputRef_strain.gff"
 infref_strain_dup_gff = "results/infref/infref_strain_dup.gff"
 infref_bowtie2_index = "results/infref/infref_bowtie2_index"
 
@@ -182,7 +170,7 @@ rule ref_dup_infref:
     output: "results/infref/infref_strain_dup.fasta"
     run:
         dup_and_conc_FASTA(input[0], output[0])
-	
+
 
 rule bowtie2_index_ref_dup:
     input: "results/{inputRef}/{inputRef}_strain_dup.fasta",
@@ -196,7 +184,7 @@ rule bowtie2_index_ref_dup:
 
 rule bowtie2_index_ref_map:
     input:
-        genome = 'results/{inputRef}/{inputRef}_bowtie2_index',	
+        genome = 'results/{inputRef}/{inputRef}_bowtie2_index',
         f1 = lambda wildcards: fq1dict[wildcards.sample],
         f2 = lambda wildcards: fq2dict[wildcards.sample]
     output:
@@ -327,63 +315,6 @@ rule CDS_coverage_infref:
           collect_gene_coverage(input, output[0], feat_type='CDS')
 
 
-
-
-#################### This section is only executes when "doInputRef" in config file is set to True
-
-
-
-acc_inputRef = config['inputRef']
-gb_acc_inputRef = acc_inputRef.split("|")[2].split("_")[0]
-
-rule get_ref_strain_seq_inputRef:
-    input:  
-    output: "results/inputRef/inputRef_strain.fasta"
-    run:
-        write_seq_by_acc(blast_db, acc_inputRef, inputRef_strain_FASTA)
-
-
-rule ref_dup_inputRef:
-    	input: "results/inputRef/inputRef_strain.fasta"
-    	output: "results/inputRef/inputRef_strain_dup.fasta"
-    	run:
-        	dup_and_conc_FASTA(input[0], output[0])
-
-
-rule get_ref_strain_gb_inputRef:
-    	input:  
-    	output: "results/inputRef/inputRef_strain.gb"
-    	run:
-        	download_gb(gb_acc_inputRef, output[0])
-
-
-rule ref_strain_gb2gff_inputRef:
-    	input:  
-       		"results/inputRef/inputRef_strain.gb"
-    	output:
-       		"results/inputRef/inputRef_strain.gff"
-    	run:
-       		gb2gff(input[0], output[0])
-
-
-rule gene_coverage_inputRef:
-     	input:
-          	expand("results/coverage/inputRef/inputRef_genome_{sample}_feature_coverage.tsv", sample=samples)
-     	output:
-          	"results/coverage/inputRef/inputRef_genome_gene_coverage.gct"
-     	run:
-        	collect_gene_coverage(input, output[0], feat_type='gene')
-
-
-rule CDS_coverage_inputRef:
-     	input:
-        	expand("results/coverage/inputRef/inputRef_genome_{sample}_feature_coverage.tsv",sample=samples)
-     	output:
-          	"results/coverage/inputRef/inputRef_genome_CDS_coverage.gct"
-     	run:
-          	collect_gene_coverage(input, output[0], feat_type='CDS')
-
-#################### 
 
 
 ################# This section is only executed when "doPerSamp" in config file is set to True

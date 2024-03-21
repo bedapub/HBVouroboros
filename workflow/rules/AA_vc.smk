@@ -1,11 +1,3 @@
-import snakemake
-# include: "common.smk"
-config: "config/config.yaml"
-
-sample_annotation = config['sample_annotation']
-samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
-
-
 rule bam2sam_vc:
     input:
         "results/{inputRef}_bam/{inputRef}_{sample}.sorted.bam"

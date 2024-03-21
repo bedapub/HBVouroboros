@@ -1,9 +1,4 @@
-import snakemake
-config: "config/config.yaml"
-sample_annotation = config['sample_annotation']
-vc_params = config['vc_params']
-
-samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
+## vc_params inherited from Snakefile
 
 rule aggregated_var_inf:
     input:

@@ -15,12 +15,12 @@ doPerSamp = config["doPerSamp"]
 
 def test_snakemake_output_files():
     # Run the pipeline
-    p = Popen("snakemake --cores 10 --use-conda --latency-wait 30", shell=True, stdout= PIPE, stderr= STDOUT)
+    p = Popen("snakemake --configfile config/test_config.yaml --cores 1 --use-conda --latency-wait 30", shell=True, stdout=PIPE, stderr=STDOUT)
     pout = p.stdout.read()
     print(pout.decode('utf-8'))
 
     # Optionally, get stdout and stderr
-    stdout, stderr= p.communicate()
+    stdout, stderr = p.communicate()
 
     # Check exits code and other expected output
     assert p.returncode == 0

@@ -7,7 +7,7 @@ run: workflow/Snakefile
 test-run: workflow/Snakefile config/test_config.yaml
 	snakemake -p --cores 1 --configfile config/test_config.yaml
 
-pytest:
+pytest: clean
 	pytest -s
 
 clean:

@@ -1,6 +1,10 @@
 name: Test of HBVouroboros with pytest
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - 'releases/**'
 
 jobs:
   pytest_pipeline:

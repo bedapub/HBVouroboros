@@ -14,46 +14,30 @@ sample_annotation = config['sample_annotation']
 samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 rule_all_input_list = ["results/stats/samples.mapping.flagstat",
-        "results/infref/infref_strain_dup.fasta",
-        "results/coverage/infref/infref_genome_count.tsv",
-        "results/coverage/infref/infref_genome_depth.tsv",
-        "results/coverage/infref/infref_genome_gene_coverage.gct",
-	"results/coverage/infref/infref_genome_CDS_coverage.gct",
-	"results/coverage/infref/infref_genome_depth_mean.tsv",
-        "results/coverage/infref/infref_genome_depth_mqc.png",
-        expand("results/variant-calling/infref/infref_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
-        "results/multiqc/infref/infref_multiqc_report.html",
-        expand("results/variant-calling-AA/infref/infref_{sample}.sorted.sam", sample = samples),
-        expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples),
-	"results/summary/infref_summary_report.html"]
+                       "results/infref/infref_strain_dup.fasta",
+                       "results/coverage/infref/infref_genome_count.tsv",
+                       "results/coverage/infref/infref_genome_depth.tsv",
+                       "results/coverage/infref/infref_genome_gene_coverage.gct",
+                       "results/coverage/infref/infref_genome_CDS_coverage.gct",
+                       "results/coverage/infref/infref_genome_depth_mean.tsv",
+                       "results/coverage/infref/infref_genome_depth_mqc.png",
+                       expand("results/variant-calling/infref/infref_{sample}_cleaned_allelicprimitives.vcf",
+                           sample=samples),
+                       expand("results/variant-calling-AA/infref/infref_{sample}.sorted.sam", sample = samples),
+                       expand("results/variant-calling-AA/infref/infref_{sample}.sam2AAFreq.done", sample = samples),
+                       "results/multiqc/infref/infref_multiqc_report.html",
+                       "results/summary/infref_summary_report.html"]
 
-
-if config['doInputRef']:
-	rule_all_input_list.extend([
-        "results/inputRef/inputRef_strain_dup.fasta",
-        "results/coverage/inputRef/inputRef_genome_count.tsv",
-        "results/coverage/inputRef/inputRef_genome_depth.tsv",
-        "results/coverage/inputRef/inputRef_genome_gene_coverage.gct",
-	    "results/coverage/inputRef/inputRef_genome_CDS_coverage.gct",
-        "results/coverage/inputRef/inputRef_genome_depth_mean.tsv",
-        "results/multiqc/inputRef/inputRef_multiqc_report.html",
-        "results/coverage/inputRef/inputRef_genome_depth_mqc.png",
-        expand("results/variant-calling/inputRef/inputRef_{sample}_cleaned_allelicprimitives.vcf", sample=samples),
-        expand("results/variant-calling-AA/inputRef/inputRef_{sample}.sorted.sam", sample = samples),
-        expand("results/variant-calling-AA/inputRef/inputRef_{sample}.sam2AAFreq.done", sample = samples),
-        "results/summary/inputRef_summary_report.html"])
-
-
-if config['doPerSamp']:
-	rule_all_input_list.extend([expand("results/variant-calling/perSamp/{sample}/{sample}_cleaned_allelicprimitives.vcf", sample=samples), 
-        expand("results/coverage/perSamp/{sample}_genome_depth.tsv", sample=samples), 
-        expand("results/coverage/perSamp/{sample}_genome_count.tsv", sample=samples), 
-        expand("results/coverage/perSamp/{sample}_genome_gene_coverage.gct", sample=samples), 
-        expand("results/coverage/perSamp/{sample}_genome_CDS_coverage.gct", sample=samples),
-        expand("results/variant-calling-AA/perSamp/{sample}/{sample}.sorted.sam", sample=samples),
-        expand("results/variant-calling-AA/perSamp/{sample}/{sample}.sam2AAFreq.done", sample=samples),
-	"results/summary/perSamp_summary_report.html",
-        "results/multiqc/perSamp/perSamp_multiqc_report.html"])
+rule_all_input_list.extend([
+    expand("results/variant-calling/perSamp/{sample}/{sample}_cleaned_allelicprimitives.vcf", sample=samples),
+    expand("results/coverage/perSamp/{sample}_genome_depth.tsv", sample=samples),
+    expand("results/coverage/perSamp/{sample}_genome_count.tsv", sample=samples),
+    expand("results/coverage/perSamp/{sample}_genome_gene_coverage.gct", sample=samples),
+    expand("results/coverage/perSamp/{sample}_genome_CDS_coverage.gct", sample=samples),
+    expand("results/variant-calling-AA/perSamp/{sample}/{sample}.sorted.sam", sample=samples),
+    expand("results/variant-calling-AA/perSamp/{sample}/{sample}.sam2AAFreq.done", sample=samples),
+    "results/summary/perSamp_summary_report.html",
+    "results/multiqc/perSamp/perSamp_multiqc_report.html"])
 
 rule all:
 	input:

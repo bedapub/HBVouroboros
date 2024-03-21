@@ -13,9 +13,15 @@ trimmomatic_steps: 'LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:35 CROP:140
 ## variant calling parameters
 vc_params: '--min-var-freq 0.01'
 
-## Run modes
-doInputRef: True
-inputRef: 'gnl|hbvnuc|AB064313_FT00000_C-G'
-doPerSamp: True
+## running mode
+doPerSamp: True # If false, genotype and genome inference (and all subsequent analysis) will NOT be done
 
-
+## Reference genomes by genotype
+genotypeA_reference: "EU054331" # alternative: X02763
+genotypeB_reference: "AB219428" # alternative: D00331
+genotypeC_reference: "GQ924620" # alternative: GQ358158
+genotypeD_reference: "AF121240" # alternative: FJ904433
+genotypeE_reference: "AB106564" # alternative: AY738145
+genotypeF_reference: "AY090458" # alternative: X75658
+genotypeG_reference: "AB064313" # alternative: AF160501
+genotypeH_reference: "AY090454" # alternative: FJ356716

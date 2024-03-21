@@ -1,8 +1,13 @@
 import os
 config: "config/config.yaml"
 
-## include the rules from the other files
+## parse configs
 include: "rules/common.py"
+sample_annotation = config['sample_annotation']
+samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
+vc_params = config['vc_params']
+
+## include the rules from the other files
 include: "rules/build_refgenomes.smk"
 include: "rules/align_reads.smk"
 include: "rules/varscan_vc.smk"
@@ -10,8 +15,6 @@ include: "rules/fastqc_multiqc.smk"
 include: "rules/AA_vc.smk"
 include: "rules/summary_report.smk"
 
-sample_annotation = config['sample_annotation']
-samples, fq1dict, fq2dict = parse_sample_annotation(sample_annotation)
 
 rule_all_input_list = ["results/stats/samples.mapping.flagstat",
                        "results/infref/infref_strain_dup.fasta",

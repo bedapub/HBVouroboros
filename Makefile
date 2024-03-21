@@ -7,8 +7,8 @@ run: workflow/Snakefile
 clean:
 	rm -rf results/*
 
-deepclean: clean
-	rm -rf resources/ref/*
+clean-all-genomes: clean
+	rm -rf resources/ref/HBV_allgenomes*
 
 gv: gv/HBVouroboros.gv
 	cd gv; $(MAKE)

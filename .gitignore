@@ -13,6 +13,14 @@ edgeR_*
 fastq/
 counts/
 *.db
+*.nin
+*.ndb
+*.nhr
+*.njs
+*.not
+*.nsq
+*.ntf
+*.nto
 
 *.html
 *_files

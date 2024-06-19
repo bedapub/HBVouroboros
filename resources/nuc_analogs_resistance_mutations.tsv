@@ -1,62 +1,62 @@
 # reference 1: https://doi.org/10.1053/j.gastro.2009.08.063
 # reference 2: https://doi.org/10.1038/s41598-019-44604-6
-Mutation	MutationP	Type	Drug
-rtI169M	I504M	Primary	
-rtV173L	V508L	Compensatory	Lamivudine
-rtV173M	V508M	Compensatory	Lamivudine
-rtL180M	L515M	Compensatory	Lamivudine
-rtL180M	L515M	Compensatory	Telbivudine
-rtL180M	L515M	Compensatory	Lamivudine
-rtL180M	L515M	Compensatory	Telbivudine
-rtL180Q	L515Q	Compensatory	
-rtA181T	A516T	Primary	Telbivudine
-rtA181T	A516T	Primary	Adefovir
-rtA181V	A516V	Primary	Telbivudine
-rtA181V	A516V	Primary	Adefovir
-rtA181S	A516S	Primary	
-rtA181G	A516G	Primary	
-rtT184A	T519A	Primary	Entecavir
-rtT184S	T519S	Primary	Entecavir
-rtT184I	T519I	Primary	Entecavir
-rtT184L	T519L	Primary	Entecavir
-rtT184G	T519G	Primary	Entecavir
-rtT184C	T519C	Primary	Entecavir
-rtT184K	T519K	Primary	Entecavir
-rtT184T	T519T	Primary	Entecavir
-rtT184M	T519M	Primary	Entecavir
-rtT191I	T526I	Putative	
-rtA200V	A535V	Putative	
-rtS202C	S537C	Primary	Entecavir
-rtS202G	S537G	Primary	Entecavir
-rtS202I	S537I	Primary	Entecavir
-rtM204I	M539I	Primary	Lamivudine
-rtM204I	M539I	Primary	Telbivudine
-rtM204I	M539I	Primary	Entecavir
-rtM204V	M539V	Primary	Lamivudine
-rtM204V	M539V	Primary	Telbivudine
-rtM204V	M539V	Primary	Entecavir
-rtV207M	V542M	Putative	Lamivudine
-rtV207I	V542I	Putative	
-rtV207L	V542L	Putative	
-rtV207F	V542F	Putative	
-rtS213T	S548T	Primary	Lamivudine
-rtV214A	V549A	Primary	Adefovir
-rtE218D	E553D	Putative	
-rtL229F	L564F	Putative	
-rtL229M	L564M	Putative	
-rtL229V	L564V	Putative	
-rtL229W	L564W	Putative	
-rtN236A	N571A	Primary	Adefovir
-rtN236T	N571T	Primary	Adefovir
-rtN236V	N571V	Primary	
-rtN236I	N571I	Primary	
-rtN236K	N571K	Primary	
-rtP237S	P572S	Putative	
-rtP237H	P572H	Putative	
-rtN238T	N573T	Primary	Adefovir
-rtH238T	H573T	Primary	Adefovir
-rtN238A	N573A	Primary	Adefovir
-rtY245F	Y580F	Putative	
-rtM250I	M585I	Primary	Entecavir
-rtM250L	M585L	Primary	
-rtM250V	M585V	Primary	Entecavir
+Mutation	RTcoord	Ref	Alt	Type	Drug
+rtI169M	169	I	M	Primary	
+rtV173L	173	V	L	Compensatory	Lamivudine
+rtV173M	173	V	M	Compensatory	Lamivudine
+rtL180M	180	L	M	Compensatory	Lamivudine
+rtL180M	180	L	M	Compensatory	Telbivudine
+rtL180M	180	L	M	Compensatory	Lamivudine
+rtL180M	180	L	M	Compensatory	Telbivudine
+rtL180Q	180	L	Q	Compensatory	
+rtA181T	181	A	T	Primary	Telbivudine
+rtA181T	181	A	T	Primary	Adefovir
+rtA181V	181	A	V	Primary	Telbivudine
+rtA181V	181	A	V	Primary	Adefovir
+rtA181S	181	A	S	Primary	
+rtA181G	181	A	G	Primary	
+rtT184A	184	T	A	Primary	Entecavir
+rtT184S	184	T	S	Primary	Entecavir
+rtT184I	184	T	I	Primary	Entecavir
+rtT184L	184	T	L	Primary	Entecavir
+rtT184G	184	T	G	Primary	Entecavir
+rtT184C	184	T	C	Primary	Entecavir
+rtT184K	184	T	K	Primary	Entecavir
+rtT184T	184	T	T	Primary	Entecavir
+rtT184M	184	T	M	Primary	Entecavir
+rtT191I	191	T	I	Putative	
+rtA200V	200	A	V	Putative	
+rtS202C	202	S	C	Primary	Entecavir
+rtS202G	202	S	G	Primary	Entecavir
+rtS202I	202	S	I	Primary	Entecavir
+rtM204I	204	M	I	Primary	Lamivudine
+rtM204I	204	M	I	Primary	Telbivudine
+rtM204I	204	M	I	Primary	Entecavir
+rtM204V	204	M	V	Primary	Lamivudine
+rtM204V	204	M	V	Primary	Telbivudine
+rtM204V	204	M	V	Primary	Entecavir
+rtV207M	207	V	M	Putative	Lamivudine
+rtV207I	207	V	I	Putative	
+rtV207L	207	V	L	Putative	
+rtV207F	207	V	F	Putative	
+rtS213T	213	S	T	Primary	Lamivudine
+rtV214A	214	V	A	Primary	Adefovir
+rtE218D	218	E	D	Putative	
+rtL229F	229	L	F	Putative	
+rtL229M	229	L	M	Putative	
+rtL229V	229	L	V	Putative	
+rtL229W	229	L	W	Putative	
+rtN236A	236	N	A	Primary	Adefovir
+rtN236T	236	N	T	Primary	Adefovir
+rtN236V	236	N	V	Primary	
+rtN236I	236	N	I	Primary	
+rtN236K	236	N	K	Primary	
+rtP237S	237	P	S	Putative	
+rtP237H	237	P	H	Putative	
+rtN238T	238	N	T	Primary	Adefovir
+rtH238T	238	H	T	Primary	Adefovir
+rtN238A	238	N	A	Primary	Adefovir
+rtY245F	245	Y	F	Putative	
+rtM250I	250	M	I	Primary	Entecavir
+rtM250L	250	M	L	Primary	
+rtM250V	250	M	V	Primary	Entecavir

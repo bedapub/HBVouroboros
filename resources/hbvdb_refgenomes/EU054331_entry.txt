@@ -1,0 +1,264 @@
+ID   EU054331; SV 1; circular; genomic DNA; STD; VRL; 3221 BP.
+XX
+AC   EU054331;
+XX
+DT   21-FEB-2008 (Rel. 94, Created)
+DT   10-APR-2024 (Rel. 60, Last updated, Version 0)
+XX
+DE   Hepatitis B Virus genotype A. Complete genome.
+XX
+KW   HBe; HBc; HBx; LHBs; MHBs; SHBs; Pol; HBSP; complete genome; Sensitive to drugs
+XX
+OS   Hepatitis B Virus genotype A
+OC   Viruses; Hepadnaviridae; Orthohepadnavirus.
+XX
+RN   [1]
+RP   1-3221
+RX   DOI; 10.1128/JCM.02142-07.
+RX   PUBMED; 18077651.
+RA   Makuwa M., Caron M., Souquiere S., Malonga-Mouelet G., Mahe A., Kazanji M.;
+RT   "Prevalence and genetic diversity of hepatitis B and delta viruses in
+RT   pregnant women in Gabon: molecular evidence that hepatitis delta virus
+RT   clade 8 originates from and is endemic in central Africa";
+RL   J. Clin. Microbiol. 46(2):754-756(2008).
+XX
+RN   [2]
+RP   1-3221
+RA   Kazanji M.;
+RT   ;
+RL   Submitted (11-JUL-2007) to the INSDC.
+RL   Virology, CIRMF, BP 769, Franceville, Gabon
+XX
+CC   The data provided in this entry have been computed thanks to
+CC   the Hepatitis B Virus Database (HBVdb) annotation alogrithms.
+CC   HBVdb is available at https://hbvdb.lyon.inserm.fr/.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..3221
+FT                   /organism="Hepatitis B virus"
+FT                   /strain="FE-929-MO"
+FT                   /mol_type="genomic DNA"
+FT                   /country="Gabon"
+FT                   /isolation_source="plasma"
+FT                   /proviral
+FT                   /db_xref="taxon:10407"
+FT                   /db_xref="EMBL:EU054331"
+FT                   /db_xref="HBVdb:EU054331"
+FT                   /PRABI_genotype="n.a.:A:A"
+FT   CDS             1814..2458
+FT                   /PRABI_name="PreC"
+FT                   /locus_tag="HBVORF02"
+FT                   /codon_start="1"
+FT                   /db_xref="UniProtKB/TrEMBL:Q81106"
+FT                   /translation="MQLFHLCLIISCTCPTFQASKLCLGWLWGMDIDPYKEFGATVELL
+FT                   SFLPSDFFPSVRDLLDTASALYREALESPEHCSPHHTALRQAILCWGELMTLATWVGNN
+FT                   LEDPASRDLVVNYVNTNMGLKIRQLLWFHISCLTFGRETVLEYLVSFGVWIRTPPAYRP
+FT                   PNAPILSTLPETTVVRRRDRGRSPRRRTPSPRRRRSQSPRRRRSQSRESQC"
+FT   sig_peptide     1814..1870
+FT                   /function="HBe/External core antigen signal peptide"
+FT                   /locus_tag="HBVORF02"
+FT                   /product="External core antigen signal peptide"
+FT                   /PRABI_name="HBeSignal"
+FT                   /PRABI_prodft=(pos:1..19, SIGNAL)
+FT   mat_peptide     1871..2275
+FT                   /function="HBe/External core antigen coding sequence"
+FT                   /locus_tag="HBVORF02"
+FT                   /product="External core antigen (HBeAg, p17)"
+FT                   /PRABI_name="HBe"
+FT                   /PRABI_prodft=(pos:20..185, CHAIN, "HBe antigen")
+FT   CDS             1901..2458
+FT                   /PRABI_name="C"
+FT                   /locus_tag="HBVORF12"
+FT                   /codon_start="1"
+FT                   /db_xref="UniProtKB/TrEMBL:Q67855"
+FT                   /translation="MDIDPYKEFGATVELLSFLPSDFFPSVRDLLDTASALYREALESP
+FT                   EHCSPHHTALRQAILCWGELMTLATWVGNNLEDPASRDLVVNYVNTNMGLKIRQLLWFH
+FT                   ISCLTFGRETVLEYLVSFGVWIRTPPAYRPPNAPILSTLPETTVVRRRDRGRSPRRRTP
+FT                   SPRRRRSQSPRRRRSQSRESQC"
+FT   mat_peptide     1901..2455
+FT                   /function="Core protein coding sequence"
+FT                   /locus_tag="HBVORF12"
+FT                   /product="Core protein (HBc, p21)"
+FT                   /PRABI_name="HBc"
+FT                   /PRABI_prodft=(pos:1..185, CHAIN, "Core protein")
+FT   CDS             1374..1838
+FT                   /PRABI_name="X"
+FT                   /locus_tag="HBVORF03"
+FT                   /codon_start="1"
+FT                   /db_xref="UniProtKB/TrEMBL:B0YPT1"
+FT                   /translation="MAARLYCQLDSSRDVLCLRPVGAESRGRPLSGPFGHFSSPSLSNI
+FT                   PNDHGAHLSFHCLPVCAFSSDGPCALRFTSARCMATTVNDHQMLRKLLHKRAVGLPAIS
+FT                   TADLEAYFKDCVFKDWEELGEEIRLKVFVLRGCRHKLVCAPSSCNFFTSA"
+FT   mat_peptide     1374..1835
+FT                   /function="X protein coding sequence"
+FT                   /locus_tag="HBVORF03"
+FT                   /product="X protein"
+FT                   /PRABI_name="HBx"
+FT                   /PRABI_prodft=(pos:1..154, CHAIN, "X protein")
+FT   CDS             join(2854..3221,1..835)
+FT                   /PRABI_name="PreS1"
+FT                   /locus_tag="HBVORF01"
+FT                   /codon_start="1"
+FT                   /db_xref="UniProtKB/TrEMBL:B0YPS8"
+FT                   /translation="MGGWLPKPRKGMGTNLSVPNPLGFFPDHQLDPAFGANSNNPDWDF
+FT                   NPIKDHWPQANQVGVGAFGPGFTPPHGGVLGWSPQAQGILTTVPAVPPPASTNRQSGRQ
+FT                   PTPISPPLRDSHPQAMQWNSTAFHQALQDPRVRGLYFPAGCSSSGTVSPVPNIASHISS
+FT                   ISSRTGDPAPTMENITSGFLGPLLVLQAGFFLLTRILTIPQSLDSWWTSLNFLGGSPVC
+FT                   LGQNSQSPTSNHSPTSCPPICPGYRWMCLRRFIIFLFILLLCLIFLLVLLDYQGMLPVC
+FT                   PLIPGSTTTSTGPCRTCTTPAQGNSMFPSCCCTKPTDGNCTCIPIPSSWAFAKYLWEWA
+FT                   SVRFSWLSLLVPFVRWFVGLSPTVWLSAIWMMWYWGPSLYNILSPFIPLLPIFFCLWVY
+FT                   I"
+FT   mat_peptide     join(2854..3221,1..832)
+FT                   /function="PreS1/Large Surface protein coding sequence"
+FT                   /locus_tag="HBVORF01"
+FT                   /product="PreS1 Surface protein"
+FT                   /PRABI_name="LHBs"
+FT                   /PRABI_prodft=(pos:1..400, CHAIN, "Large Surface protein")
+FT   CDS             join(3211..3221,1..835)
+FT                   /PRABI_name="PreS2"
+FT                   /locus_tag="HBVORF11"
+FT                   /codon_start="1"
+FT                   /db_xref="UniProtKB/TrEMBL:B0YPS9"
+FT                   /translation="MQWNSTAFHQALQDPRVRGLYFPAGCSSSGTVSPVPNIASHISSI
+FT                   SSRTGDPAPTMENITSGFLGPLLVLQAGFFLLTRILTIPQSLDSWWTSLNFLGGSPVCL
+FT                   GQNSQSPTSNHSPTSCPPICPGYRWMCLRRFIIFLFILLLCLIFLLVLLDYQGMLPVCP
+FT                   LIPGSTTTSTGPCRTCTTPAQGNSMFPSCCCTKPTDGNCTCIPIPSSWAFAKYLWEWAS
+FT                   VRFSWLSLLVPFVRWFVGLSPTVWLSAIWMMWYWGPSLYNILSPFIPLLPIFFCLWVYI
+FT                   "
+FT   mat_peptide     join(3211..3221,1..832)
+FT                   /function="PreS2/Middle Surface protein coding sequence"
+FT                   /locus_tag="HBVORF11"
+FT                   /product="PreS2 Surface protein"
+FT                   /PRABI_name="MHBs"
+FT                   /PRABI_prodft=(pos:1..281, CHAIN, "Middle Surface protein")
+FT   CDS             155..835
+FT                   /PRABI_name="S"
+FT                   /locus_tag="HBVORF21"
+FT                   /codon_start="1"
+FT                   /db_xref="UniProtKB/TrEMBL:B0YPT0"
+FT                   /translation="MENITSGFLGPLLVLQAGFFLLTRILTIPQSLDSWWTSLNFLGGS
+FT                   PVCLGQNSQSPTSNHSPTSCPPICPGYRWMCLRRFIIFLFILLLCLIFLLVLLDYQGML
+FT                   PVCPLIPGSTTTSTGPCRTCTTPAQGNSMFPSCCCTKPTDGNCTCIPIPSSWAFAKYLW
+FT                   EWASVRFSWLSLLVPFVRWFVGLSPTVWLSAIWMMWYWGPSLYNILSPFIPLLPIFFCL
+FT                   WVYI"
+FT   mat_peptide     155..832
+FT                   /function="S protein coding sequence"
+FT                   /locus_tag="HBVORF21"
+FT                   /product="Surface protein S"
+FT                   /PRABI_name="SHBs"
+FT                   /PRABI_prodft=(pos:1..226, CHAIN, "Small Surface protein")
+FT   CDS             join(2307..3221,1..1623)
+FT                   /PRABI_name="P"
+FT                   /locus_tag="HBVORF13"
+FT                   /codon_start="1"
+FT                   /db_xref="UniProtKB/TrEMBL:B0YPS7"
+FT                   /translation="MPLSYQHFRKLLLLDDGTEAGPLEEELPRLADADLNRRVAEDLNL
+FT                   GNLNVSIPWTHKVGNFTGLYSSTVPIFNPEWQTPSFPKIHLHEDIINRCQQFVGPLTVN
+FT                   EKRRLKLIMPARFFPNSTKYLPLDKGIKPYYPDHVVNHYFQARHYLHTLWKAGILYKRE
+FT                   TTSSASFCGSPYSWEQELQHGRLVTKTSQRHGDKSFCSQSSGILSRSSVGPCIRSQLKQ
+FT                   SRLGLQPHQGPLATSQSGRSGSIWARVHPSTRRCSGVEPSSSGHIDYRASSSSSCLHQS
+FT                   AVRKAAYSHLSTSKRQSSSGHAVEFHSFPPSSTRSQSQGPVFSCGVLQFRNSKPCSEYC
+FT                   LSHLVNLLEDWGPCTDHGEHHIRIPRTPARVTGGVFLVDKNPHNTAESRLVVDFSQFSR
+FT                   GITRVSWPKFAVPNLQSLTNLLSSNLSWLSLDVSAAFYHIPLHPAAMPHLLIGSSGLSR
+FT                   YVARLSSNSRIHNHQYGTLQNLHDSCTRQLYVSLMLLYKTYGRKLHLYSHPIILGFRKI
+FT                   PMGVGLSPFLLAQFTSAICSVVRRAFPHCLAFSYMDDVVLGAKSVQHLESLYTAVTNFL
+FT                   LSLGIHLNPNKTKRWGYSLNFMGYIIGCWGSLPQDHIVQKLKDCFRKLPVNRPIDWKVC
+FT                   QRIVGLLGFAAPFTQCGYPALMPLYACIQAKQAFTFSPTYKAFLSKQYMNLYPVARQRP
+FT                   GLCQVFADATPTGWGLAMGHQRMRGTFVAPLPIHTAELLAACFARSRSGAKLIGTDNSV
+FT                   VLSRKYTSFPWLLGCTANWILRGTSFVYVPSALNHADDPSRGPLVISRPLLCLTFRTTT
+FT                   ERTSHSTAYPSVPSHLTDRVHFASPLHVAWRPP"
+FT   mat_peptide     join(2307..3221,1..1620)
+FT                   /function="DNA-polymerase/Reverse Transcriptase coding
+FT                   sequence"
+FT                   /locus_tag="HBVORF13"
+FT                   /product="Polymerase/Reverse Transcriptase"
+FT                   /PRABI_name="Pol"
+FT                   /PRABI_prodft=(pos:1..845, CHAIN, "Polymerase/Reverse
+FT                   transcriptase")
+FT                   /PRABI_prodft=(pos:1..183, DOMAIN, "Terminal Protein (TP)/
+FT                   Primase domain")
+FT                   /PRABI_prodft=(pos:184..348, DOMAIN, "Spacer")
+FT                   /PRABI_prodft=(pos:349..692, DOMAIN, "Reverse Transcriptase
+FT                   (RT) domain")
+FT                   /PRABI_prodft=(pos:431..431, ACT_SITE, "RT catalytic Asp")
+FT                   /PRABI_prodft=(pos:553..553, ACT_SITE, "RT catalytic Asp")
+FT                   /PRABI_prodft=(pos:554..554, ACT_SITE, "RT catalytic Asp")
+FT                   /PRABI_prodft=(pos:693..845, DOMAIN, "Ribonuclease H
+FT                   (RNaseH) domain")
+FT                   /PRABI_prodft=(pos:702..702, ACT_SITE, "RNaseH catalytic
+FT                   Asp")
+FT                   /PRABI_prodft=(pos:731..731, ACT_SITE, "RNaseH catalytic
+FT                   Glu")
+FT                   /PRABI_prodft=(pos:750..750, ACT_SITE, "RNaseH catalytic
+FT                   Asp")
+FT   CDS             join(2307..2453,489..683)
+FT                   /PRABI_name="SP"
+FT                   /locus_tag="HBVORF04"
+FT                   /codon_start="1"
+FT                   /translation="MPLSYQHFRKLLLLDDGTEAGPLEEELPRLADADLNRRVAEDLNL
+FT                   GNLNDPQPPVRDPAEPARLLHKATLCFPHVAVQNLRTEIALVFPSHHPGLSQNTYGSGP
+FT                   QSVSPGSVY"
+FT   mat_peptide     join(2307..2453,489..680)
+FT                   /function="HBSP coding sequence"
+FT                   /locus_tag="HBVORF04"
+FT                   /product="Hepatitis B Spliced Protein"
+FT                   /PRABI_name="HBSP"
+FT                   /PRABI_prodft=(pos:1..113, CHAIN, "HBV Spliced Protein")
+XX
+SQ   Sequence 3221 BP; 740 A; 857 C; 696 G; 928 T; 0 other;
+     ttccacagct ttccaccaag ctctacaaga tcccagagtc aggggcctgt attttcctgc        60
+     ggggtgctcc agttcaggaa cagtaagccc tgttccgaat attgcctctc acatctcgtc       120
+     aatctcctcg aggactgggg accctgcacc gaccatggag aacatcacat caggattcct       180
+     aggacccctg ctcgtgttac aggcggggtt tttcttgttg acaagaatcc tcacaatacc       240
+     gcagagtcta gactcgtggt ggacttctct caattttcta gggggatcac ccgtgtgtct       300
+     tggccaaaat tcgcagtccc caacctccaa tcactcacca acctcctgtc ctccaatttg       360
+     tcctggttat cgctggatgt gtctgcggcg ttttatcata ttcctcttca tcctgctgct       420
+     atgcctcatc ttcttattgg ttcttctgga ttatcaaggt atgttgcccg tttgtcctct       480
+     aattccagga tccacaacca ccagtacggg accctgcaga acctgcacga ctcctgcaca       540
+     aggcaactct atgtttccct catgttgctg tacaaaacct acggacggaa attgcacttg       600
+     tattcccatc ccatcatcct gggctttcgc aaaataccta tgggagtggg cctcagtccg       660
+     tttctcctgg ctcagtttac tagtgccatt tgttcggtgg ttcgtagggc tttcccccac       720
+     tgtttggctt tcagctatat ggatgatgtg gtattggggg ccaagtctgt acaacatctt       780
+     gagtcccttt ataccgctgt taccaatttt cttttgtctt tgggtataca tttaaaccct       840
+     aacaaaacaa aaagatgggg ttattcccta aacttcatgg gctacataat tggatgttgg       900
+     ggatcattgc cacaagatca tattgttcaa aaactcaaag attgttttcg aaaacttcct       960
+     gttaacagac ctattgattg gaaagtctgt caacgcattg tgggtctttt gggctttgcc      1020
+     gctccattta cacaatgtgg gtaccctgct ttaatgcctc tgtacgcatg tatacaagcc      1080
+     aaacaggctt ttactttctc gccaacttac aaggcctttc taagtaaaca gtatatgaac      1140
+     ctttaccccg ttgcccggca acggcctggt ctatgccaag tgtttgctga cgcaaccccc      1200
+     actggctggg gcttggccat gggccatcag cgcatgcgtg gaacctttgt ggctcctctg      1260
+     ccgatccata ctgcggaact cctagccgct tgttttgctc gcagccggtc tggagcgaaa      1320
+     ctcatcggga ctgataattc tgtcgtcctt tctcggaaat atacatcttt cccatggctg      1380
+     ctaggttgta ctgccaactg gattcttcgc gggacgtcct ttgtttacgt cccgtcggcg      1440
+     ctgaatcacg cggacgaccc ctctcggggc cctttggtca tttctcgtcc ccttctctgt      1500
+     ctaacattcc gaacgaccac ggagcgcacc tctcattcca ctgcctaccc gtctgtgcct      1560
+     tctcatctga cggaccgtgt gcacttcgct tcacctctgc acgttgcatg gcgaccaccg      1620
+     tgaacgacca tcagatgctg cgcaagttgt tacataaaag agctgttgga ctcccagcaa      1680
+     tatcaacagc cgaccttgag gcttacttca aagactgtgt gtttaaagac tgggaggagt      1740
+     tgggggagga gattaggcta aaggtctttg tattaagagg ctgtaggcat aaattggtct      1800
+     gcgcaccatc atcatgcaac tttttcacct ctgcctaatc atttcttgta catgtcccac      1860
+     ttttcaagcc tccaagctgt gccttgggtg gctttggggc atggacattg acccttataa      1920
+     agaatttgga gctactgtgg agttactctc gtttttgcct tctgacttct ttccttccgt      1980
+     ccgagatctc ctcgataccg cctcagctct atatcgggaa gcactagagt ctcctgagca      2040
+     ttgctctcct caccatacag cactcaggca agccattctc tgctgggggg agttaatgac      2100
+     tctagctacc tgggtgggta ataatttgga agatccagca tccagggatc tagtagtcaa      2160
+     ttatgttaat actaatatgg gcctaaagat caggcaactg ttgtggtttc atatttcttg      2220
+     ccttactttt ggaagagaaa ctgtacttga gtatttggtc tcttttggag tgtggattcg      2280
+     cactcctcca gcttatagac caccaaatgc ccctatctta tcaacacttc cggaaactac      2340
+     tgttgttaga cgacgggacc gaggcaggtc ccctagaaga agaactccct cgcctcgcag      2400
+     acgcagatct caatcgccgc gtcgcagaag atctcaatct cgggaatctc aatgttagta      2460
+     ttccttggac tcataaggtg gggaatttta ctgggcttta ttcttctact gtacctatct      2520
+     ttaatcctga atggcaaact ccttcttttc ccaagattca tttacatgag gacattatta      2580
+     atagatgtca acaatttgta ggccctctca ctgtaaatga aaagagaaga ttgaaattaa      2640
+     ttatgcctgc tagattcttt cctaacagca ctaaatattt gccacttgac aaagggatta      2700
+     aaccttatta tcctgatcat gtagttaatc attacttcca ggcccgacat tatttacata      2760
+     ctctttggaa ggccggtatt ctatataaga gggaaactac aagtagcgct tcattttgcg      2820
+     ggtcaccata ttcttgggaa caagagctac agcatgggag gttggttacc aaaacctcgc      2880
+     aaaggcatgg ggacaaatct ttctgttccc aatcctctgg gattctttcc cgatcatcag      2940
+     ttggaccctg cattcggagc caactcaaac aatccagatt gggacttcaa ccccatcaag      3000
+     gaccactggc cacaagccaa tcaggtagga gtgggagcat ttgggccagg gttcacccct      3060
+     ccacacggag gtgttctggg gtggagccct caagctcagg gcatattgac taccgtgcca      3120
+     gcagttcctc ctcctgcctc caccaatcgg cagtcaggaa ggcagcctac tcccatctct      3180
+     ccacctctaa gagacagtca tcctcaggcc atgcagtgga a                          3221
+//
